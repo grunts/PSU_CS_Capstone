@@ -1,7 +1,9 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+import MapView from 'react-native-maps';
 
 import EditScreenInfo from "../components/EditScreenInfo";
+import MapComponent from "../components/MapComponent";
 import { Text, View } from "../components/Themed";
 const restaurants = require("../mock/restaurant");
 
@@ -14,7 +16,7 @@ export default function TabTwoScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <EditScreenInfo path="/screens/TabTwoScreen.js" />
+      <MapComponent></MapComponent>
     </View>
   );
 }
@@ -34,4 +36,8 @@ const styles = StyleSheet.create({
     height: 1,
     width: "80%",
   },
+  mapStyle: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+  }
 });
