@@ -2,7 +2,7 @@
 import React from 'react';
 import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar } from 'react-native';
 //our issue is here:
-import restaurants from '../mock/restaurant.js';
+//import restaurants from '../mock/restaurant.js';
 //const restaurants = require("../mock/restaurant.js");
 /*
 const restaurants = [
@@ -19,6 +19,121 @@ const restaurants = [
     name: 'Third Item',
   },
 ];*/
+
+const restaurants = [
+  {
+    name: "Yum Yum",
+    description: "So good tbh",
+    address: {
+      street: "1234 the street",
+      city: "Portland",
+      state: "OR",
+      zip: 97214,
+    },
+    location: {
+      longitude: 107.12414,
+      latitude: 205.21515,
+    },
+    menu: [
+      {
+        name: "food name",
+        description: "food desc",
+        price: 20.5,
+        picURL: "someurl",
+      },
+      {
+        name: "food name 2",
+        description: "food desc 2",
+        price: 20.52,
+      },
+    ],
+    picURL: "link-to-restaurant photo",
+  },
+  {
+    name: "Other place",
+    description: "Not so good tbh",
+    address: {
+      street: "1234 the street",
+      city: "Portland",
+      state: "OR",
+      zip: 97214,
+    },
+    location: {
+      longitude: 101.12444,
+      latitude: 198.15672,
+    },
+    menu: [
+      {
+        name: "food name",
+        description: "food desc",
+        price: 20.5,
+        picURL: "someurl",
+      },
+      {
+        name: "food name 2",
+        description: "food desc 2",
+        price: 20.52,
+      },
+    ],
+    picURL: "link-to-restaurant photo",
+  },
+  {
+    name: "Other place",
+    description: "Not so good tbh",
+    address: {
+      street: "1234 the street",
+      city: "Portland",
+      state: "OR",
+      zip: 97214,
+    },
+    location: {
+      longitude: 101.12444,
+      latitude: 198.15672,
+    },
+    menu: [
+      {
+        name: "food name",
+        description: "food desc",
+        price: 20.5,
+        picURL: "someurl",
+      },
+      {
+        name: "food name 2",
+        description: "food desc 2",
+        price: 20.52,
+      },
+    ],
+    picURL: "link-to-restaurant photo",
+  },
+  {
+    name: "Other place",
+    description: "Not so good tbh",
+    address: {
+      street: "1234 the street",
+      city: "Portland",
+      state: "OR",
+      zip: 97214,
+    },
+    location: {
+      longitude: 101.12444,
+      latitude: 198.15672,
+    },
+    menu: [
+      {
+        name: "food name",
+        description: "food desc",
+        price: 20.5,
+        picURL: "someurl",
+      },
+      {
+        name: "food name 2",
+        description: "food desc 2",
+        price: 20.52,
+      },
+    ],
+    picURL: "link-to-restaurant photo",
+  },
+];
 
 const Item = ({ name }) => (
   <View style={styles.item}>

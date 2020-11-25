@@ -3,13 +3,14 @@ import { StyleSheet } from "react-native";
 
 //import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
-import ListComponent from "../components/ListView";
+//import ListComponent from "../components/ListView";
+import ScrollListComponent from "../components/ListViewScroll";
 
 export default function TabOneScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>List View</Text>
-      <ListComponent />
+      <ScrollListComponent />
       <View
         style={styles.separator}
         lightColor="#eee"
