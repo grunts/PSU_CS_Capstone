@@ -1,4 +1,4 @@
-export const restaurants = [
+const restaurants = [
   {
     name: "Yum Yum",
     description: "So good tbh",
@@ -112,3 +112,5 @@ export const restaurants = [
     picURL: "link-to-restaurant photo",
   },
 ];
+
+export default restaurants;
