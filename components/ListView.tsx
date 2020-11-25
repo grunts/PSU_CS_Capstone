@@ -10,7 +10,7 @@ const ListComponent = () => (
         <Title>Card title</Title>
         <Paragraph>Card content</Paragraph>
       </Card.Content>
-      <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+      {/* <Card.Cover source={{ uri: 'https://picsum.photos/700' }} /> */}
     </Card>
   );
 
