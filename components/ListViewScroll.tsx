@@ -4,6 +4,8 @@ import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar } from 'react
 //our issue is here:
 import restaurants from '../mock/restaurant.js';
 //const restaurants = require("../mock/restaurant.js");
+import { Avatar, ListItem } from 'react-native-elements';
+
 
 const Item = ({ name }) => (
   <View style={styles.item}>
@@ -13,7 +15,17 @@ const Item = ({ name }) => (
 
 const App = () => {
   const renderItem = ({ item }) => (
-    <Item name={item.name} />
+  <ListItem bottomDivider>
+      <Avatar 
+      size="large"
+      source={{uri: item.picURL}} />
+      <ListItem.Content>
+        <ListItem.Title>{item.name}</ListItem.Title>
+        <ListItem.Subtitle>{item.address.street}, {item.address.city}, {item.address.state}, {item.address.zip}</ListItem.Subtitle>
+      </ListItem.Content>
+    </ListItem>
+
+
   );
 
   return (
