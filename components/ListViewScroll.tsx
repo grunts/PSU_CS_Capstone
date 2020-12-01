@@ -1,9 +1,6 @@
-
 import React from 'react';
 import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar } from 'react-native';
-//our issue is here:
 import restaurants from '../mock/restaurant.js';
-//const restaurants = require("../mock/restaurant.js");
 import { Avatar, ListItem } from 'react-native-elements';
 
 
@@ -17,15 +14,13 @@ const App = () => {
   const renderItem = ({ item }) => (
   <ListItem bottomDivider>
       <Avatar 
-      size="large"
-      source={{uri: item.picURL}} />
+        size="large"
+        source={{uri: item.picURL}} />
       <ListItem.Content>
         <ListItem.Title>{item.name}</ListItem.Title>
         <ListItem.Subtitle>{item.address.street}, {item.address.city}, {item.address.state}, {item.address.zip}</ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>
-
-
   );
 
   return (
@@ -33,8 +28,7 @@ const App = () => {
       <FlatList
         data={restaurants}
         renderItem={renderItem}
-        keyExtractor={item => item.description}
-      />
+        keyExtractor={item => item.description} />
     </SafeAreaView>
   );
 }
