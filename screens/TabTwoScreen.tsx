@@ -1,13 +1,30 @@
-import * as React from "react";
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Dimensions } from "react-native";
 import MapView from 'react-native-maps';
-
+import * as Location from 'expo-location';
+import Region from "../constants/Region";
 import EditScreenInfo from "../components/EditScreenInfo";
 import MapComponent from "../components/MapComponent";
 import { Text, View } from "../components/Themed";
 const restaurants = require("../mock/restaurant");
 
 export default function TabTwoScreen() {
+  const [errorMsg, setErrorMsg] = useState(String);
+  const [region, setRegion] = useState(Region);
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+      }
+
+      let result = await Location.getCurrentPositionAsync({});
+      const { latitude, longitude } = result.coords
+      setRegion( { latitude, longitude, latitudeDelta: region.latitudeDelta, longitudeDelta: region.longitudeDelta } );
+    })();
+  }, []);
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab Two</Text>
@@ -16,7 +33,9 @@ export default function TabTwoScreen() {
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
       />
-      <MapComponent></MapComponent>
+      <MapComponent 
+        initialRegion={region}
+      />
     </View>
   );
 }

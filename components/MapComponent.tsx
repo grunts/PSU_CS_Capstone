@@ -1,11 +1,18 @@
 import React from 'react';
 import MapView from 'react-native-maps';
 import { StyleSheet, View, Dimensions } from 'react-native';
+import Region from "../constants/Region";
 
-export default function MapComponent() {
+export default function MapComponent({ initialRegion }:  { initialRegion: typeof Region } ) {
     return (
         <View style={styles.container}>
-            <MapView style={styles.mapStyle}/>
+            <MapView 
+              style={styles.mapStyle}
+              initialRegion={initialRegion}
+              region={initialRegion}
+              // onRegionChange={ region => setRegion( region )}
+              >
+            </MapView>
         </View>
     );
 }
