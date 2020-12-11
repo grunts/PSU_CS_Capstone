@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Dimensions } from "react-native";
-import MapView from 'react-native-maps';
 import * as Location from 'expo-location';
 import Region from "../constants/Region";
 import EditScreenInfo from "../components/EditScreenInfo";

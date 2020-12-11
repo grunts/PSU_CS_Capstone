@@ -2,8 +2,8 @@ import { Dimensions } from 'react-native';
 
   const { width, height } = Dimensions.get('window');
   const ASPECT_RATIO = width / height;
-  const LATITUDE = 0;
-  const LONGITUDE = 0;
+  const LATITUDE = 38.1549896;
+  const LONGITUDE = -96.1923437;
   const LATITUDE_DELTA = 0.0922;
   const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 

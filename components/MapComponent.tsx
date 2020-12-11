@@ -13,16 +13,20 @@ export default function MapComponent({ initialRegion }:  { initialRegion: typeof
               region={initialRegion}
               // onRegionChange={ region => setRegion( region )}
               >
-               {/* {state.markers.map((marker, index) => ( */}
-                <Marker
-                  key={'keyasdf'}
-                  coordinate={{
-                    latitude: 45.53861829560881,
-                    longitude: -122.71220591415464,}
-                  }
-                  title={'marker.title'}
-                  description={'marker.description'}
-                />
+                <Marker 
+                  coordinate={initialRegion}
+                  title={'You'}
+                  description={'You are here'}
+                  pinColor={'green'}
+                  />
+                {restaurants.map((marker, index) => (
+                  <Marker 
+                  key={index}
+                  coordinate={marker.location}
+                  title={marker.name}
+                  description={marker.description}
+                  />
+                ))}
             </MapView>
         </View>
     );
