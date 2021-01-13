@@ -5,3 +5,4 @@ steps for setup:
 
 npm install react-native-vector-icons
 npm install react-native-paper
+npm install react-native-searchable-dropdown

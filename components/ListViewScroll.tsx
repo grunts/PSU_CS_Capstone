@@ -2,7 +2,7 @@ import React from 'react';
 import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar } from 'react-native';
 import restaurants from '../mock/restaurant.js';
 import { Avatar, ListItem } from 'react-native-elements';
-
+import SearchBar from './SearchBar';
 
 const Item = ({ name }) => (
   <View style={styles.item}>
@@ -25,11 +25,13 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <SearchBar></SearchBar>
       <FlatList
         data={restaurants}
         renderItem={renderItem}
         keyExtractor={item => item.description} />
     </SafeAreaView>
+    
   );
 }
 
