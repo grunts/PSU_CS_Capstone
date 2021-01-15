@@ -1,17 +1,16 @@
 const restaurants = [
   {
-    id: "f9b30433-8501-41f4-ba02-be41b324f048",
-    Merchant_id: "f5ce39f7-432f-455a-805d-4834b0879871",
-    GeoPoint: {
-      latitude: 45.53861829560881,
-      longitude: -122.71220591415464,
-    },
-    Address: {
-      streetNum: "2929",
-      street: "NW Nicolai St",
+    name: "Chicken City",
+    description: "A nice restaurant with all-chicken everything.",
+    address: {
+      street: "2929 NW Nicolai St, Portland, OR 97210",
       city: "Portland",
       state: "OR",
-      country: "USA",
+      zip: 97210,
+    },
+    location: {
+      latitude: 45.53861829560881,
+      longitude: -122.71220591415464,
     },
     menu: [
       {
@@ -76,22 +75,21 @@ const restaurants = [
         ],
       },
     ],
+    picURL: "https://media-cdn.tripadvisor.com/media/photo-s/0d/12/bd/2f/20160923-123311-largejpg.jpg",
   },
   {
-    id: "ee83b7f5-587f-4428-bdf6-8a8cb53116fb",
-    Merchant_id: "c21d6d73-5570-4588-a289-536b2eea574e",
-    GeoPoint: {
+    name: "Jim's Formal Wear (and Restaurant)",
+    description: "Men's clothing store with an illegal restaurant behind the pants rack.",
+    address: {
+      street: "3180 Fulton Rd",
+      city: "Cleveland",
+      state: "OH",
+      zip: 44109,
+    },
+    location: {
       latitude: 41.467385796579364,
       longitude: -81.70773329375706,
     },
-    Address: {
-      streetNum: "3180",
-      street: "Fulton Rd",
-      city: "Cleveland",
-      state: "OH",
-      country: "USA",
-    },
-
     menu: [
       {
         name: "Fettuccine Alfredo",
@@ -107,20 +105,20 @@ const restaurants = [
         ],
       },
     ],
+    picURL: "https://www.duttiled.com/wp-content/uploads/2018/12/Dutti-D0056-LED-chandelier-for-clothing-store-restaurant-living-room-dining-room-bedroom-Nordic-crystal-warm-romantic-personality-creative-art-postmodern-lighting-2.jpg",
   },
   {
-    id: "61431303-3449-4688-bb7b-10583ec04257",
-    Merchant_id: "900ec4fa-3662-4391-8f9a-c3a95ec0bf9b",
-    GeoPoint: {
-      latitude: 45.518164486329056,
-      longitude: -122.45485314817385,
-    },
-    Address: {
-      streetNum: "614",
-      street: "SE 202nd Ave",
+    name: "The Midnight Snack Colosseum",
+    description: "Your one-stop-shop for all things midnight snacks. Only open from midnight to one.",
+    address: {
+      street: "614 SE 202nd Ave",
       city: "Portland",
       state: "OR",
-      country: "USA",
+      zip: 97233,
+    },
+    location: {
+      latitude: 45.518164486329056,
+      longitude: -122.45485314817385,
     },
     menu: [
       {
@@ -136,20 +134,20 @@ const restaurants = [
         ],
       },
     ],
+    picURL: "https://i.pinimg.com/originals/6b/71/ee/6b71ee703bca0811ec5041f11b2b9206.jpg",
   },
   {
-    id: "a964e7ed-9564-4f93-a312-6f3da6579174",
-    Merchant_id: "5959ebf6-62af-42b9-accc-a3e7a68f81f3",
-    GeoPoint: {
-      latitude: 40.80636327866863,
-      longitude: -73.96556036136899,
-    },
-    Address: {
-      streetNum: "2880",
-      street: "Broadway",
+    name: "Tom's Restaurant",
+    description: "Bwah bwah-bwah-bwah-bwah bwah bwah-bwah-bwah, bwah bwah bwah bwah-bwah-bwah bwah bwah bwah bwah bwah, duh-nuh.",
+    address: {
+      street: "2880 Broadway",
       city: "New York",
       state: "NY",
-      country: "USA",
+      zip: 10025,
+    },
+    location: {
+      latitude: 40.80636327866863,
+      longitude: -73.96556036136899,
     },
     menu: [
       {
@@ -165,20 +163,20 @@ const restaurants = [
         ],
       },
     ],
+    picURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Tom%27s_Restaurant%2C_NYC.jpg/280px-Tom%27s_Restaurant%2C_NYC.jpg",
   },
   {
-    id: "f544ce1c-6250-48cf-a31b-7f99eb2c5fb2",
-    Merchant_id: "e19a7044-aea8-47ec-ac61-3037db6fbca1",
-    GeoPoint: {
-      latitude: 45.53267381284505,
-      longitude: -122.65353245851188,
-    },
-    Address: {
-      streetNum: "2201",
-      street: "NE Lloyd Center",
+    name: "Sear's Fried Catalogues",
+    description: "Lloyd Center's last frontier: sweet and garlicky stir-fried magazines.",
+    address: {
+      street: "2201 Lloyd Center",
       city: "Portland",
       state: "OR",
-      country: "USA",
+      zip: 97232,
+    },
+    location: {
+      latitude: 45.53267381284505,
+      longitude: -122.65353245851188,
     },
     menu: [
       {
@@ -194,20 +192,20 @@ const restaurants = [
         ],
       },
     ],
+    picURL: "https://www.supermarketnews.com/sites/supermarketnews.com/files/styles/article_featured_retina/public/sears-bankruptcy-stores-close.png?itok=GULgIeNx",
   },
   {
-    id: "50a5067b-e841-4b54-8a59-acc1d8798375",
-    Merchant_id: "45b7756f-c2da-4b4b-8b5e-8e5ea12858a7",
-    GeoPoint: {
-      latitude: 45.51225885504484,
-      longitude: -122.63003793580931,
-    },
-    Address: {
-      streetNum: "3341",
-      street: "SE Hawthorne Blvd.",
+    name: "Shia LaBeouf's Popcorn Paradise",
+    description: "The world's best all-you-can-eat popcorn bar, brought to you by an international legend.",
+    address: {
+      street: "3341 SE Hawthorne Blvd.",
       city: "Portland",
       state: "OR",
-      country: "USA",
+      zip: 97214,
+    },
+    location: {
+      latitude: 45.51225885504484,
+      longitude: -122.63003793580931,
     },
     menu: [
       {
@@ -223,6 +221,7 @@ const restaurants = [
         ],
       },
     ],
+    picURL: "https://static.onecms.io/wp-content/uploads/sites/6/2015/11/shia-labeouf.jpg",
   },
 ];
 
