@@ -10,9 +10,9 @@ const Item = ({ name }) => (
   </View>
 );
 
-const App = () => {
+const App = ({navigator} : {navigator: any}) => {
   const renderItem = ({ item }) => (
-  <ListItem bottomDivider>
+  <ListItem bottomDivider onPress={() => navigator.navigate('MenuScreen')}>
       <Avatar 
         size="large"
         source={{uri: item.picURL}} />

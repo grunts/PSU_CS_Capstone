@@ -1,12 +1,13 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
 import { Text, View } from "../components/Themed";
-import ScrollListComponent from "../components/ListViewScroll";
+import restaurants from "../mock/restaurant";
+import MenuTitleComponent from "../components/MenuTitleComponent";
 
-export default function TabOneScreen({navigation}: {navigation: any}) {
+export default function MenuScreen() {
   return (
     <View style={styles.container}>
-      <ScrollListComponent navigator={navigation}/>
+        <MenuTitleComponent title={restaurants[0].name}></MenuTitleComponent>
     </View>
   );
 }
