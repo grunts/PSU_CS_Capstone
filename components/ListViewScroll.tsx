@@ -25,7 +25,7 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar></SearchBar>
+      <SearchBar></SearchBar> 
       <FlatList
         data={restaurants}
         renderItem={renderItem}

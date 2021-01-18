@@ -5,18 +5,20 @@ import restaurants from '../mock/restaurant.js';
 //import SearchableDropdown component
 import SearchableDropdown from 'react-native-searchable-dropdown';
 
+// this is test data. it will soon be hooked up to the resturant
+// menu data
 const items = [
     //name key is must.It is to show the text in front
-    { id: 1, name: 'angellist' },
-    { id: 2, name: 'codepen' },
-    { id: 3, name: 'envelope' },
-    { id: 4, name: 'etsy' },
-    { id: 5, name: 'facebook' },
-    { id: 6, name: 'foursquare' },
-    { id: 7, name: 'github-alt' },
-    { id: 8, name: 'github' },
-    { id: 9, name: 'gitlab' },
-    { id: 10, name: 'instagram' },
+    { id: 1, name: 'chicken tenders' },
+    { id: 2, name: 'gyro' },
+    { id: 3, name: 'sushi' },
+    { id: 4, name: 'cheese burger' },
+    { id: 5, name: 'falafel' },
+    { id: 6, name: 'soup dumplings' },
+    { id: 7, name: 'reuben' },
+    { id: 8, name: 'mac and cheese' },
+    { id: 9, name: 'shepherds pie' },
+    { id: 10, name: 'tom yum soup' },
   ];
 
 
@@ -25,11 +27,10 @@ const SearchBar = () => {
     return (
             <SearchableDropdown
             onTextChange={(text) => console.log(text)}
-            //On text change listner on the searchable input
+            //On text change listener on the searchable input
+            // TODO: change so that on click navigates to menu page
+            // or item
             onItemSelect={(item) => alert(JSON.stringify(item))}
-                
-
-
 
             textInputStyle={{
                 //inserted text style
@@ -52,18 +53,17 @@ const SearchBar = () => {
             }}
             itemsContainerStyle={{
                 //items container style you can pass maxHeight
-                //to restrict the items dropdown hieght
+                //to restrict the items dropdown height
                 maxHeight: '60%',
             }}
 
-
-
               items={items}
               //mapping of item array
-              defaultIndex={2}
-              //default selected item index
-              placeholder="Search menu items"
+              
+              placeholder="Search menu items..."
               //place holder for the search input
+              // TODO: cannot see placeholder text on dark mode
+              // on ios
               resetValue={false}
               //reset textInput Value with true and false state
               underlineColorAndroid="transparent"
