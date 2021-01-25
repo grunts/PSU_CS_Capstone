@@ -16,7 +16,7 @@ export default function MenuScreen({ route }) {
         <SectionList
           sections={categories}
           keyExtractor={(item, index) => item + index}
-          renderItem={({ item }) => <MenuItemComponent menuItem={item} />}
+          renderItem={({ item }) => <View><MenuItemComponent menuItem={item} /></View>}
           renderSectionHeader={({ section: { title } }) => (
             <Text>{title}</Text>
           )}
@@ -41,7 +41,16 @@ const styles = StyleSheet.create({
   },
 });
 
+const reducer = (accumulator, currentItem) => {
+  if (accumulator[currentItem.category]) {
+    accumulator[currentItem.category].push(currentItem)
+  } else {
+    accumulator[currentItem.category] = [currentItem]
+  }
+  return accumulator
+}
+
 const extractCategories = (menu: any) => {
-  const categoriesObj = menu.reduce((accumulator, currentItem) => accumulator[currentItem.category] ? accumulator[currentItem.category].push(currentItem) : accumulator[currentItem.category] = [currentItem], {})
+  const categoriesObj = menu.reduce(reducer, {})
   return Object.keys(categoriesObj).map(category => ({ title: category, data: categoriesObj[category] }))
 }
