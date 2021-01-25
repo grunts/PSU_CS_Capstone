@@ -12,7 +12,7 @@ const Item = ({ name }) => (
 
 const App = ({navigator} : {navigator: any}) => {
   const renderItem = ({ item }) => (
-  <ListItem bottomDivider onPress={() => navigator.navigate('MenuScreen')}>
+  <ListItem bottomDivider onPress={() => navigator.navigate('MenuScreen', {restaurant: item})}>
       <Avatar 
         size="large"
         source={{uri: item.picURL}} />

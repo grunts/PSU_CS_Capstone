@@ -60,6 +60,7 @@ function TabOneNavigator() {
       <TabOneStack.Screen
         name="MenuScreen"
         component={MenuScreen}
+        options={({ route }) => ({ title: (route.params.restaurant.name || 'The Menu') })}
       />
     </TabOneStack.Navigator>
   );

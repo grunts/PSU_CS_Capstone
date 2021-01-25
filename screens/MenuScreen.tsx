@@ -3,11 +3,14 @@ import { StyleSheet } from "react-native";
 import { Text, View } from "../components/Themed";
 import restaurants from "../mock/restaurant";
 import MenuTitleComponent from "../components/MenuTitleComponent";
+import MenuItemComponent from "../components/MenuItemComponent"
 
-export default function MenuScreen() {
+export default function MenuScreen({ route }) {
+  const { restaurant } = route.params
   return (
     <View style={styles.container}>
-        <MenuTitleComponent title={restaurants[0].name}></MenuTitleComponent>
+        <MenuTitleComponent title={restaurant.name}></MenuTitleComponent>
+        <MenuItemComponent menuItem={restaurant.menu[0]} />
     </View>
   );
 }
