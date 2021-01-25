@@ -2,6 +2,7 @@ import * as React from "react";
 import { StyleSheet } from "react-native";
 import { Text, View } from "../components/Themed";
 import ScrollListComponent from "../components/ListViewScroll";
+/*import ChameleonComponent from "../components/Chameleon";*/
 
 export default function TabOneScreen() {
   return (
