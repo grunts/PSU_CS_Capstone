@@ -10,7 +10,7 @@ export type BottomTabParamList = {
 
 export type TabOneParamList = {
   TabOneScreen: undefined;
-  MenuScreen: undefined;
+  MenuScreen: { restaurant };
 };
 
 export type TabTwoParamList = {

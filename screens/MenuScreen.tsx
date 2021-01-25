@@ -1,16 +1,18 @@
 import * as React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, SectionList } from "react-native";
 import { Text, View } from "../components/Themed";
-import restaurants from "../mock/restaurant";
 import MenuTitleComponent from "../components/MenuTitleComponent";
-import MenuItemComponent from "../components/MenuItemComponent"
+import MenuItemComponent from "../components/MenuItemComponent";
+import DefaultRestaurant from "../constants/DefaultRestaurant";
 
 export default function MenuScreen({ route }) {
-  const { restaurant } = route.params
+  const { restaurants } = route.params;
+  const categories = extractCategories(restaurants);
   return (
     <View style={styles.container}>
-        <MenuTitleComponent title={restaurant.name}></MenuTitleComponent>
-        <MenuItemComponent menuItem={restaurant.menu[0]} />
+        <MenuTitleComponent title={restaurants.name ?? DefaultRestaurant.name}></MenuTitleComponent>
+        {/*<MenuItemComponent menuItem={restaurant.menu[0]} />*/}
+        <SectionList sections={}/>
     </View>
   );
 }
@@ -30,3 +32,7 @@ const styles = StyleSheet.create({
     width: "80%",
   },
 });
+
+function extractCategories(restaurants) {
+  
+}
