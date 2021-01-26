@@ -25,8 +25,11 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar></SearchBar> 
-      <FlatList
+      <View style={styles.container}>
+        <SearchBar />
+      </View>
+       <FlatList 
+        style={styles.container2}
         data={restaurants}
         renderItem={renderItem}
         keyExtractor={item => item.description} />
@@ -39,6 +42,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
+    height: '20%'
+  },
+  container2: {
+    flex: 4,
+    marginTop: StatusBar.currentHeight || 0,
+    height: '20%'
   },
   item: {
     backgroundColor: '#f9c2ff',
