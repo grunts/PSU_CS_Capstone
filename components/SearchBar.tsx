@@ -11,8 +11,11 @@ import {
   FlatList
 } from 'react-native';
 import { useTheme } from '@react-navigation/native';
+import { SearchBar } from "react-native-elements";
+import { FontAwesome5 } from '@expo/vector-icons'; 
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
-import restaurants from '../mock/restaurant.js';
+// import restaurants from '../mock/restaurant.js';
 
 // this is test data. it will soon be hooked up to the resturant
 // menu data
@@ -31,32 +34,37 @@ import restaurants from '../mock/restaurant.js';
 //   ];
 
 
-const SearchBar = () => {
+const DropdownSearch = (props) => {
     const [search, setSearch] = useState('');
     
-    const [masterDataSource, setMasterDataSource] = useState(restaurants);
+    const [masterDataSource, setMasterDataSource] = useState(props.dataToBeSearched);
+    const [filteredDataSource, setFilteredDataSource] = useState(null);
 
-    let filteredDataSource = masterDataSource.filter((item) => item.name.toLowerCase().includes(search.toLowerCase()))
+    let updateSearch = (search) => {
+      setSearch(search)
+      setFilteredDataSource(props.dataToBeSearched.filter((item) => item[props.fieldToSearch].toLowerCase().includes(search.toLowerCase())))
+    }
 
     const { colors } = useTheme();
+    console.log("color is" + colors.text)
 
-    const renderItem = ({ item }) => {
-        return (
-            <TouchableOpacity
-              style={{
-                margin: 15,
-                borderWidth: StyleSheet.hairlineWidth,
-                padding: 10,
-                borderRadius: 10,
-                borderColor: colors.text,
-              }}
-              onPress={() => getItem(item)}>
-              <Text style={{ color: colors.text, fontWeight: '700' }}>
-                {item.name}
-              </Text>
-            </TouchableOpacity>
-          );
-        };
+    // const renderItem = ({ item }) => {
+    //     return (
+    //         <TouchableOpacity
+    //           style={{
+    //             margin: 15,
+    //             borderWidth: StyleSheet.hairlineWidth,
+    //             padding: 10,
+    //             borderRadius: 10,
+    //             borderColor: colors.text,
+    //           }}
+    //           onPress={() => getItem(item)}>
+    //           <Text style={{ color: colors.text, fontWeight: '700' }}>
+    //             {item.name}
+    //           </Text>
+    //         </TouchableOpacity>
+    //       );
+    //     };
       
         const getItem = (item) => {
           alert(item.extra);
@@ -64,8 +72,8 @@ const SearchBar = () => {
 
         return (
             <>
-            <View style={{ flex: 1, backgroundColor: 'white' }}>
-            <View
+            {/* <View style={{ flex: 1, backgroundColor: 'white' }}> */}
+            {/* <View
                 style={{
                 flexDirection: 'row',
                 justifyContent: 'center',
@@ -91,20 +99,33 @@ const SearchBar = () => {
                 onChangeText={(text) => setSearch(text)}
                 value={search}
                 />
-            </View>
-            <View>
+            </View> */}
+            <SearchBar 
+              placeholder = "Search..."
+              value={search}
+              onChangeText={updateSearch}
+               />
+            {/* <View> */}
                 <FlatList
                 data={search.length > 2 ? filteredDataSource : null}
                 keyExtractor={(item, index) => index.toString()}
                 initialNumToRender={1}
                 showsVerticalScrollIndicator={false}
-                renderItem={renderItem}
-                style={{ height: '30%' }}
+                renderItem={props.renderFunction}
+                // style={{ height: '30%' }}
                 />
-            </View>
-            </View>
+            {/* </View> */}
+            {/* </View> */}
+            {
+              search.length > 2 && (filteredDataSource && filteredDataSource.length === 0) ?
+              <View style = {{height: 60, justifyContent: 'center', alignItems: 'center', margin: 5, paddingLeft: 5, paddingRight: 5}}>
+                <FontAwesome5 name="meh-blank" size={24} color={colors.text} />
+                <Text style={{color: colors.text, textAlign: 'center', fontWeight: '500', paddingTop: 2, paddingBottom: 2}}>Oops! Sorry, we didn't find anything that matched your search.</Text>
+                </View> :
+              null
+            }
         </> 
         );
 }
 
-export default SearchBar;
+export default DropdownSearch;

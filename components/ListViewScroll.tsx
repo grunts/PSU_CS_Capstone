@@ -25,11 +25,14 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.container}>
-        <SearchBar />
-      </View>
+      {/* <View style={styles.container}> */}
+        <SearchBar 
+          renderFunction = {renderItem} 
+          dataToBeSearched = {restaurants}
+          fieldToSearch = {"name"}
+        />
+      {/* </View> */}
        <FlatList 
-        style={styles.container2}
         data={restaurants}
         renderItem={renderItem}
         keyExtractor={item => item.description} />
