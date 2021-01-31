@@ -16,3 +16,16 @@ export type TabOneParamList = {
 export type TabTwoParamList = {
   TabTwoScreen: undefined;
 };
+
+export type MenuItem = {
+  name: string,
+  image: string,
+  longDesc: string,
+  shortDesc: string,
+  ABV: number,
+  Allergens: number,
+  price: number,
+  category: string,
+  mandatoryMods: [],
+  nonMandatoryMods: []
+};
