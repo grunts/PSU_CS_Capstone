@@ -4,17 +4,16 @@ import restaurants from '../mock/restaurant.js';
 import { Avatar, ListItem } from 'react-native-elements';
 
 
-const Item = ({ name }) => (
-  <View style={styles.item}>
-    <Text style={styles.name}>{name}</Text>
-  </View>
-);
-
+//The list view component - requires the current navigator as an input argument
 const App = ({navigator} : {navigator: any}) => {
+  
+  //Inline component function describing how to render a piece of data from the list when item-containing object is provided as argument
   const renderItem = ({ item }) => (
-  <ListItem bottomDivider onPress={() => navigator.navigate('MenuScreen', {restaurant: item})}>
+    //List item component to hold item data with an onPress listener that navigates to the MenuScreen in this navigation stack
+    <ListItem bottomDivider onPress={() => navigator.navigate('MenuScreen', {restaurant: item})}>
       <Avatar 
         size="large"
+        //Pulls the url from the item's picURL field
         source={{uri: item.picURL}} />
       <ListItem.Content>
         <ListItem.Title>{item.name}</ListItem.Title>
@@ -23,8 +22,10 @@ const App = ({navigator} : {navigator: any}) => {
     </ListItem>
   );
 
+  //The component that the default export actually returns - a FlatList of ListItems in a SafeAreaView
   return (
     <SafeAreaView style={styles.container}>
+      {/*FlatList calls a defined renderItem function and passes it the restaurant for each item in the list*/}
       <FlatList
         data={restaurants}
         renderItem={renderItem}
@@ -33,6 +34,7 @@ const App = ({navigator} : {navigator: any}) => {
   );
 }
 
+//CSS styles for the elements in this component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
