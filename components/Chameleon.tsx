@@ -1,6 +1,5 @@
 import React from 'react';
-import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar } from 'react-native';
-import { Avatar, ListItem } from 'react-native-elements';
+import { SafeAreaView, StyleSheet, Text } from 'react-native';
 
 /*
 IMPORTANT: Provider will need to wrap the entire App for consitent state
@@ -19,14 +18,27 @@ Registers listener callbacks: store.subscribe(listener);
 Handle unregistering of listeners via the unsubscribe function returned by store.subscribe(listener);.
 */
 
-/*
-TODO: Component to display current colors
-*/
+const App = () => {
+  /*
+  TODO: Component to display current colors
+  */
 
-/*
-TODO: Component to display possible colors
-*/
+  /*
+  TODO: Component to display possible colors
+  */
 
-/*
-TODO: Component to add to current colors
-*/
+  /*
+  TODO: Component to add to current colors
+  */
+    <SafeAreaView style={styles.container}>
+      <Text>TODO</Text>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: StatusBar.currentHeight || 0,
+  },
+});
