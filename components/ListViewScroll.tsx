@@ -5,11 +5,13 @@ import { Avatar, ListItem } from "react-native-elements";
 import SearchBar from "./SearchBar";
 import { useTheme } from "@react-navigation/native";
 
-const App = () => {
-  const { colors } = useTheme();
+
+const App = ({navigator} : {navigator: any}) => {
   const renderItem = ({ item }) => (
-    <ListItem bottomDivider>
-      <Avatar size="large" source={{ uri: item.picURL }} />
+  <ListItem bottomDivider onPress={() => navigator.navigate('MenuScreen', {restaurant: item})}>
+      <Avatar 
+        size="large"
+        source={{uri: item.picURL}} />
       <ListItem.Content>
         <ListItem.Title>{item.name}</ListItem.Title>
         <ListItem.Subtitle>
