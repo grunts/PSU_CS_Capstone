@@ -3,10 +3,10 @@ import { StyleSheet } from "react-native";
 import { Text, View } from "../components/Themed";
 import ScrollListComponent from "../components/ListViewScroll";
 
-export default function TabOneScreen() {
+export default function TabOneScreen({navigation}: {navigation: any}) {
   return (
     <View style={styles.container}>
-      <ScrollListComponent />
+      <ScrollListComponent navigator={navigation}/>
     </View>
   );
 }
