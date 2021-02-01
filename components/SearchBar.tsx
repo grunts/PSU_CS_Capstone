@@ -9,10 +9,14 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 
 const DropdownSearch = (props) => {
+  
+  //Set state variables to store the current contents of the search bar and
+  //a filtered subset of whatever is to be searched
   const [search, setSearch] = useState("");
-
   const [filteredDataSource, setFilteredDataSource] = useState([]);
 
+  //function that is called when ever the content of the search bar is changed.
+  //Sets the value of the search bar and sets filteredDataSource ot be an array of matching search items
   let updateSearch = (search) => {
     setSearch(search);
     setFilteredDataSource(
@@ -22,9 +26,11 @@ const DropdownSearch = (props) => {
     );
   };
 
+  //Get the user phones current theme for styling
   const { colors, dark } = useTheme();
   return (
     <>
+    {/* Searchbar is the component that always users to enter text */}
       <SearchBar
         placeholder="Search..."
         value={search}
@@ -32,6 +38,8 @@ const DropdownSearch = (props) => {
         lightTheme={dark ? false : true}
         inputStyle={!dark ? { color: "black" } : {}}
       />
+
+    {/* This flat list acts as the drop down and appears whenever the search is at least 3 characters and we have matching results  */}
       <FlatList
         data={search.length > 2 ? filteredDataSource : null}
         keyExtractor={(item, index) => index.toString()}
@@ -44,6 +52,7 @@ const DropdownSearch = (props) => {
             : {}
         }
       />
+      {/* Below are conditional renders to seperate the two lists or report when not matches are found */}
       {search.length > 2 && filteredDataSource.length === 0 ? (
         <View
           style={{
