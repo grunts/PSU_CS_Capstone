@@ -4,10 +4,10 @@ import { Text, View } from "../components/Themed";
 import ScrollListComponent from "../components/ListViewScroll";
 /*import ChameleonComponent from "../components/Chameleon";*/
 
-export default function TabOneScreen() {
+export default function TabOneScreen({navigation}: {navigation: any}) {
   return (
     <View style={styles.container}>
-      <ScrollListComponent />
+      <ScrollListComponent navigator={navigation}/>
     </View>
   );
 }
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     marginVertical: 30,
-    height: 1,
+    height: 10,
     width: "80%",
   },
 });

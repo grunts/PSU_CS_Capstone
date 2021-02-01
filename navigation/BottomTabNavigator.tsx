@@ -5,6 +5,7 @@ import * as React from 'react';
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
+import MenuScreen from '../screens/MenuScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
@@ -48,11 +49,18 @@ const TabOneStack = createStackNavigator<TabOneParamList>();
 
 function TabOneNavigator() {
   return (
-    <TabOneStack.Navigator>
+    <TabOneStack.Navigator
+      initialRouteName="TabOneScreen"
+    >
       <TabOneStack.Screen
         name="TabOneScreen"
         component={TabOneScreen}
         options={{ headerTitle: 'List View' }}
+      />
+      <TabOneStack.Screen
+        name="MenuScreen"
+        component={MenuScreen}
+        options={({ route }) => ({ title: route?.params?.restaurant?.name} ?? 'The Menu')}
       />
     </TabOneStack.Navigator>
   );

@@ -15,14 +15,64 @@ const restaurants = [
     menu: [
       {
         name: "Chicken",
-        description: "Just some plain chicken.",
+        image: "https://cdn.apartmenttherapy.info/image/upload/f_auto,q_auto:eco,w_730/k%2Farchive%2F0f9d4548ea77f774030c30c2bbb6376418b4cc26",
+        shortDesc: "Just some plain chicken.",
+        longDesc: "Just some plain chicken, dipped in nothing.",
         price: 9.00,
-        picURL: "https://cdn.apartmenttherapy.info/image/upload/f_auto,q_auto:eco,w_730/k%2Farchive%2F0f9d4548ea77f774030c30c2bbb6376418b4cc26",
+        Allergens: "chicken",
+        category: "Entree",
+        mandatoryMods: [
+        ],
+        nonMandatoryMods: [  
+        ],
       },
       {
         name: "French Fries",
-        description: "They're actually also just chicken but in thinner pieces.",
+        image: "https://www.weightwatchers.com/images/1033/dynamic/foodandrecipes/2010/07/parmchickenstrips_xl.jpg",
+        shortDesc: "Thin pieces of chicken.",
+        longDesc: "They're actually also just chicken but in thinner pieces.",
         price: 6.00,
+        category: "Side",
+        mandatoryMods: [
+        ],
+        nonMandatoryMods: [  
+        ],
+      },
+      {
+        name: "Rotisserie Chicken",
+        image: "https://www.dinneratthezoo.com/wp-content/uploads/2019/06/rotisserie-chicken-3.jpg",
+        shortDesc: "A whole rotisserie chicken.",
+        longDesc: "A whole entire rotisserie chicken.",
+        price: 22.00,
+        category: "Entree",
+        mandatoryMods: [
+        ],
+        nonMandatoryMods: [  
+        ],
+      },
+      {
+        name: "Chick on a Plate",
+        image: "https://image.shutterstock.com/z/stock-photo-a-live-chicken-on-a-plate-knife-and-fork-concept-do-not-eat-animals-402618625.jpg",
+        shortDesc: "A live chick.",
+        longDesc: "In the middle of your plate with plenty of watermarks, this chick is what keeps customers coming back.",
+        price: 4.99,
+        category: "Appetizer",
+        mandatoryMods: [
+        ],
+        nonMandatoryMods: [  
+        ],
+      },
+      {
+        name: "Chicken Hat",
+        image: "https://images-na.ssl-images-amazon.com/images/I/41xAAr5ue4L._AC_.jpg",
+        shortDesc: "An inedible chicken hat.",
+        longDesc: "Don't try to eat this! Fun for the whole family, this hat looks like a chicken.",
+        price: 19.99,
+        category: "Merch",
+        mandatoryMods: [
+        ],
+        nonMandatoryMods: [  
+        ],
       },
     ],
     picURL: "https://media-cdn.tripadvisor.com/media/photo-s/0d/12/bd/2f/20160923-123311-largejpg.jpg",
@@ -43,14 +93,16 @@ const restaurants = [
     menu: [
       {
         name: "Fettuccine Alfredo",
-        description: "Hand-rolled fresh pasta with fresh tomatoes from the Jim's Formal Wear garden.",
+        image: "https://www.modernhoney.com/wp-content/uploads/2018/08/Fettuccine-Alfredo-Recipe-1.jpg",
+        shortDesc: "Fresh pasta with fresh tomatoes.",
+        longDesc: "Hand-rolled fresh pasta with fresh tomatoes from the Jim's Formal Wear garden.",
         price: 845.99,
-        picURL: "https://s3-media0.fl.yelpcdn.com/bphoto/FEQXwyuEk8Uuhq067nhI4A/258s.jpg",
-      },
-      {
-        name: "Breadsticks",
-        description: "Imported from Olive Garden, Italy, these breadsticks are something to write home about.",
-        price: 1.99,
+        Allergens: "gluten",
+        category: "Entree",
+        mandatoryMods: [
+        ],
+        nonMandatoryMods: [  
+        ],
       },
     ],
     picURL: "https://www.duttiled.com/wp-content/uploads/2018/12/Dutti-D0056-LED-chandelier-for-clothing-store-restaurant-living-room-dining-room-bedroom-Nordic-crystal-warm-romantic-personality-creative-art-postmodern-lighting-2.jpg",
@@ -71,14 +123,15 @@ const restaurants = [
     menu: [
       {
         name: "String Cheese",
-        description: "A piece of string cheese, already peeled for your convenience.",
+        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/%C3%9Aden%C3%BD_korb%C3%A1%C4%8Dik_%28Slovakia%29.jpg/1200px-%C3%9Aden%C3%BD_korb%C3%A1%C4%8Dik_%28Slovakia%29.jpg",
+        longDesc: "A piece of string cheese, already peeled for your convenience.",
+        shortDesc: "It's-a-mozzarella",
         price: 0.75,
-        picURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/%C3%9Aden%C3%BD_korb%C3%A1%C4%8Dik_%28Slovakia%29.jpg/1200px-%C3%9Aden%C3%BD_korb%C3%A1%C4%8Dik_%28Slovakia%29.jpg",
-      },
-      {
-        name: "Pepperoni Souflé",
-        description: "Everyone's favorite midnight snacks, pizza and souflés, merged into one delectable dish.",
-        price: 17.99,
+        category: "Side",
+        mandatoryMods: [
+        ],
+        nonMandatoryMods: [  
+        ],
       },
     ],
     picURL: "https://i.pinimg.com/originals/6b/71/ee/6b71ee703bca0811ec5041f11b2b9206.jpg",
@@ -99,45 +152,18 @@ const restaurants = [
     menu: [
       {
         name: "Big Salad",
-        description: "A large collection of lettuce.",
+        image: "https://images.news18.com/ibnlive/uploads/2011/09/weirdworldrecords25.jpg",
+        longDesc: "An asbolutely massive collection of lettuce.",
+        shortDesc: "A large collection of lettuce.",
         price: 18.95,
-        picURL: "https://images.news18.com/ibnlive/uploads/2011/09/weirdworldrecords25.jpg",
-      },
-      {
-        name: "Soup",
-        description: "Some soup for you.",
-        price: 8.95,
+        category: "Entree",
+        mandatoryMods: [
+        ],
+        nonMandatoryMods: [  
+        ],
       },
     ],
     picURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Tom%27s_Restaurant%2C_NYC.jpg/280px-Tom%27s_Restaurant%2C_NYC.jpg",
-  },
-  {
-    name: "John's Restaurant",
-    description: "Like Tom's restaurant, but made more lazily.",
-    address: {
-      street: "2882 Broadway",
-      city: "New York",
-      state: "NY",
-      zip: 10025,
-    },
-    location: {
-      latitude: 40.80636327866864,
-      longitude: -73.96556036136898,
-    },
-    menu: [
-      {
-        name: "Small Salad",
-        description: "A tiny collection of lettuce.",
-        price: 17.95,
-        picURL: "https://www.adweek.com/wp-content/uploads/2017/10/dole-mini-salad-fun-size-hed-2017-600x315.jpg",
-      },
-      {
-        name: "Oranges",
-        description: "Some oranges for you.",
-        price: 8.95,
-      },
-    ],
-    picURL: "https://images.getbento.com/accounts/37b2aa867625f5bb658fe9bec68d9b7a/media/accounts/media/DGkmBp7ZTWm07ph8xXlw_Logo%20Version2.jpg?w=600&fit=max&auto=compress,format&h=600",
   },
   {
     name: "Sear's Fried Catalogues",
@@ -155,14 +181,15 @@ const restaurants = [
     menu: [
       {
         name: "Raw, aged catalogue",
-        description: "A complimentary vintage magazine for light snacking.",
+        image: "https://i.pinimg.com/originals/b1/44/af/b144af888087b2d993c673c84ec4fd4c.jpg",
+        shortDesc: "A glossy refreshment.",
+        longDesc: "A complimentary vintage magazine for light snacking.",
         price: 0.0,
-        picURL: "https://i.pinimg.com/originals/b1/44/af/b144af888087b2d993c673c84ec4fd4c.jpg",
-      },
-      {
-        name: "The Sear's Catalogue Stir-Fry",
-        description: "Our specialty! Three different varieties of magazine, all stir-fried to golden perfection.",
-        price: 11.95,
+        category: "Appetizer",
+        mandatoryMods: [
+        ],
+        nonMandatoryMods: [  
+        ],
       },
     ],
     picURL: "https://www.supermarketnews.com/sites/supermarketnews.com/files/styles/article_featured_retina/public/sears-bankruptcy-stores-close.png?itok=GULgIeNx",
@@ -183,35 +210,18 @@ const restaurants = [
     menu: [
       {
         name: "All-you-can-eat popcorn",
-        description: "Full access to the all-inclusive 75-topping popcorn bar (for up to two hours).",
+        image: "https://i.pinimg.com/originals/ba/99/2c/ba992ce8d47ee9f40fb52f305045b76d.jpg",
+        longDesc: "Full access to the all-inclusive 75-topping popcorn bar (for up to two hours).",
+        shortDesc: "Popcorn buffet.",
         price: 29.99,
-        picURL: "https://i.pinimg.com/originals/ba/99/2c/ba992ce8d47ee9f40fb52f305045b76d.jpg",
+        category: "Buffet",
+        mandatoryMods: [
+        ],
+        nonMandatoryMods: [  
+        ],
       },
     ],
     picURL: "https://static.onecms.io/wp-content/uploads/sites/6/2015/11/shia-labeouf.jpg",
-  },
-  {
-    name: "Sarah's Swedish Sweets",
-    description: "An upscale restaurant that only sells Swedish fish.",
-    address: {
-      street: "738 E Burnside St.",
-      city: "Portland",
-      state: "OR",
-      zip: 97214,
-    },
-    location: {
-      latitude: 45.52330238179709,
-      longitude: -122.65807089205349,
-    },
-    menu: [
-      {
-        name: "Swedish Fish",
-        description: "A full plate of Swedish fish..",
-        price: 46.99,
-        picURL: "https://cdnimg.webstaurantstore.com/images/products/extra_large/483133/1944862.jpg",
-      },
-    ],
-    picURL: "https://assets3.thrillist.com/v1/image/734770/1000x666.6666666666666/flatten;crop;jpeg_quality=70",
   },
 ];
 
