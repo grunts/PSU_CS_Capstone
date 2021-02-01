@@ -27,15 +27,15 @@ class Chameleon extends React.Component
       <View style={styles.container}>
 
         <Text>Current:</Text>
-        {this.props.chameleon.current.map((chameleon, index) => (
-            <Button key={chameleon} 
-                    title={chameleon}
+        {this.props.chameleon.current.map((color, index) => (
+            <Button key={color} 
+                    title={color}
                     onPress={() => this.props.removeColor(index)}/>))}
 
         <Text>Possible:</Text>
-        {this.props.chameleon.possible.map((chameleon, index) => (
-            <Button key={chameleon} 
-                    title={chameleon}
+        {this.props.chameleon.possible.map((color, index) => (
+            <Button key={color} 
+                    title={color}
                     onPress={() => this.props.addColor(index)}/>))}
 
       </View>
