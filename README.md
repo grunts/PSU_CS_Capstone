@@ -5,3 +5,4 @@ steps for setup:
 
 npm install\
 expo start
+
