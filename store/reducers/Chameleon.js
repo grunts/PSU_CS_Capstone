@@ -29,6 +29,13 @@ const chameleonReducer = (state = INITIAL_STATE, action) =>
       const newState = {current, possible};
       return newState;
 
+    case 'REMOVE_COLOR':
+      const state = {current, possible};
+      const removedColor = current.splice(action.payload, 1);
+      possible.push(removedColor);
+      const newState = {current, possible};
+      return newState;
+
     default:
       return state;
   }

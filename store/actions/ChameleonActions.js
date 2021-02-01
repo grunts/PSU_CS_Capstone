@@ -10,3 +10,9 @@ export const addColor = colorIndex =>
   type: "ADD_COLOR",
   payload: colorIndex,
 });
+
+export const removeColor = colorIndex =>
+({
+  type: "REMOVE_COLOR",
+  payload: colorIndex,
+});
