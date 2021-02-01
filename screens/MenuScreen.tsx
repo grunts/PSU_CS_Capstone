@@ -4,19 +4,27 @@ import { Text, View } from "../components/Themed";
 import MenuTitleComponent from "../components/MenuTitleComponent";
 import MenuItemComponent from "../components/MenuItemComponent";
 import DefaultRestaurant from "../constants/DefaultRestaurant";
+import SearchBar from "../components/SearchBar";
 
 export default function MenuScreen({ route }) {
   const { restaurant } = route.params;
   const { menu } = restaurant;
   const categories = extractCategories(menu);
+  const renderItem = ({ item }) => <View><MenuItemComponent menuItem={item} /></View>
+  
   return (
     <View style={styles.container}>
         <MenuTitleComponent title={restaurant.name ?? DefaultRestaurant.name}></MenuTitleComponent>
         {/*<MenuItemComponent menuItem={restaurant.menu[0]} />*/}
+        <SearchBar
+        renderFunction={renderItem}
+        dataToBeSearched={menu}
+        fieldToSearch={"name"}
+        />
         <SectionList
           sections={categories}
           keyExtractor={(item, index) => item + index}
-          renderItem={({ item }) => <View><MenuItemComponent menuItem={item} /></View>}
+          renderItem={renderItem}
           renderSectionHeader={({ section: { title } }) => (
             <Text>{title}</Text>
           )}
