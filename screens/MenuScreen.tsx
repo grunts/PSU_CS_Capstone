@@ -18,9 +18,9 @@ export default function MenuScreen({ route }) {
 
   return (
     <View style={styles.container}>
-      <MenuTitleComponent
+      {/* <MenuTitleComponent
         title={restaurant.name ?? DefaultRestaurant.name}
-      ></MenuTitleComponent>
+      ></MenuTitleComponent> */}
       {/*<MenuItemComponent menuItem={restaurant.menu[0]} />*/}
       <SearchBar
         renderFunction={renderItem}
@@ -31,7 +31,9 @@ export default function MenuScreen({ route }) {
         sections={categories}
         keyExtractor={(item, index) => item + index}
         renderItem={renderItem}
-        renderSectionHeader={({ section: { title } }) => <Text>{title}</Text>}
+        style={{paddingTop: 5, height: "100%"}}
+        stickySectionHeadersEnabled={false}
+        renderSectionHeader={({ section: { title } }) => <Text style={{fontWeight: "500", fontSize: 15}}>{title}</Text>}
       />
     </View>
   );
@@ -39,7 +41,7 @@ export default function MenuScreen({ route }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     justifyContent: "center",
   },
   title: {
