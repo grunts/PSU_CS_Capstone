@@ -29,33 +29,37 @@ export default function ItemCardComponent({ menuItem }: { menuItem : MenuItem })
   //Define the ItemCardComponent and return it as the default export
   return (
     <ListItem bottomDivider style={styles.item}>
+        {/**A simple picture element for holding an image of the food item.*/}
         <Avatar 
           size="large"
           source={{uri: image}} />
+        {/**The Content component holds the body of the data in the list item.*/}
         <ListItem.Content>
           <ListItem.Title>{name} {`$${Number(price).toFixed(2)}`}</ListItem.Title>
           <ListItem.Subtitle>{longDesc}</ListItem.Subtitle>
+          {/**Extract a useful ABV string from the ABV value using the previously defined displayABV function.*/}
           <ListItem.Subtitle>{displayABV(ABV)}</ListItem.Subtitle>
+          {/**Use a convenient button component from react-native-vector-icons to create an add to tray button.*/}
           <MaterialCommunityIcons.Button
-          name="tray-plus"
-          size={24} 
-          color="white"
-          backgroundColor="#a28"
-          accessibilityLabel="Add item to tray"
-            >Add
+            name="tray-plus"
+            size={24} 
+            color="white"
+            backgroundColor="#a28"
+            accessibilityLabel="Add item to tray">
+              Add
           </MaterialCommunityIcons.Button>
         </ListItem.Content>
     </ListItem>
   );
 }
 
+//CSS Styles
 const styles = StyleSheet.create({
   item: {
     backgroundColor: '#f9c2ff',
     padding: 5,
     marginVertical: 8,
     marginHorizontal: 16,
-    // flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
