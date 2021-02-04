@@ -57,9 +57,8 @@ export default function ItemCardComponent({ menuItem }: { menuItem : MenuItem })
 const styles = StyleSheet.create({
   item: {
     backgroundColor: '#f9c2ff',
-    padding: 5,
+    padding: 3,
     marginVertical: 8,
-    marginHorizontal: 16,
     alignItems: 'center',
     justifyContent: 'center',
   },

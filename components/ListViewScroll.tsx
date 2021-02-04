@@ -1,7 +1,8 @@
-import React from 'react';
-import { SafeAreaView, View, FlatList, StyleSheet, Text, StatusBar } from 'react-native';
-import restaurants from '../mock/restaurant.js';
-import { Avatar, ListItem } from 'react-native-elements';
+import React from "react";
+import { SafeAreaView, FlatList, StyleSheet, StatusBar } from "react-native";
+import restaurants from "../mock/restaurant.js";
+import { Avatar, ListItem } from "react-native-elements";
+import SearchBar from "./SearchBar";
 
 
 //The list view component - requires the current navigator as an input argument
@@ -17,31 +18,47 @@ const App = ({navigator} : {navigator: any}) => {
         source={{uri: item.picURL}} />
       <ListItem.Content>
         <ListItem.Title>{item.name}</ListItem.Title>
-        <ListItem.Subtitle>{item.address.street}, {item.address.city}, {item.address.state}, {item.address.zip}</ListItem.Subtitle>
+        <ListItem.Subtitle>
+          {item.address.street}, {item.address.city}, {item.address.state},{" "}
+          {item.address.zip}
+        </ListItem.Subtitle>
       </ListItem.Content>
     </ListItem>
   );
 
-  //The component that the default export actually returns - a FlatList of ListItems in a SafeAreaView
+  //The component that the default export actually returns - a FlatList of ListItems in a SafeAreaView with a SearchBar
   return (
     <SafeAreaView style={styles.container}>
-      {/*FlatList calls a defined renderItem function and passes it the restaurant for each item in the list*/}
+      {/**Searchbar calls the defined renderItem function and passes it the restaurants to be searched from via name.*/}
+      <SearchBar
+        renderFunction={renderItem}
+        dataToBeSearched={restaurants}
+        fieldToSearch={"name"}
+      />
+      {/**FlatList calls the defined renderItem function and passes it the restaurant for each item in the list*/}
       <FlatList
         data={restaurants}
         renderItem={renderItem}
-        keyExtractor={item => item.description} />
+        keyExtractor={(item) => item.description}
+      />
     </SafeAreaView>
   );
-}
+};
 
 //CSS styles for the elements in this component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
+    height: "20%",
+  },
+  container2: {
+    flex: 4,
+    marginTop: StatusBar.currentHeight || 0,
+    height: "20%",
   },
   item: {
-    backgroundColor: '#f9c2ff',
+    backgroundColor: "#f9c2ff",
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
