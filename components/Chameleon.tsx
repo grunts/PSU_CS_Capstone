@@ -9,7 +9,7 @@ across the app. I don't know how to do this for React Native yet. -Jasmine
 */
 import { Provider, connect } from 'react-redux';
 import { createStore, bindActionCreators } from 'redux';
-import chameleonReducer from '../store/reducers/ChameleonReducer'
+import chameleonReducer from '../store/reducers/Chameleon'
 const store = createStore(chameleonReducer);
 
 /*
