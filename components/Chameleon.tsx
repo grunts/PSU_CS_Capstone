@@ -8,7 +8,7 @@ IMPORTANT: Provider will need to wrap the entire App for consitent state
 across the app. I don't know how to do this for React Native yet. -Jasmine
 */
 import { Provider, connect } from 'react-redux';
-import { createStore } from 'redux';
+import { createStore, bindActionCreators } from 'redux';
 import chameleonReducer from '../store/reducers/ChameleonReducer'
 const store = createStore(chameleonReducer);
 
@@ -49,6 +49,12 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
 });
+
+/*
+state: the part of components that adjust dynamically, like the number of freinds a user has on heir friends list at any gien time
+store: persisent data syntactically defined by us, stored on the device, and modified by the user, such as what toppings are on a cake; we say what topping they can choose, they pick some, and the device remembers between screens.
+Part of the point of Redux is mapping state and store, so that when the store changes, components on-screen will change in real time. That's what these functions help to do.
+*/
 
 const mapDispatchToProps = dispatch => (
   bindActionCreators({addColor, removeColor}, dispatch}))
