@@ -8,6 +8,7 @@ import MenuScreen from '../screens/MenuScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import TitleBarComponent from '../components/TitleBarComponent';
 
 /**This creates a new Navigator to manage switching between list view and map view using the bottom tabs.
  * We give "BottomTab" a type: "BottomTabParamList" - this identifies which object types are valid to use
@@ -30,7 +31,7 @@ export default function BottomTabNavigator() {
       <BottomTab.Screen
         name="TabOne"
         component={TabOneNavigator}
-        options={{ tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} /> }}/>
+        options={{ tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />, title: 'New Title' }}/>
 
       {/**The TabTwo Screen will also be defined by its own navigation stack: TabTwoNavigator. It will also
        * have a tab bar icon.*/}
@@ -66,13 +67,13 @@ function TabOneNavigator() {
     <TabOneStack.Navigator initialRouteName="TabOneScreen">
       {/**The List View Screen is defined by the TabOneScreen component.  It has a headerTitle 
         * designating it as the List View.*/}
-      <TabOneStack.Screen name="TabOneScreen" component={TabOneScreen} options={{ headerTitle: 'List View' }}/>
+      <TabOneStack.Screen name="TabOneScreen" component={TabOneScreen} options={{ headerTitle: (props) => <TitleBarComponent title="List View"/>}}/>
       {/**The Menu Screen is accessed from the List View.  See TabOneScreen component.  The Menu Screen
         * also has a title, but in this case, the title is based on a lambda function that uses the route object
         * (the route object contains the restaurant object as part of its type definition) to extract the name
         * of the restaurant to be used as the title.  If there is no restaurant name in the route object, then
         * the title gets set to "The Menu"*/}
-      <TabOneStack.Screen name="MenuScreen" component={MenuScreen} options={({ route }) => ({ title: route?.params?.restaurant?.name} ?? 'The Menu')}/>
+      <TabOneStack.Screen name="MenuScreen" component={MenuScreen} options={({ route }) => ({ headerTitle: route?.params?.restaurant?.name} ?? 'The Menu')}/>
     </TabOneStack.Navigator>
   );
 }
