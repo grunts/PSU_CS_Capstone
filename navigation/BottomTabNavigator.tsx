@@ -7,6 +7,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import MenuScreen from '../screens/MenuScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
+import StagingScreen from '../screens/StagingScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 
 /**This creates a new Navigator to manage switching between list view and map view using the bottom tabs.
@@ -73,6 +74,7 @@ function TabOneNavigator() {
         * of the restaurant to be used as the title.  If there is no restaurant name in the route object, then
         * the title gets set to "The Menu"*/}
       <TabOneStack.Screen name="MenuScreen" component={MenuScreen} options={({ route }) => ({ title: route?.params?.restaurant?.name} ?? 'The Menu')}/>
+      <TabOneStack.Screen name="StagingScreen" component={StagingScreen} options={{ headerTitle: 'Customize Your Order' }}/>
     </TabOneStack.Navigator>
   );
 }

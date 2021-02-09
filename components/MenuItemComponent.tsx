@@ -3,11 +3,13 @@ import { StyleSheet, Button, Image } from 'react-native';
 import { Avatar, ListItem } from 'react-native-elements';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MenuItem } from '../types';
+import { useNavigation } from '@react-navigation/native';
+
 
 
 //The component holding a menu item and all of its info - requires an object containing a MenuItem as an input argument
 export default function ItemCardComponent({ menuItem }: { menuItem : MenuItem }) {
-  
+  const navigation = useNavigation(); 
   //Extract constants name, image, longDesc, etc. from menuItem object
   const {
     name,
@@ -40,7 +42,7 @@ export default function ItemCardComponent({ menuItem }: { menuItem : MenuItem })
           {/**Extract a useful ABV string from the ABV value using the previously defined displayABV function.*/}
           <ListItem.Subtitle>{displayABV(ABV)}</ListItem.Subtitle>
           {/**Use a convenient button component from react-native-vector-icons to create an add to tray button.*/}
-          <MaterialCommunityIcons.Button
+          <MaterialCommunityIcons.Button onPress={() => navigation.navigate('StagingScreen', {MenuItem: menuItem})}
             name="tray-plus"
             size={24} 
             color="white"
