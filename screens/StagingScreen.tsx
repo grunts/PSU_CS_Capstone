@@ -16,6 +16,7 @@ export default function StagingScreen({ route }) {
             quantity
             list of mandatory mods
             list of non-mandatory mods
+            optional comment
             add to cart button
              */}
             <MaterialCommunityIcons.Button
