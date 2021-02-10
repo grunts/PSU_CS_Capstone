@@ -74,7 +74,7 @@ function TabOneNavigator() {
         * of the restaurant to be used as the title.  If there is no restaurant name in the route object, then
         * the title gets set to "The Menu"*/}
       <TabOneStack.Screen name="MenuScreen" component={MenuScreen} options={({ route }) => ({ title: route?.params?.restaurant?.name} ?? 'The Menu')}/>
-      <TabOneStack.Screen name="StagingScreen" component={StagingScreen} options={{ headerTitle: 'Customize Your Order' }}/>
+      <TabOneStack.Screen name="StagingScreen" component={StagingScreen} options={({ route }) => ({ title: route?.params?.MenuItem?.name} ?? 'Customize Your Order' )}/>
     </TabOneStack.Navigator>
   );
 }

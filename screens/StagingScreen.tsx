@@ -1,15 +1,33 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
+import { Avatar } from 'react-native-elements';
 import { Text, View } from "../components/Themed";
+import { MenuItem } from '../types';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
-export default function StagingScreen({ route }) {
-    const { menuItem } = route.params;
+export default function StagingScreen({route}) {
+    console.log("This is the route:");
+    console.log(route);
+    console.log("This is params:");
+    console.log(route.params);
+    console.log("This is menuItem:");
+    console.log(route.params.MenuItem);
+    const myMenuItem = route.params.MenuItem;
+    
+    const {
+      name,
+      image,
+      longDesc,
+      shortDesc,
+      ABV,
+      Allergens,
+      price,
+      mandatoryMods,
+    } = myMenuItem;
 
     return (
         <View style={styles.container}>
-        <Text>Hello World!</Text>
         {/* food item title - this will be in BottomTabNavigator
             image
             longDescription 
@@ -19,6 +37,9 @@ export default function StagingScreen({ route }) {
             optional comment
             add to cart button
              */}
+             <Avatar 
+          size="large"
+          source={{uri: image}} />
             <MaterialCommunityIcons.Button
             name="tray-plus"
             size={34} 
