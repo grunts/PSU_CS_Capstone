@@ -3,14 +3,9 @@
 import React from 'react';
 import { View, Button, StyleSheet, Text, StatusBar } from 'react-native';
 
-/*
-IMPORTANT: Provider will need to wrap the entire App for consitent state
-across the app. I don't know how to do this for React Native yet. -Jasmine
-*/
-import { Provider, connect } from 'react-redux';
-import { createStore, bindActionCreators } from 'redux';
-import chameleonReducer from '../store/reducers/Chameleon'
-const store = createStore(chameleonReducer);
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { addColor, removeColor } from '../store/actions/Chameleon.js';
 
 /*
 QUICK REFERENCE:
