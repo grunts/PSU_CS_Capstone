@@ -1,12 +1,11 @@
 import React from 'react';
 import { StyleSheet, Button, Image } from 'react-native';
 import { Avatar, ListItem } from 'react-native-elements';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MenuItem } from '../types';
 
 
 //The component holding a menu item and all of its info - requires an object containing a MenuItem as an input argument
-export default function ItemCardComponent({ menuItem }: { menuItem : MenuItem }) {
+export default function ItemCardComponent({ menuItem, children }: { menuItem : MenuItem, children?: JSX.Element[] | JSX.Element }) {
   
   //Extract constants name, image, longDesc, etc. from menuItem object
   const {
@@ -39,15 +38,7 @@ export default function ItemCardComponent({ menuItem }: { menuItem : MenuItem })
           <ListItem.Subtitle>{longDesc}</ListItem.Subtitle>
           {/**Extract a useful ABV string from the ABV value using the previously defined displayABV function.*/}
           <ListItem.Subtitle>{displayABV(ABV)}</ListItem.Subtitle>
-          {/**Use a convenient button component from react-native-vector-icons to create an add to tray button.*/}
-          <MaterialCommunityIcons.Button
-            name="tray-plus"
-            size={24} 
-            color="white"
-            backgroundColor="#a28"
-            accessibilityLabel="Add item to tray">
-              Add
-          </MaterialCommunityIcons.Button>
+          {children}
         </ListItem.Content>
     </ListItem>
   );

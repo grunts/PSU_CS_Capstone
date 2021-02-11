@@ -4,6 +4,7 @@ import { Text, View } from "../components/Themed";
 import MenuTitleComponent from "../components/MenuTitleComponent";
 import MenuItemComponent from "../components/MenuItemComponent";
 import DefaultRestaurant from "../constants/DefaultRestaurant";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SearchBar from "../components/SearchBar";
 
 export default function MenuScreen({ route }) {
@@ -12,7 +13,17 @@ export default function MenuScreen({ route }) {
   const categories = extractCategories(menu);
   const renderItem = ({ item }) => (
     <View>
-      <MenuItemComponent menuItem={item} />
+      <MenuItemComponent menuItem={item}>
+          {/**Use a convenient button component from react-native-vector-icons to create an add to tray button.*/}
+          <MaterialCommunityIcons.Button
+            name="tray-plus"
+            size={24} 
+            color="white"
+            backgroundColor="#a28"
+            accessibilityLabel="Add item to tray">
+              Add
+          </MaterialCommunityIcons.Button>
+      </MenuItemComponent>
     </View>
   );
 
