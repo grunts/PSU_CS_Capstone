@@ -5,14 +5,11 @@ import { Text, View } from "../components/Themed";
 import { MenuItem } from '../types';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+import { Image } from 'react-native'
+import { Card, ListItem, Button, Icon } from 'react-native-elements'
+import InputSpinner from "react-native-input-spinner";
 
 export default function StagingScreen({route}) {
-    console.log("This is the route:");
-    console.log(route);
-    console.log("This is params:");
-    console.log(route.params);
-    console.log("This is menuItem:");
-    console.log(route.params.MenuItem);
     const myMenuItem = route.params.MenuItem;
     
     const {
@@ -27,35 +24,65 @@ export default function StagingScreen({route}) {
     } = myMenuItem;
 
     return (
+
         <View style={styles.container}>
-        {/* food item title - this will be in BottomTabNavigator
-            image
-            longDescription 
-            quantity
-            list of mandatory mods
-            list of non-mandatory mods
-            optional comment
-            add to cart button
-             */}
-             <Avatar 
-          size="large"
-          source={{uri: image}} />
+          <Card containerStyle={{width: '95%'}}>
+            <Card.Image source={{uri: image}}>
+            
+            </Card.Image>
+            <Card.Title>{name}                       ${Number(price).toFixed(2)}</Card.Title>
+            <Text style={{marginBottom: 10}}>
+                {longDesc}
+            </Text>
+
+          </Card>
+          
+          <View style={styles.bottomcontainer}>
+            <Card>
             <MaterialCommunityIcons.Button
-            name="tray-plus"
-            size={34} 
-            color="white"
-            backgroundColor="#a28"
-            accessibilityLabel="Confirm add item">
-              Finish
-           </MaterialCommunityIcons.Button>
-        </View>
-    );
+                      name="tray-plus"
+                      size={34} 
+                      color="white"
+                      backgroundColor="#a28"
+                      accessibilityLabel="Confirm add item">
+                         {`Confirm order                                 $${Number(price).toFixed(2)}`}
+            </MaterialCommunityIcons.Button>
+
+          
+            </Card>
+          </View>
+
+          <InputSpinner
+            max={10}
+            min={1}
+            step={1}
+            colorMax={"#f04048"}
+            value='0'
+            onChange={(num) => {
+              console.log(num);
+            }}
+          />
+
+        </View>    
+    )
 }
 
 const styles = StyleSheet.create({
   container: {
-    //flex: 1,
+    flex: 1,
+    width: '100%',
+    height: '70%',
     justifyContent: "center",
+    alignItems: 'center',
+
+  },
+  bottomcontainer: {
+    width: '105%',
+    height: 100,
+    justifyContent: 'center',
+
+    position: 'absolute',
+    bottom: 0, 
   },
   title: {
     fontSize: 20,
