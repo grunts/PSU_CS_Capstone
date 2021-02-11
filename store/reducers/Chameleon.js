@@ -25,6 +25,8 @@ const chameleonReducer = (state = INITIAL_STATE, action) =>
       //nothing will be returned if the user requested an impossible color,
       //as intended
       const addedColor = possible.splice(action.payload, 1);
+      //const addedColor = possible.filter(look => look === action.payload)
+      
       //add color to current colors
       current.push(addedColor);
       //update the state
