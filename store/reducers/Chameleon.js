@@ -13,12 +13,14 @@ const INITIAL_STATE =
 
 const chameleonReducer = (state = INITIAL_STATE, action) =>
 {
+  //moved this line here to avoid it dumbly thinking I'm redeclaring the same variables for each
+  const {current, possible} = state;
   switch(action.type)
   {
     case 'ADD_COLOR':
       //make a copy of our state to modify on so we don't have awkward
       //intermediate changes in our real state while we're processing
-      const state = {current, possible};
+      //const {current, possible} = state_;
       //pull the color out of the possible colors
       //nothing will be returned if the user requested an impossible color,
       //as intended
@@ -26,15 +28,15 @@ const chameleonReducer = (state = INITIAL_STATE, action) =>
       //add color to current colors
       current.push(addedColor);
       //update the state
-      const newState = {current, possible};
-      return newState;
+      const state_after_add = {current, possible};
+      return state_after_add;
 
     case 'REMOVE_COLOR':
-      const state = {current, possible};
+      //const {current, possible} = state;
       const removedColor = current.splice(action.payload, 1);
       possible.push(removedColor);
-      const newState = {current, possible};
-      return newState;
+      const state_after_remove = {current, possible};
+      return state_after_remove;
 
     default:
       return state;

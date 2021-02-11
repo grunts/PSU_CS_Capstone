@@ -1,7 +1,7 @@
 /*followed https://www.digitalocean.com/community/tutorials/react-react-native-redux*/
 
 import React from 'react';
-import { View, Button, StyleSheet, Text } from 'react-native';
+import { View, Button, StyleSheet, Text, StatusBar } from 'react-native';
 
 /*
 IMPORTANT: Provider will need to wrap the entire App for consitent state
@@ -57,7 +57,7 @@ Part of the point of Redux is mapping state and store, so that when the store ch
 */
 
 const mapDispatchToProps = dispatch => (
-  bindActionCreators({addColor, removeColor}, dispatch}))
+  bindActionCreators({addColor, removeColor}, dispatch)
 );
 
 const mapStateToProps = (state) =>
