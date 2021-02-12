@@ -6,6 +6,7 @@ import ScrollListComponent from "../components/ListViewScroll";
 export default function TabOneScreen({navigation}: {navigation: any}) {
   return (
     <View style={styles.container}>
+      <Text onPress={() => navigation.navigate('ServingTray')}>Serving Tray</Text>
       <ScrollListComponent navigator={navigation}/>
     </View>
   );
