@@ -5,14 +5,14 @@
 //  optional payload - the data sent
 //  type - what to do with the data (ex: remove this your cart or add it?)
 
-export const addColor = colorIndex =>
+export const addMenuItem = menuItem =>
 ({
-  type: "ADD_COLOR",
-  payload: colorIndex,
+  type: "ADD_ITEM",
+  payload: menuItem,
 });
 
-export const removeColor = colorIndex =>
+export const removeMenuItem = menuItem =>
 ({
-  type: "REMOVE_COLOR",
-  payload: colorIndex,
+  type: "REMOVE_ITEM",
+  payload: menuItem,
 });

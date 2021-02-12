@@ -7,7 +7,7 @@ import useColorScheme from "./hooks/useColorScheme";
 import Navigation from "./navigation";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
-import mainReducer from "./store/reducers/Chameleon";
+import mainReducer from "./store/reducers/ServingTray";
 
 const store = createStore(mainReducer);
 

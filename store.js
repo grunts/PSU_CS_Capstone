@@ -2,14 +2,13 @@
 //This is where we combine all of our reducers.
 //As you make them and want them to be useable, import them and put them inside 'combineReducers'.
 
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers } from "redux";
 
-import chameleonReducer from './store/reducers/Chameleon'
+import servingTrayReducer from "./store/reducers/ServingTray";
 
 const reducer = combineReducers({
-  chameleonReducer,
-  
-  });
+  servingTrayReducer,
+});
 
 const store = createStore(reducer);
 

@@ -1,26 +1,14 @@
-import React from 'react';
+import React from "react";
 // import { Text as DefaultText, View as DefaultView } from 'react-native';
 import { Text, View } from "../components/Themed";
-import { StyleSheet, Button, Image } from 'react-native';
-import { Avatar, ListItem } from 'react-native-elements';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { StyleSheet, Button, Image } from "react-native";
+import { Avatar, ListItem } from "react-native-elements";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { menuItem } from "../types";
 
-// type ItemProps = 
+// type ItemProps =
 
-export default function ItemCardComponent({ menuItem }:  {
-  menuItem:{
-    name: string,
-    image: string,
-    longDesc: string,
-    shortDesc: string,
-    ABV: number,
-    Allergens: number,
-    price: number,
-    category: string,
-    mandatoryMods: [],
-    nonMandatoryMods: [],
-  }
-} ) {
+export default function ItemCardComponent(menuItem: menuItem) {
   const {
     name,
     image,
@@ -30,43 +18,46 @@ export default function ItemCardComponent({ menuItem }:  {
     Allergens,
     price,
     mandatoryMods,
-  } = menuItem
+  } = menuItem;
 
   const displayABV = (abv: number) => {
-    if (abv > 0) {return `${abv}% ABV`}
-    return ''
-  }
+    if (abv > 0) {
+      return `${abv}% ABV`;
+    }
+    return "";
+  };
 
   return (
     <ListItem bottomDivider style={styles.item}>
-        <Avatar 
-          size="large"
-          source={{uri: image}} />
-        <ListItem.Content>
-          <ListItem.Title>{name} {`$${Number(price).toFixed(2)}`}</ListItem.Title>
-          <ListItem.Subtitle>{longDesc}</ListItem.Subtitle>
-          <ListItem.Subtitle>{displayABV(ABV)}</ListItem.Subtitle>
-          <MaterialCommunityIcons.Button
+      <Avatar size="large" source={{ uri: image }} />
+      <ListItem.Content>
+        <ListItem.Title>
+          {name} {`$${Number(price).toFixed(2)}`}
+        </ListItem.Title>
+        <ListItem.Subtitle>{longDesc}</ListItem.Subtitle>
+        <ListItem.Subtitle>{displayABV(ABV)}</ListItem.Subtitle>
+        <MaterialCommunityIcons.Button
           name="tray-plus"
-          size={24} 
+          size={24}
           color="white"
           backgroundColor="#a28"
           accessibilityLabel="Add item to tray"
-            >Add
-          </MaterialCommunityIcons.Button>
-        </ListItem.Content>
+        >
+          Add
+        </MaterialCommunityIcons.Button>
+      </ListItem.Content>
     </ListItem>
   );
 }
 
 const styles = StyleSheet.create({
   item: {
-    backgroundColor: '#f9c2ff',
+    backgroundColor: "#f9c2ff",
     padding: 5,
     marginVertical: 8,
     marginHorizontal: 16,
     // flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
