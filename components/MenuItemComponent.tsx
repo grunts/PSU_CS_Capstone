@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { StyleSheet, Button, Image } from 'react-native';
 import { Avatar, ListItem } from 'react-native-elements';
 import { MenuItem } from '../types';
 
 
 //The component holding a menu item and all of its info - requires an object containing a MenuItem as an input argument
-export default function ItemCardComponent({ menuItem, children }: { menuItem : MenuItem, children?: JSX.Element[] | JSX.Element }) {
+export default function ItemCardComponent({ menuItem, children }: { menuItem : MenuItem, children?: ReactNode }) {
   
   //Extract constants name, image, longDesc, etc. from menuItem object
   const {
