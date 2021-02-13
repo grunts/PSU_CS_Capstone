@@ -17,7 +17,7 @@ export type TabTwoParamList = {
   TabTwoScreen: undefined;
 };
 
-export type menuItem ={
+export type MenuItem ={
   name: string,
   image: string,
   longDesc: string,

@@ -6,7 +6,7 @@ import { combineReducers } from "redux";
 //it can be more than one color at once, right now it is none... don't think about it too hard
 //we create an 'action', ../actions/ChameleonActions.js, so we have a way to add colors to our chameleon
 const INITIAL_STATE = {
-  currentTray: [],
+  currentTray: []
 };
 
 const servingTrayReducer = (state = INITIAL_STATE, action) => {

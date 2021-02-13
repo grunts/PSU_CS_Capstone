@@ -7,7 +7,6 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { addMenuItem, removeMenuItem } from "../store/actions/ServingTray.js";
-import uuid from 'uuid-random';
 /*
 QUICK REFERENCE:
 Access the current state: store.getState(); 
@@ -84,7 +83,9 @@ const ReduxExample = () => {
       {tray.currentTray.map((item, index) => (
         <TouchableOpacity
           key={index}
-          onPress={() => dispatch({ type: "REMOVE_ITEM", payload: item, index: index })}
+          onPress={() =>
+            dispatch({ type: "REMOVE_ITEM", payload: item, index: index })
+          }
           style={{
             alignItems: "center",
             borderWidth: 1,
@@ -94,7 +95,9 @@ const ReduxExample = () => {
             marginRight: 20,
           }}
         >
-          <Text style={{ color: "white" }}>{item.name} and {item.idCustom}</Text>
+          <Text style={{ color: "white" }}>
+            {item.name} and {item.idCustom}
+          </Text>
         </TouchableOpacity>
       ))}
 
@@ -104,9 +107,7 @@ const ReduxExample = () => {
       {test.map((item, index) => (
         <TouchableOpacity
           key={index}
-          onPress={() => 
-            dispatch({ type: "ADD_ITEM", payload: item }
-          )}
+          onPress={() => dispatch({ type: "ADD_ITEM", payload: item })}
           style={{
             alignItems: "center",
             borderWidth: 1,
@@ -120,7 +121,6 @@ const ReduxExample = () => {
         </TouchableOpacity>
       ))}
     </View>
-    
   );
 };
 

@@ -4,11 +4,11 @@ import { Text, View } from "../components/Themed";
 import { StyleSheet, Button, Image } from "react-native";
 import { Avatar, ListItem } from "react-native-elements";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { menuItem } from "../types";
+import { MenuItem } from "../types";
 
 // type ItemProps =
 
-export default function ItemCardComponent(menuItem: menuItem) {
+export default function ItemCardComponent(menuItem: MenuItem) {
   const {
     name,
     image,
