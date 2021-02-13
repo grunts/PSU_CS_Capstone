@@ -1,7 +1,7 @@
 /*followed https://www.digitalocean.com/community/tutorials/react-react-native-redux */
 
 import React from "react";
-import { View, Button, StyleSheet, Text, StatusBar } from "react-native";
+import { View, StyleSheet, Text, StatusBar } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { connect, useSelector, useDispatch } from "react-redux";
