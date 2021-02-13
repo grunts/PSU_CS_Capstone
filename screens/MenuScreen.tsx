@@ -6,6 +6,18 @@ import MenuItemComponent from "../components/MenuItemComponent";
 import DefaultRestaurant from "../constants/DefaultRestaurant";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SearchBar from "../components/SearchBar";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+//Get the pushToken from local storage
+// const getData = async () => {
+//   try {
+//     const jsonValue = await AsyncStorage.getItem('@pushToken')
+//     return jsonValue != null ? JSON.parse(jsonValue) : null;
+//   } catch(e) {
+//     // error reading value
+//     console.log(e)
+//   }
+// }
 
 export default function MenuScreen({ route }) {
   const { restaurant } = route.params;
@@ -20,7 +32,8 @@ export default function MenuScreen({ route }) {
             size={24} 
             color="white"
             backgroundColor="#a28"
-            accessibilityLabel="Add item to tray">
+            accessibilityLabel="Add item to tray"
+            >
               Add
           </MaterialCommunityIcons.Button>
       </MenuItemComponent>
@@ -82,3 +95,25 @@ const extractCategories = (menu: any) => {
     data: categoriesObj[category],
   }));
 };
+
+//An example of calling this function from a button may look like async () => sendPushNotification()
+// async function sendPushNotification() {
+//   const expoPushToken = await getData()
+//   const message = {
+//     to: expoPushToken,
+//     sound: 'default',
+//     title: 'Original Title',
+//     body: 'And here is the body!',
+//     data: { someData: 'goes here' },
+//   }
+
+//   await fetch('https://exp.host/--/api/v2/push/send', {
+//     method: 'POST',
+//     headers: {
+//       Accept: 'application/json',
+//       'Accept-encoding': 'gzip, deflate',
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify(message),
+//   });
+// }
