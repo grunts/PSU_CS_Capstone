@@ -17,7 +17,7 @@ export default function ItemCardComponent({ menuItem, children }: { menuItem : M
     Allergens,
     price,
     mandatoryMods,
-  } = menuItem
+  } = menuItem;
 
   //Define a function that takes the abv field and determines whether it is > 0 and returns an appropriate ABV string
   const displayABV = (abv: number) => {
