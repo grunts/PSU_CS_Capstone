@@ -8,12 +8,13 @@ import MenuScreen from '../screens/MenuScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import { enableScreens } from 'react-native-screens'
 
 /**This creates a new Navigator to manage switching between list view and map view using the bottom tabs.
  * We give "BottomTab" a type: "BottomTabParamList" - this identifies which object types are valid to use
  * as components for each Screen of the Navigator.*/
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
-
+enableScreens(true)
 
 /**Create the BottomTabNavigator and export it.*/
 export default function BottomTabNavigator() {
@@ -22,22 +23,22 @@ export default function BottomTabNavigator() {
     /**The BottomTab Navigator will have two screens.  The initially displayed screen will be TabOne. 
      * The BottomTab will also have some style properties set - namely it will be colored based on the
      * current color scheme as imported from Colors.*/
-    <BottomTab.Navigator initialRouteName="TabOne" tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
+    <BottomTab.Navigator initialRouteName="Restaurants" tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}>
       
       {/**The TabOne Screen will be defined by its own navigation stack: TabOneNavigator.  It will also have
        * a tab bar icon as specified in its options property.  The tab bar icon is defined by a lambda function
        * that creates a JSX element with the specified color.*/}
       <BottomTab.Screen
-        name="TabOne"
+        name="Restaurants"
         component={TabOneNavigator}
-        options={{ tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} /> }}/>
+        options={{ tabBarIcon: ({ color }) => <TabBarIcon name="fast-food-outline" color={color} /> }}/>
 
       {/**The TabTwo Screen will also be defined by its own navigation stack: TabTwoNavigator. It will also
        * have a tab bar icon.*/}
       <BottomTab.Screen
-        name="TabTwo"
+        name="Map"
         component={TabTwoNavigator}
-        options={{ tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} /> }}/>
+        options={{ tabBarIcon: ({ color }) => <TabBarIcon name="map-outline" color={color} /> }}/>
 
     </BottomTab.Navigator>
   );
@@ -66,7 +67,7 @@ function TabOneNavigator() {
     <TabOneStack.Navigator initialRouteName="TabOneScreen">
       {/**The List View Screen is defined by the TabOneScreen component.  It has a headerTitle 
         * designating it as the List View.*/}
-      <TabOneStack.Screen name="TabOneScreen" component={TabOneScreen} options={{ headerTitle: 'List View' }}/>
+      <TabOneStack.Screen name="TabOneScreen" component={TabOneScreen} options={{ headerTitle: 'Restaurants ' }}/>
       {/**The Menu Screen is accessed from the List View.  See TabOneScreen component.  The Menu Screen
         * also has a title, but in this case, the title is based on a lambda function that uses the route object
         * (the route object contains the restaurant object as part of its type definition) to extract the name

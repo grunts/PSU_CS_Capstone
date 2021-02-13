@@ -1,5 +1,6 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
+  "//": "this is the old main, aka entry point: node_modules/expo/AppEntry.js",
+  "main": "index.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -37,7 +38,9 @@
     "react-native-screens": "~2.15.0",
     "react-native-vector-icons": "^7.1.0",
     "react-native-web": "~0.13.12",
-    "expo-notifications": "~0.8.2"
+    "expo-notifications": "~0.8.2",
+    "react-redux": "^7.2.2",
+    "redux": "^4.0.5"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
