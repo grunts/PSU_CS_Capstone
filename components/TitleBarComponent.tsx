@@ -1,22 +1,20 @@
 import React from 'react';
 import { StyleSheet } from "react-native";
 import { Text, View } from "./Themed";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function TitleBarComponent({title}: {title: String}) {
     return (
         <View style={styleSheet.inline}>
-            <Text>
+            <Text style={styleSheet.title}>
                 {title}
             </Text>
-            <MaterialCommunityIcons.Button
-                name="tray-plus"
+            <Ionicons.Button
+                name="restaurant"
                 size={24} 
                 color="white"
                 style={styleSheet.button}
-                accessibilityLabel="Add item to tray">
-                    Serving Tray
-            </MaterialCommunityIcons.Button>
+                accessibilityLabel="Add item to tray">3</Ionicons.Button>
         </View>
     );
 }

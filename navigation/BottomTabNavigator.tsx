@@ -67,13 +67,13 @@ function TabOneNavigator() {
     <TabOneStack.Navigator initialRouteName="TabOneScreen">
       {/**The List View Screen is defined by the TabOneScreen component.  It has a headerTitle 
         * designating it as the List View.*/}
-      <TabOneStack.Screen name="TabOneScreen" component={TabOneScreen} options={{ headerTitle: (props) => <TitleBarComponent title="List View"/>}}/>
+      <TabOneStack.Screen name="TabOneScreen" component={TabOneScreen} options={{ headerTitle: () => <TitleBarComponent title="List View"/>, headerTitleAlign: "left"}}/>
       {/**The Menu Screen is accessed from the List View.  See TabOneScreen component.  The Menu Screen
         * also has a title, but in this case, the title is based on a lambda function that uses the route object
         * (the route object contains the restaurant object as part of its type definition) to extract the name
         * of the restaurant to be used as the title.  If there is no restaurant name in the route object, then
         * the title gets set to "The Menu"*/}
-      <TabOneStack.Screen name="MenuScreen" component={MenuScreen} options={({ route }) => ({ headerTitle: route?.params?.restaurant?.name} ?? 'The Menu')}/>
+      <TabOneStack.Screen name="MenuScreen" component={MenuScreen} options={({ route }) => ( {headerTitle: () => <TitleBarComponent title={route?.params?.restaurant?.name ?? "The Menu"}/>, headerTitleAlign: "left"})}/>
     </TabOneStack.Navigator>
   );
 }
@@ -88,7 +88,7 @@ function TabTwoNavigator() {
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: 'Map View' }}
+        options={{ headerTitle: () => <TitleBarComponent title="Map View"/>, headerTitleAlign: "left"}}
       />
     </TabTwoStack.Navigator>
   );
