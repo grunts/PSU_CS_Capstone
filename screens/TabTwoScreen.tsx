@@ -27,6 +27,7 @@ export default function TabTwoScreen() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Tab Two</Text>
+      {/**Add a small line to separate the title from the Map.*/}
       <View
         style={styles.separator}
         lightColor="#eee"

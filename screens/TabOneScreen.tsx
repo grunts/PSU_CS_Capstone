@@ -1,13 +1,12 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
-import { Text, View } from "../components/Themed";
-/*import ScrollListComponent from "../components/ListViewScroll";*/
-import ChameleonComponent from "../components/Chameleon";
+import { View } from "../components/Themed";
+import ScrollListComponent from "../components/ListViewScroll";
 
 export default function TabOneScreen({navigation}: {navigation: any}) {
   return (
     <View style={styles.container}>
-      <ChameleonComponent/>
+        <ScrollListComponent navigator={navigation}/>
     </View>
   );
 }

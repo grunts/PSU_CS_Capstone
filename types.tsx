@@ -17,7 +17,7 @@ export type TabTwoParamList = {
   TabTwoScreen: undefined;
 };
 
-export type MenuItem ={
+export type MenuItem = {
   name: string,
   image: string,
   longDesc: string,
@@ -27,7 +27,5 @@ export type MenuItem ={
   price: number,
   category: string,
   mandatoryMods: [],
-  nonMandatoryMods: [],
-}
-
-
+  nonMandatoryMods: []
+};

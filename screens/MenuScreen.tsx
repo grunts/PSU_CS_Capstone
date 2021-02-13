@@ -4,30 +4,55 @@ import { Text, View } from "../components/Themed";
 import MenuTitleComponent from "../components/MenuTitleComponent";
 import MenuItemComponent from "../components/MenuItemComponent";
 import DefaultRestaurant from "../constants/DefaultRestaurant";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import SearchBar from "../components/SearchBar";
 
 export default function MenuScreen({ route }) {
   const { restaurant } = route.params;
   const { menu } = restaurant;
   const categories = extractCategories(menu);
+  const renderItem = ({ item }) => (
+    <View>
+      <MenuItemComponent menuItem={item}>
+          {/**Use a convenient button component from react-native-vector-icons to create an add to tray button.*/}
+          <MaterialCommunityIcons.Button
+            name="tray-plus"
+            size={24} 
+            color="white"
+            backgroundColor="#a28"
+            accessibilityLabel="Add item to tray">
+              Add
+          </MaterialCommunityIcons.Button>
+      </MenuItemComponent>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
-        <MenuTitleComponent title={restaurant.name ?? DefaultRestaurant.name}></MenuTitleComponent>
-        {/*<MenuItemComponent menuItem={restaurant.menu[0]} />*/}
-        <SectionList
-          sections={categories}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({ item }) => <View><MenuItemComponent menuItem={item} /></View>}
-          renderSectionHeader={({ section: { title } }) => (
-            <Text>{title}</Text>
-          )}
-        />
+      {/* <MenuTitleComponent
+        title={restaurant.name ?? DefaultRestaurant.name}
+      ></MenuTitleComponent> */}
+      {/*<MenuItemComponent menuItem={restaurant.menu[0]} />*/}
+      <SearchBar
+        renderFunction={renderItem}
+        dataToBeSearched={menu}
+        fieldToSearch={"name"}
+      />
+      <SectionList
+        sections={categories}
+        keyExtractor={(item, index) => item + index}
+        renderItem={renderItem}
+        style={{paddingTop: 5, height: "100%"}}
+        stickySectionHeadersEnabled={false}
+        renderSectionHeader={({ section: { title } }) => <Text style={{fontWeight: "500", fontSize: 15}}>{title}</Text>}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     justifyContent: "center",
   },
   title: {
@@ -43,14 +68,17 @@ const styles = StyleSheet.create({
 
 const reducer = (accumulator, currentItem) => {
   if (accumulator[currentItem.category]) {
-    accumulator[currentItem.category].push(currentItem)
+    accumulator[currentItem.category].push(currentItem);
   } else {
-    accumulator[currentItem.category] = [currentItem]
+    accumulator[currentItem.category] = [currentItem];
   }
-  return accumulator
-}
+  return accumulator;
+};
 
 const extractCategories = (menu: any) => {
-  const categoriesObj = menu.reduce(reducer, {})
-  return Object.keys(categoriesObj).map(category => ({ title: category, data: categoriesObj[category] }))
-}
+  const categoriesObj = menu.reduce(reducer, {});
+  return Object.keys(categoriesObj).map((category) => ({
+    title: category,
+    data: categoriesObj[category],
+  }));
+};
