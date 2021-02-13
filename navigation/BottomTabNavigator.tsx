@@ -8,12 +8,13 @@ import MenuScreen from '../screens/MenuScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import { enableScreens } from 'react-native-screens'
 
 /**This creates a new Navigator to manage switching between list view and map view using the bottom tabs.
  * We give "BottomTab" a type: "BottomTabParamList" - this identifies which object types are valid to use
  * as components for each Screen of the Navigator.*/
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
-
+enableScreens(true)
 
 /**Create the BottomTabNavigator and export it.*/
 export default function BottomTabNavigator() {
