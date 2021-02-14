@@ -4,20 +4,36 @@ import { Text, View } from "../components/Themed";
 import MenuItemComponent from "../components/MenuItemComponent";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MenuItem } from "../types";
-import restaurants from "../mock/restaurant.js";
 import SearchBar from "../components/SearchBar";
 
-export default function ServingTray({ navigation }: { navigation: any }) {
-  const [tray, setTray] = useState(tempTray);
+import { connect, useSelector, useDispatch } from "react-redux";
+import { bindActionCreators, Dispatch } from "redux";
+import { addMenuItem, removeMenuItem } from "../store/actions/ServingTray.js";
+import { ServingTrayState } from "../store/reducers/types"
 
-  const renderItem = ({ item, index }) => (
+interface RootState {
+  servingTray: ServingTrayState;
+}
+
+function ServingTray({ servingTray }: RootState) {
+  const { currentTray } = servingTray;
+  const dispatch: Dispatch = useDispatch();
+  
+  // Sums the price of all the serving tray items
+  const total = currentTray.reduce(
+    (accumulator, currentItem) =>
+      (accumulator += currentItem.price),
+    0
+  );
+
+  const renderItem = ({ item, index }: { item: MenuItem, index: number }) => (
     <View>
       <MenuItemComponent menuItem={item}>
         {/**Use a convenient button component from react-native-vector-icons to create an remove from tray button.*/}
         <MaterialCommunityIcons.Button
           name="tray-minus"
           onPress={() => {
-            setTray(removeItem(tray, index));
+            dispatch({ type: "REMOVE_ITEM", payload: item, index: index })
           }}
           size={24}
           color="#a28"
@@ -30,30 +46,17 @@ export default function ServingTray({ navigation }: { navigation: any }) {
     </View>
   );
 
-  // Returns a copy of the tray with indexed item removed
-  const removeItem = (array: MenuItem[], index: number) => [
-    ...array.slice(0, index),
-    ...array.slice(++index),
-  ];
-
-  // Reducer that sums the price of all the serving tray items
-  const total = tray.reduce(
-    (accumulator: number, currentItem: MenuItem) =>
-      (accumulator += currentItem.price),
-    0
-  );
-
   return (
     <View style={styles.container}>
       <SearchBar
         renderFunction={renderItem}
-        dataToBeSearched={tray}
+        dataToBeSearched={currentTray}
         fieldToSearch={"name"}
       />
       <FlatList
-        data={tray}
+        data={currentTray}
         renderItem={renderItem}
-        keyExtractor={(item: MenuItem, index: number) => item.name + index}
+        keyExtractor={(item, index) => item.name + index}
         ListFooterComponent={<View style={{padding: 40}}></View>}
       />
       {/* <Text>Total: {MakeCurrencyString(total)}</Text> */}
@@ -73,20 +76,6 @@ export default function ServingTray({ navigation }: { navigation: any }) {
 const MakeCurrencyString = (value: number) => {
   return `$${value.toFixed(2)}`;
 };
-
-// const formatter = new Intl.NumberFormat('en-US', {
-//   style: 'currency',
-//   currency: 'USD',
-//   minimumFractionDigits: 2
-// })
-
-const tempReducer = (accumulator, currentItem) => {
-  accumulator.push(...currentItem.menu);
-  accumulator.push(...currentItem.menu);
-  return accumulator;
-};
-
-const tempTray = restaurants.reduce(tempReducer, []);
 
 const styles = StyleSheet.create({
   container: {
@@ -118,3 +107,13 @@ const styles = StyleSheet.create({
     bottom: 5,
   },
 });
+
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators({ addMenuItem, removeMenuItem }, dispatch);
+
+const mapStateToProps = (state: RootState) => {
+  const { servingTray } = state;
+  return { servingTray };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ServingTray);
