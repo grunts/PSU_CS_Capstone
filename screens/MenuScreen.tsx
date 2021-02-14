@@ -6,11 +6,9 @@ import MenuItemComponent from "../components/MenuItemComponent";
 import DefaultRestaurant from "../constants/DefaultRestaurant";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SearchBar from "../components/SearchBar";
-import { connect, useDispatch } from "react-redux";
-import { bindActionCreators, Dispatch } from "redux";
-import { addMenuItem, removeMenuItem } from "../store/actions/ServingTray.js";
+import { useDispatch } from "react-redux";
 
-function MenuScreen({ route }) {
+export default function MenuScreen({ route }) {
   const { restaurant } = route.params;
   const { menu } = restaurant;
   const categories = extractCategories(menu);
@@ -88,13 +86,3 @@ const extractCategories = (menu: any) => {
     data: categoriesObj[category],
   }));
 };
-
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ addMenuItem, removeMenuItem }, dispatch);
-
-const mapStateToProps = (state: any) => {
-  const { servingTray } = state;
-  return { servingTray };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MenuScreen);

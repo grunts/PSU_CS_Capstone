@@ -6,11 +6,12 @@ import { connect, useSelector } from "react-redux";
 import { bindActionCreators, Dispatch } from "redux";
 import { addMenuItem, removeMenuItem } from "../store/actions/ServingTray.js";
 
-function TabOneScreen({navigation, servingTray}: {navigation: any, servingTray: any}) {
-  const { currentTray } = servingTray;
+export default function TabOneScreen({navigation}: {navigation: any}) {
+  const tray = useSelector((state) => state.servingTray);
+  const { currentTray } = tray;
   return (
     <View style={styles.container}>
-      <Text onPress={() => navigation.navigate('ServingTray')}>Serving Tray {servingTray.currentTray.length}</Text>
+      <Text onPress={() => navigation.navigate('ServingTray')}>Serving Tray {currentTray.length}</Text>
       <ScrollListComponent navigator={navigation}/>
     </View>
   );
@@ -32,13 +33,3 @@ const styles = StyleSheet.create({
     width: "80%",
   },
 });
-
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ addMenuItem, removeMenuItem }, dispatch);
-
-const mapStateToProps = (state: any) => {
-  const { servingTray } = state;
-  return { servingTray };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(TabOneScreen);

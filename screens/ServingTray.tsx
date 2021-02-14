@@ -6,18 +6,17 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MenuItem } from "../types";
 import SearchBar from "../components/SearchBar";
 
-import { connect, useSelector, useDispatch } from "react-redux";
-import { bindActionCreators, Dispatch } from "redux";
-import { addMenuItem, removeMenuItem } from "../store/actions/ServingTray.js";
+import { useSelector, useDispatch } from "react-redux";
 import { ServingTrayState } from "../store/reducers/types"
 
 interface RootState {
   servingTray: ServingTrayState;
 }
 
-function ServingTray({ servingTray }: RootState) {
-  const { currentTray } = servingTray;
-  const dispatch: Dispatch = useDispatch();
+export default function ServingTray() {
+  const tray: ServingTrayState = useSelector((state: RootState) => state.servingTray);
+  const { currentTray } = tray;
+  const dispatch = useDispatch();
   
   // Sums the price of all the serving tray items
   const total = currentTray.reduce(
@@ -32,9 +31,7 @@ function ServingTray({ servingTray }: RootState) {
         {/**Use a convenient button component from react-native-vector-icons to create an remove from tray button.*/}
         <MaterialCommunityIcons.Button
           name="tray-minus"
-          onPress={() => {
-            dispatch({ type: "REMOVE_ITEM", payload: item, index: index })
-          }}
+          onPress={() => dispatch({ type: "REMOVE_ITEM", payload: item, index: index })}
           size={24}
           color="#a28"
           backgroundColor="white"
@@ -107,13 +104,3 @@ const styles = StyleSheet.create({
     bottom: 5,
   },
 });
-
-const mapDispatchToProps = (dispatch: Dispatch) =>
-  bindActionCreators({ addMenuItem, removeMenuItem }, dispatch);
-
-const mapStateToProps = (state: RootState) => {
-  const { servingTray } = state;
-  return { servingTray };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ServingTray);
