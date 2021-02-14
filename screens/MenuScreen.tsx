@@ -6,16 +6,22 @@ import MenuItemComponent from "../components/MenuItemComponent";
 import DefaultRestaurant from "../constants/DefaultRestaurant";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SearchBar from "../components/SearchBar";
+import { connect, useDispatch } from "react-redux";
+import { bindActionCreators, Dispatch } from "redux";
+import { addMenuItem, removeMenuItem } from "../store/actions/ServingTray.js";
 
-export default function MenuScreen({ route }) {
+function MenuScreen({ route }) {
   const { restaurant } = route.params;
   const { menu } = restaurant;
   const categories = extractCategories(menu);
+  const dispatch = useDispatch();
+
   const renderItem = ({ item }) => (
     <View>
       <MenuItemComponent menuItem={item}>
           {/**Use a convenient button component from react-native-vector-icons to create an add to tray button.*/}
           <MaterialCommunityIcons.Button
+            onPress={() => dispatch({ type: "ADD_ITEM", payload: item })}
             name="tray-plus"
             size={24} 
             color="white"
@@ -82,3 +88,13 @@ const extractCategories = (menu: any) => {
     data: categoriesObj[category],
   }));
 };
+
+const mapDispatchToProps = (dispatch: Dispatch) =>
+  bindActionCreators({ addMenuItem, removeMenuItem }, dispatch);
+
+const mapStateToProps = (state: any) => {
+  const { servingTray } = state;
+  return { servingTray };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MenuScreen);
