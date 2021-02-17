@@ -13,9 +13,25 @@ interface RootState {
   servingTray: ServingTrayState;
 }
 
+/**
+ * Creates serving tray screen
+ * Populates a flatlist that includes a button to remove that item by dispatching redux action
+ */
 export default function ServingTray() {
+
+  /**
+   * hook to retrieve serving tray information from redux store
+   */
   const tray: ServingTrayState = useSelector((state: RootState) => state.servingTray);
+
+  /**
+   * Destructures tray contents
+   */
   const { currentTray } = tray;
+
+  /**
+   * retrieves redux dispatch functionality
+   */
   const dispatch = useDispatch();
   
   // Sums the price of all the serving tray items
@@ -25,10 +41,17 @@ export default function ServingTray() {
     0
   );
 
+  /**
+   * Creates components to populate the list
+   *
+   * @param {object} params Item info and index in array
+   */
   const renderItem = ({ item, index }: { item: MenuItem, index: number }) => (
     <View>
       <MenuItemComponent menuItem={item}>
-        {/**Use a convenient button component from react-native-vector-icons to create an remove from tray button.*/}
+        {/**
+         * Use a convenient button component from Material-Community-icons to create an remove from tray button.
+         * */}
         <MaterialCommunityIcons.Button
           name="tray-minus"
           onPress={() => dispatch({ type: "REMOVE_ITEM", payload: item, index: index })}
@@ -70,6 +93,11 @@ export default function ServingTray() {
   );
 }
 
+/**
+ * Converts value to truncate and display as a currency
+ *
+ * @param {number} value The amount to convert
+ */
 const MakeCurrencyString = (value: number) => {
   return `$${value.toFixed(2)}`;
 };
