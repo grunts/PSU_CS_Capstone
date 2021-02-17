@@ -3,17 +3,14 @@ import { StyleSheet, Button, Image } from 'react-native';
 import { Avatar, ListItem } from 'react-native-elements';
 import { MenuItem } from '../types';
 import { useNavigation } from '@react-navigation/native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 
 
 
 //The component holding a menu item and all of its info - requires an object containing a MenuItem as an input argument
-<<<<<<< HEAD
-export default function ItemCardComponent({ menuItem }: { menuItem : MenuItem }) {
-  const navigation = useNavigation(); 
-=======
 export default function ItemCardComponent({ menuItem, children }: { menuItem : MenuItem, children?: ReactNode }) {
-  
->>>>>>> 67296d5ff8dab1801cc02e214ea76bec569df8e1
+  const navigation = useNavigation(); 
   //Extract constants name, image, longDesc, etc. from menuItem object
   const {
     name,
@@ -45,7 +42,6 @@ export default function ItemCardComponent({ menuItem, children }: { menuItem : M
           <ListItem.Subtitle>{longDesc}</ListItem.Subtitle>
           {/**Extract a useful ABV string from the ABV value using the previously defined displayABV function.*/}
           <ListItem.Subtitle>{displayABV(ABV)}</ListItem.Subtitle>
-<<<<<<< HEAD
           {/**Use a convenient button component from react-native-vector-icons to create an add to tray button.*/}
           <MaterialCommunityIcons.Button onPress={() => navigation.navigate('StagingScreen', {MenuItem: menuItem})}
             name="tray-plus"
@@ -55,9 +51,7 @@ export default function ItemCardComponent({ menuItem, children }: { menuItem : M
             accessibilityLabel="Add item to tray">
               Add
           </MaterialCommunityIcons.Button>
-=======
           {children}
->>>>>>> 67296d5ff8dab1801cc02e214ea76bec569df8e1
         </ListItem.Content>
     </ListItem>
   );

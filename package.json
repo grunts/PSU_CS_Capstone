@@ -24,10 +24,7 @@
     "expo-constants": "~9.3.3",
     "expo-linking": "~2.0.0",
     "expo-location": "~10.0.0",
-<<<<<<< HEAD
-=======
     "expo-notifications": "~0.8.2",
->>>>>>> 67296d5ff8dab1801cc02e214ea76bec569df8e1
     "expo-splash-screen": "~0.8.1",
     "expo-status-bar": "~1.0.3",
     "expo-web-browser": "~8.6.0",
@@ -37,10 +34,7 @@
     "react-native-components": "0.0.1",
     "react-native-elements": "^3.0.0-alpha.1",
     "react-native-gesture-handler": "~1.8.0",
-<<<<<<< HEAD
     "react-native-input-spinner": "^1.4.8",
-=======
->>>>>>> 67296d5ff8dab1801cc02e214ea76bec569df8e1
     "react-native-maps": "0.27.1",
     "react-native-paper": "^4.4.1",
     "react-native-safe-area-context": "3.1.9",
