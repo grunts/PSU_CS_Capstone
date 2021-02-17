@@ -4,12 +4,13 @@ export type RootStackParamList = {
 };
 
 export type BottomTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
+  Restaurants: undefined;
+  Map: undefined;
 };
 
 export type TabOneParamList = {
   TabOneScreen: undefined;
+  ServingTray: undefined;
   MenuScreen: { restaurant };
   StagingScreen: { MenuItem };
 };

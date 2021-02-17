@@ -10,8 +10,9 @@ import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import InputSpinner from "react-native-input-spinner";
 
 export default function StagingScreen({route}) {
+    const [quantity, setQuantity] = React.useState(1);
     const myMenuItem = route.params.MenuItem;
-    
+
     const {
       name,
       image,
@@ -37,6 +38,17 @@ export default function StagingScreen({route}) {
 
           </Card>
           
+          <InputSpinner
+            max={10}
+            min={1}
+            step={1}
+            colorMax={"#f04048"}
+            value={quantity}
+            onChange={(num:number) => {
+              setQuantity(num);
+            }}
+          />
+
           <View style={styles.bottomcontainer}>
             <Card>
             <MaterialCommunityIcons.Button
@@ -45,14 +57,14 @@ export default function StagingScreen({route}) {
                       color="white"
                       backgroundColor="#a28"
                       accessibilityLabel="Confirm add item">
-                         {`Confirm order                                 $${Number(price).toFixed(2)}`}
+                         {`Confirm order                                 $${Number(quantity * price).toFixed(2)}`}
+                      
             </MaterialCommunityIcons.Button>
-
           
             </Card>
           </View>
-
-          <InputSpinner
+          
+          {/* <InputSpinner
             max={10}
             min={1}
             step={1}
@@ -61,7 +73,7 @@ export default function StagingScreen({route}) {
             onChange={(num) => {
               console.log(num);
             }}
-          />
+          /> */}
 
         </View>    
     )
