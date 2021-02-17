@@ -29,5 +29,6 @@ export type MenuItem = {
   price: number,
   category: string,
   mandatoryMods: [],
-  nonMandatoryMods: []
+  nonMandatoryMods: [],
+  customComments?: string
 };

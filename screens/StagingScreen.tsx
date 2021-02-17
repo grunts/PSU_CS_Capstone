@@ -1,12 +1,11 @@
 import * as React from "react";
 import { StyleSheet } from "react-native";
-import { Avatar } from 'react-native-elements';
 import { Text, View } from "../components/Themed";
 import { MenuItem } from '../types';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { Image } from 'react-native'
-import { Card, ListItem, Button, Icon } from 'react-native-elements'
+import { Card, Input } from 'react-native-elements'
 import InputSpinner from "react-native-input-spinner";
 
 export default function StagingScreen({route}) {
@@ -39,6 +38,8 @@ export default function StagingScreen({route}) {
           </Card>
           
           <InputSpinner
+            style = {styles.spinner}
+            width = {200}
             max={10}
             min={1}
             step={1}
@@ -48,8 +49,14 @@ export default function StagingScreen({route}) {
               setQuantity(num);
             }}
           />
+          <Card containerStyle={{width: '95%'}}>
+            <Input
+              placeholder='Notes for the chef...'
+            />
+          </Card>
+          
 
-          <View style={styles.bottomcontainer}>
+          {/* <View style={styles.bottomcontainer}> */}
             <Card>
             <MaterialCommunityIcons.Button
                       name="tray-plus"
@@ -62,21 +69,12 @@ export default function StagingScreen({route}) {
             </MaterialCommunityIcons.Button>
           
             </Card>
-          </View>
-          
-          {/* <InputSpinner
-            max={10}
-            min={1}
-            step={1}
-            colorMax={"#f04048"}
-            value='0'
-            onChange={(num) => {
-              console.log(num);
-            }}
-          /> */}
+          {/* </View> */}
 
         </View>    
     )
+
+    // after confirm the order we want send user back to previous page
 }
 
 const styles = StyleSheet.create({
@@ -105,4 +103,7 @@ const styles = StyleSheet.create({
     height: 1,
     width: "80%",
   },
+  spinner: {
+    margin: 15,
+  }
 });

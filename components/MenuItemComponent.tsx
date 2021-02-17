@@ -51,7 +51,7 @@ export default function ItemCardComponent({ menuItem, children }: { menuItem : M
             accessibilityLabel="Add item to tray">
               Add
           </MaterialCommunityIcons.Button>
-          {children}
+          {/* {children} */}
         </ListItem.Content>
     </ListItem>
   );
