@@ -8,7 +8,7 @@ import { Text, View } from "../components/Themed";
 const restaurants = require("../mock/restaurant");
 
 export default function TabTwoScreen() {
-  const [errorMsg, setErrorMsg] = useState(String);
+  const [errorMsg, setErrorMsg] = useState("");
   const [region, setRegion] = useState(Region);
 
   useEffect(() => {
