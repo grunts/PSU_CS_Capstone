@@ -6,7 +6,7 @@ import ScrollListComponent from "../components/ListViewScroll";
 export default function TabOneScreen({navigation}: {navigation: any}) {
   return (
     <View style={styles.container}>
-        <ScrollListComponent navigator={navigation}/>
+      <ScrollListComponent navigator={navigation}/>
     </View>
   );
 }

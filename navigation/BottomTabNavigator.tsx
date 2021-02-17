@@ -7,6 +7,7 @@ import useColorScheme from '../hooks/useColorScheme';
 import MenuScreen from '../screens/MenuScreen';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
+import ServingTray from '../screens/ServingTray';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 import { enableScreens } from 'react-native-screens'
 
@@ -74,6 +75,7 @@ function TabOneNavigator() {
         * of the restaurant to be used as the title.  If there is no restaurant name in the route object, then
         * the title gets set to "The Menu"*/}
       <TabOneStack.Screen name="MenuScreen" component={MenuScreen} options={({ route }) => ({ title: route?.params?.restaurant?.name} ?? 'The Menu')}/>
+      <TabOneStack.Screen name="ServingTray" component={ServingTray} options={{ headerTitle: 'Serving Tray' }}/>
     </TabOneStack.Navigator>
   );
 }
