@@ -86,12 +86,30 @@ const TabTwoStack = createStackNavigator<TabTwoParamList>();
 
 function TabTwoNavigator() {
   return (
-    <TabTwoStack.Navigator>
+    <TabTwoStack.Navigator initialRouteName="TabTwoScreen">
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
         options={{ headerTitle: 'Map View' }}
       />
+      <TabOneStack.Screen 
+        name="MenuScreen"
+        component={MenuScreen}
+        options={({ route }) => ({ title: route?.params?.restaurant?.name} ?? 'The Menu')}/>
+      <TabOneStack.Screen 
+        name="ServingTray"
+        component={ServingTray}
+        options={{ headerTitle: 'Serving Tray' }}/>
     </TabTwoStack.Navigator>
   );
 }
+
+/* abandon and delete this comment if there's not enough time to implement
+const AllTabs = StackNavigator(
+{
+  tabOne: { screen: TabOneScreen },
+  menu : {screen: MenuScreen },
+  servingTray : { screen: ServingTray },
+  tabTwo : { screen: TabTwoScreen}
+}
+*/
