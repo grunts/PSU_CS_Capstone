@@ -58,6 +58,7 @@ export default function MenuScreen({ route }) {
         style={{paddingTop: 5, height: "100%"}}
         stickySectionHeadersEnabled={false}
         renderSectionHeader={({ section: { title } }) => <Text style={{fontWeight: "500", fontSize: 15}}>{title}</Text>}
+        contentContainerStyle={{paddingBottom: 50}}
       />
     </View>
   );
