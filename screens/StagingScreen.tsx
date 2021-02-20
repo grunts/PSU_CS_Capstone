@@ -345,8 +345,6 @@ export default function StagingScreen({ route }) {
               //the additonal comments and info
               myMenuItem["customComments"] = comments;
               myMenuItem.price += checked.adtlCharges;
-              setChecked({adtlCharges: 0})
-              setComments("")
               dispatch({ type: "ADD_ITEM", payload: myMenuItem });
             }
             //send the user back to the menu screen

@@ -78,9 +78,9 @@ export default function ServingTray() {
         data={currentTray}
         renderItem={renderItem}
         keyExtractor={(item, index) => item.name + index}
-        contentContainerStyle={{ paddingBottom: 50, flexGrow: 1}}
+        contentContainerStyle={{ paddingBottom: 50, flexGrow: 1, backgroundColor: "white"}}
         style={{height: "100%"}}
-        ListFooterComponent={<View style={{ padding: 50}}></View>}
+        ListFooterComponent={<View style={{ padding: 50, backgroundColor: "white"}}></View>}
       />
       {/* <Text>Total: {MakeCurrencyString(total)}</Text> */}
       <TouchableOpacity
@@ -106,7 +106,9 @@ const MakeCurrencyString = (value: number) => {
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    backgroundColor: "white"
+  },
   title: {
     fontSize: 20,
     fontWeight: "bold",

@@ -25,7 +25,6 @@ export default function MenuScreen({ route }) {
   const tray = useSelector((state) => state.servingTray);
   const categories = extractCategories(menu);
   const renderItem = ({ item }) => (
-    <View>
       <MenuItemComponent menuItem={item}>
         {/**Use a convenient button component from react-native-vector-icons to create an add to tray button.*/}
         <MaterialCommunityIcons.Button
@@ -39,7 +38,6 @@ export default function MenuScreen({ route }) {
           Add
         </MaterialCommunityIcons.Button>
       </MenuItemComponent>
-    </View>
   );
   const navigation = useNavigation();
   return (
@@ -60,7 +58,7 @@ export default function MenuScreen({ route }) {
         style={{ paddingTop: 5, height: "100%" }}
         stickySectionHeadersEnabled={false}
         renderSectionHeader={({ section: { title } }) => (
-          <Text style={{ fontWeight: "500", fontSize: 18, paddingLeft: 5}}>{title}</Text>
+          <Text style={{color: "black", fontWeight: "500", fontSize: 18, paddingLeft: 5}}>{title}</Text>
         )}
         contentContainerStyle={{ paddingBottom: 100, backgroundColor: "white" }}
       />

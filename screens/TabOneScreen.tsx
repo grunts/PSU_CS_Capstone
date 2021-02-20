@@ -34,7 +34,8 @@ export default function TabOneScreen({ navigation }: { navigation: any }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: "white"
   },
   title: {
     fontSize: 20,
