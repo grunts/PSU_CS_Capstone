@@ -10,6 +10,7 @@ import { TextInput, KeyboardAvoidingView } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { CheckBox } from "react-native-elements";
+import { setStatusBarNetworkActivityIndicatorVisible } from "expo-status-bar";
 
 export default function StagingScreen({ route }) {
   const [quantity, setQuantity] = React.useState(1);
@@ -343,6 +344,9 @@ export default function StagingScreen({ route }) {
               //Add each item to the redux store for later checkout with
               //the additonal comments and info
               myMenuItem["customComments"] = comments;
+              myMenuItem.price += checked.adtlCharges;
+              setChecked({adtlCharges: 0})
+              setComments("")
               dispatch({ type: "ADD_ITEM", payload: myMenuItem });
             }
             //send the user back to the menu screen

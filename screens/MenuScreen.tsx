@@ -60,9 +60,9 @@ export default function MenuScreen({ route }) {
         style={{ paddingTop: 5, height: "100%" }}
         stickySectionHeadersEnabled={false}
         renderSectionHeader={({ section: { title } }) => (
-          <Text style={{ fontWeight: "500", fontSize: 15 }}>{title}</Text>
+          <Text style={{ fontWeight: "500", fontSize: 18, paddingLeft: 5}}>{title}</Text>
         )}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 100, backgroundColor: "white" }}
       />
 
       {tray.currentTray.length ? (
@@ -86,7 +86,7 @@ export default function MenuScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
-    backgroundColor: "transparent",
+    backgroundColor: "white",
   },
   title: {
     fontSize: 20,
