@@ -380,7 +380,7 @@ export default function StagingScreen({ route }) {
           accessibilityLabel="Confirm add item"
         >
           {`Confirm order $${Number(
-            quantity * price + Math.max(0, checked.adtlCharges)
+            quantity * (price + Math.max(0, checked.adtlCharges))
           ).toFixed(2)}`}
         </MaterialCommunityIcons.Button>
       </View>
