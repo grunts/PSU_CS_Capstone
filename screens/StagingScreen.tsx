@@ -1,25 +1,21 @@
 import * as React from "react";
-import { Keyboard, StyleSheet, Platform } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 import { Text, View } from "../components/Themed";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import { Image, ScrollView } from "react-native";
-import { Card, Input } from "react-native-elements";
+import { Card } from "react-native-elements";
 import InputSpinner from "react-native-input-spinner";
 import { TextInput, KeyboardAvoidingView } from "react-native";
-import { RadioButton } from "react-native-paper";
-import { connect, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import { useTheme } from "@react-navigation/native";
 import { CheckBox } from "react-native-elements";
 
 export default function StagingScreen({ route }) {
-  let obj = {};
   const [quantity, setQuantity] = React.useState(1);
   const myMenuItem = route.params.MenuItem;
   const [comments, setComments] = React.useState("");
   const [checked, setChecked] = React.useState({ adtlCharges: 0 });
-  const { colors, dark } = useTheme();
   const navigation = useNavigation();
   const tray = useSelector((state) => state.servingTray);
   const dispatch = useDispatch();
@@ -39,10 +35,6 @@ export default function StagingScreen({ route }) {
     setComments(comments);
   };
 
-  const mandCount = mandatoryMods.length;
-  const nonMandCount = nonMandatoryMods.length;
-
-  console.log(checked);
   return (
     // We want to wrap this all in a KeyBoardAvoiding view so that when the user wants to type something they can see
     <KeyboardAvoidingView
@@ -88,7 +80,7 @@ export default function StagingScreen({ route }) {
           ? mandatoryMods.map((mod, index) => (
               <>
                 <View
-                  key={mod.modName}
+                  key={mod.modName+index}
                   style={{
                     width: "100%",
                     height: 60,
@@ -106,15 +98,16 @@ export default function StagingScreen({ route }) {
                   >
                     {mod.modName}
                   </Text>
+                  {/**All mods in this category are required */}
                   <Text style={{ color: "black", paddingLeft: 10 }}>
                     Required
                   </Text>
-                  {/* {console.log(mod.modOptions.map(a=>a.option))} */}
                 </View>
                 <View
-                  key={index}
+                  key={index+mod.modName}
                   style={{ backgroundColor: "transparent", width: "100%" }}
                 >
+                  {/**List out every option per mod */}
                   {mod.modOptions.map((opt, index) => {
                     var name = mod.modName;
                     return (
@@ -126,37 +119,15 @@ export default function StagingScreen({ route }) {
                             flexDirection: "row",
                           }}
                         >
-                          {/* <View
-                            style={{
-                              backgroundColor: "transparent",
-                              borderWidth: 1,
-                              height: 35,
-                              width: 35,
-                              borderRadius: 13,
-                              marginLeft: 5,
-                              marginTop: 3,
-                              borderColor: "green",
-                            }}
-                          >
-                            <RadioButton
-                              value={index}
-                              status={
-                                checked[`${mod.modName}`] === index
-                                  ? "checked"
-                                  : "unchecked"
-                              }
-                              onPress={() => {
-                                // obj[`${mod.modName}`] = index;
-                                setChecked({ ...checked, [name]: index });
-                              }}
-                            />
-                          </View> */}
-
                           <CheckBox
+                            //Simulate a radio button by only allowing one value per mod to be selected 
+                            //via its position in the list
                             checked={
                               checked[`${mod.modName}`] === index ? true : false
                             }
                             checkedColor="#a28"
+                            //On press take the old state and update the value of the option 
+                            //with the index
                             onPress={() => {
                               setChecked({ ...checked, [name]: index });
                             }}
@@ -175,6 +146,7 @@ export default function StagingScreen({ route }) {
                           >
                             {opt.option}
                           </Text>
+                          {/**Does the selection cost extra? */}
                           {opt.adtlPrice ? <Text>{opt.adtlPrice}</Text> : null}
                         </View>
                         <Card.Divider
@@ -193,7 +165,7 @@ export default function StagingScreen({ route }) {
           ? nonMandatoryMods.map((mod, index) => (
               <>
                 <View
-                  key={mod.modName}
+                  key={mod.modName+index}
                   style={{
                     width: "100%",
                     height: 60,
@@ -220,7 +192,7 @@ export default function StagingScreen({ route }) {
                     return (
                       <>
                         <View
-                          key={opt}
+                          key={opt+index}
                           style={{
                             backgroundColor: "transparent",
                             flex: 1,
@@ -229,6 +201,7 @@ export default function StagingScreen({ route }) {
                             justifyContent: "space-between",
                           }}
                         >
+                          {/**Here we do not want to simulate a radio list as multiple selections make sense */}
                           <CheckBox
                             checked={
                               typeof checked[mod.modName + opt.option] ===
@@ -237,6 +210,9 @@ export default function StagingScreen({ route }) {
                                 : false
                             }
                             checkedColor="#a28"
+                            //We need to check if the selection costs more and update the price
+                            //If it is selected we add, if it has been pressed and was alreadu selected
+                            //we subtract
                             onPress={() => {
                               const isChecked =
                                 typeof checked[mod.modName + opt.option] ===
@@ -274,7 +250,7 @@ export default function StagingScreen({ route }) {
                             <Text
                               style={{
                                 padding: 13,
-                                color: "black",
+                                color: "gray",
                                 textAlign: "right",
                                 fontSize: 16,
                                 fontWeight: "500",
@@ -313,12 +289,8 @@ export default function StagingScreen({ route }) {
             Notes for the chef
           </Text>
         </View>
-        {/* <Card.Title style={{ color: colors.text, textAlign: "right" }}>
-          ${Number(price).toFixed(2)}
-        </Card.Title> */}
-        {/* </Card> */}
-        {/* The display for the input spinner is behaving strangely */}
 
+        {/**Allow for custom comments to be attatched to the order */}
         <TextInput
           placeholderTextColor="silver"
           placeholder="Any modifications?"
@@ -333,6 +305,7 @@ export default function StagingScreen({ route }) {
           }}
         />
         <Card.Divider></Card.Divider>
+        {/** Allow for quantitiy selection of the menu item */}
         <InputSpinner
           style={styles.spinner}
           width={150}
@@ -367,10 +340,12 @@ export default function StagingScreen({ route }) {
         <MaterialCommunityIcons.Button
           onPress={() => {
             for (let i = 0; i < quantity; ++i) {
+              //Add each item to the redux store for later checkout with
+              //the additonal comments and info
               myMenuItem["customComments"] = comments;
-              console.log(myMenuItem);
               dispatch({ type: "ADD_ITEM", payload: myMenuItem });
             }
+            //send the user back to the menu screen
             navigation.goBack();
           }}
           name="tray-plus"
