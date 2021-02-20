@@ -43,15 +43,15 @@ export default function ItemCardComponent({ menuItem, children }: { menuItem : M
           {/**Extract a useful ABV string from the ABV value using the previously defined displayABV function.*/}
           <ListItem.Subtitle>{displayABV(ABV)}</ListItem.Subtitle>
           {/**Use a convenient button component from react-native-vector-icons to create an add to tray button.*/}
-          <MaterialCommunityIcons.Button onPress={() => navigation.navigate('StagingScreen', {MenuItem: menuItem})}
+          {/* <MaterialCommunityIcons.Button onPress={() => navigation.navigate('StagingScreen', {MenuItem: menuItem})}
             name="tray-plus"
             size={24} 
             color="white"
             backgroundColor="#a28"
             accessibilityLabel="Add item to tray">
               Add
-          </MaterialCommunityIcons.Button>
-          {/* {children} */}
+          </MaterialCommunityIcons.Button> */}
+          {children} 
         </ListItem.Content>
     </ListItem>
   );

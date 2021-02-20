@@ -29,6 +29,7 @@ export default function MenuScreen({ route }) {
       <MenuItemComponent menuItem={item}>
         {/**Use a convenient button component from react-native-vector-icons to create an add to tray button.*/}
         <MaterialCommunityIcons.Button
+          onPress={() => navigation.navigate('StagingScreen', {MenuItem: item})}
           name="tray-plus"
           size={24}
           color="white"
