@@ -11,14 +11,14 @@ import { RadioButton } from "react-native-paper";
 import { connect, useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { useTheme } from "@react-navigation/native";
+import { CheckBox } from "react-native-elements";
 
 export default function StagingScreen({ route }) {
   let obj = {};
-
   const [quantity, setQuantity] = React.useState(1);
   const myMenuItem = route.params.MenuItem;
   const [comments, setComments] = React.useState("");
-  const [checked, setChecked] = React.useState(obj);
+  const [checked, setChecked] = React.useState({ adtlCharges: 0 });
   const { colors, dark } = useTheme();
   const navigation = useNavigation();
   const tray = useSelector((state) => state.servingTray);
@@ -41,6 +41,8 @@ export default function StagingScreen({ route }) {
 
   const mandCount = mandatoryMods.length;
   const nonMandCount = nonMandatoryMods.length;
+
+  console.log(checked);
   return (
     // We want to wrap this all in a KeyBoardAvoiding view so that when the user wants to type something they can see
     <KeyboardAvoidingView
@@ -114,35 +116,71 @@ export default function StagingScreen({ route }) {
                   style={{ backgroundColor: "transparent", width: "100%" }}
                 >
                   {mod.modOptions.map((opt, index) => {
-                    obj[opt.option] = index;
+                    var name = mod.modName;
                     return (
-                      <View
-                        key={index}
-                        style={{
-                          backgroundColor: "transparent",
-                          flexDirection: "row",
-                        }}
-                      >
-                        {/* <RadioButton
-                          value={opt}
-                          status={checked.option === opt ? "checked" : "unchecked"}
-                          onPress={() => {obj[opt.option] = opt; setChecked(obj)}}
-                        /> */}
-                        <Text
+                      <>
+                        <View
+                          key={`${opt}${index}`}
                           style={{
-                            color: "black",
-                            padding: 13,
-                            fontSize: 16,
-                            fontWeight: "500",
+                            backgroundColor: "transparent",
+                            flexDirection: "row",
                           }}
                         >
-                          {opt.option}
-                        </Text>
-                        {opt.adtlPrice ? <Text>{opt.adtlPrice}</Text> : null}
+                          {/* <View
+                            style={{
+                              backgroundColor: "transparent",
+                              borderWidth: 1,
+                              height: 35,
+                              width: 35,
+                              borderRadius: 13,
+                              marginLeft: 5,
+                              marginTop: 3,
+                              borderColor: "green",
+                            }}
+                          >
+                            <RadioButton
+                              value={index}
+                              status={
+                                checked[`${mod.modName}`] === index
+                                  ? "checked"
+                                  : "unchecked"
+                              }
+                              onPress={() => {
+                                // obj[`${mod.modName}`] = index;
+                                setChecked({ ...checked, [name]: index });
+                              }}
+                            />
+                          </View> */}
+
+                          <CheckBox
+                            checked={
+                              checked[`${mod.modName}`] === index ? true : false
+                            }
+                            checkedColor="#a28"
+                            onPress={() => {
+                              setChecked({ ...checked, [name]: index });
+                            }}
+                            containerStyle={{ marginRight: 0 }}
+                            style={{ paddingLeft: 0 }}
+                            center
+                          />
+                          <Text
+                            style={{
+                              color: "black",
+                              padding: 16,
+                              fontSize: 16,
+                              fontWeight: "500",
+                              paddingLeft: 0
+                            }}
+                          >
+                            {opt.option}
+                          </Text>
+                          {opt.adtlPrice ? <Text>{opt.adtlPrice}</Text> : null}
+                        </View>
                         <Card.Divider
                           style={{ marginBottom: 0 }}
                         ></Card.Divider>
-                      </View>
+                      </>
                     );
                   })}
                 </View>
@@ -178,7 +216,7 @@ export default function StagingScreen({ route }) {
                   key={index}
                   style={{ backgroundColor: "transparent", width: "100%" }}
                 >
-                  {mod.modOptions.map((opt) => {
+                  {mod.modOptions.map((opt, index) => {
                     return (
                       <>
                         <View
@@ -191,10 +229,37 @@ export default function StagingScreen({ route }) {
                             justifyContent: "space-between",
                           }}
                         >
+                          <CheckBox
+                            checked={
+                              typeof checked[mod.modName + opt.option] ===
+                              "number"
+                                ? true
+                                : false
+                            }
+                            checkedColor="#a28"
+                            onPress={() => {
+                              const isChecked =
+                                typeof checked[mod.modName + opt.option] ===
+                                "number";
+                              setChecked({
+                                ...checked,
+                                [mod.modName + opt.option]: isChecked
+                                  ? null
+                                  : index,
+                                adtlCharges: isChecked
+                                  ? checked.adtlCharges - opt.adtlPrice
+                                  : checked.adtlCharges + opt.adtlPrice,
+                              });
+                            }}
+                            containerStyle={{ marginRight: 0 }}
+                            style={{ paddingLeft: 0 }}
+                            center
+                          />
                           <Text
                             style={{
                               color: "black",
-                              padding: 13,
+                              padding: 16,
+                              paddingLeft: 0,
                               fontSize: 16,
                               fontWeight: "500",
                               width: "100%",
@@ -314,7 +379,9 @@ export default function StagingScreen({ route }) {
           backgroundColor="#a28"
           accessibilityLabel="Confirm add item"
         >
-          {`Confirm order $${Number(quantity * price).toFixed(2)}`}
+          {`Confirm order $${Number(
+            quantity * price + Math.max(0, checked.adtlCharges)
+          ).toFixed(2)}`}
         </MaterialCommunityIcons.Button>
       </View>
     </KeyboardAvoidingView>
