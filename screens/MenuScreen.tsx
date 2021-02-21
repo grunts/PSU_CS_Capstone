@@ -5,8 +5,9 @@ import MenuItemComponent from "../components/MenuItemComponent";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SearchBar from "../components/SearchBar";
 import CheckoutButton from "../components/CheckoutButton";
-
-import { useSelector, useDispatch } from "react-redux";
+import { MenuItem } from "../types";
+import { ServingTrayState } from "../store/reducers/types";
+import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 //Get the pushToken from local storage
 // const getData = async () => {
@@ -19,12 +20,31 @@ import { useNavigation } from "@react-navigation/native";
 //   }
 // }
 
-export default function MenuScreen({ route }) {
-  const { restaurant } = route.params;
-  const { menu } = restaurant;
-  const tray = useSelector((state) => state.servingTray);
+interface Props {
+  route: {
+    params: {
+      restaurant: { menu: MenuItem[] }
+    }
+  }
+}
+
+interface RootState {
+  servingTray: ServingTrayState;
+}
+
+export default function MenuScreen({ route }: Props) {
+  /** array containing menu items */
+  const menu = route.params.restaurant.menu;
+  /** tray state object containing an array of menu items */
+  const tray = useSelector((state: RootState) => state.servingTray);
+  /** array of categories that each contain a title and an array of menu items */
   const categories = extractCategories(menu);
-  const renderItem = ({ item }) => (
+
+  /**
+   * Components to render for flatlist and how it uses the menu item
+   * @param props object containing a menu item
+   */
+  const renderItem = ({ item }: { item: MenuItem }) => (
       <MenuItemComponent menuItem={item}>
         {/**Use a convenient button component from react-native-vector-icons to create an add to tray button.*/}
         <MaterialCommunityIcons.Button
@@ -39,6 +59,8 @@ export default function MenuScreen({ route }) {
         </MaterialCommunityIcons.Button>
       </MenuItemComponent>
   );
+
+  /** Navigation prop of the parent screen */
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -53,7 +75,7 @@ export default function MenuScreen({ route }) {
       />
       <SectionList
         sections={categories}
-        keyExtractor={(item, index) => item + index}
+        keyExtractor={(item, index) => JSON.stringify(item) + index}
         renderItem={renderItem}
         style={{ paddingTop: 5, height: "100%" }}
         stickySectionHeadersEnabled={false}
@@ -63,6 +85,9 @@ export default function MenuScreen({ route }) {
         contentContainerStyle={{ paddingBottom: 100, backgroundColor: "white" }}
       />
 
+      {/** 
+       * If current tray is not empty, display the checkout button
+       */}
       {tray.currentTray.length ? (
         <View
           style={{
@@ -97,7 +122,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const reducer = (accumulator, currentItem) => {
+/**
+ * Reducer to separate items by category.
+ * If a new category is found, it creates a new category array
+ * This orders categories by first appearance in the array.
+ * This is also case sensitive.
+ * @param accumulator {object} the result of each pass sorting the item into a category
+ * @param currentItem {MenuItem} the item to be sorted to a category
+ * @returns accumlator after sorting the item
+ */
+const reducer = (accumulator: MenuItem[][], currentItem: MenuItem) => {
   if (accumulator[currentItem.category]) {
     accumulator[currentItem.category].push(currentItem);
   } else {
@@ -106,8 +140,12 @@ const reducer = (accumulator, currentItem) => {
   return accumulator;
 };
 
-const extractCategories = (menu: any) => {
-  const categoriesObj = menu.reduce(reducer, {});
+/**
+ * 
+ * @param menu {MenuItem[]} the array of all menu items to be extracted
+ */
+const extractCategories = (menu: MenuItem[]) => {
+  const categoriesObj = menu.reduce(reducer, []);
   return Object.keys(categoriesObj).map((category) => ({
     title: category,
     data: categoriesObj[category],

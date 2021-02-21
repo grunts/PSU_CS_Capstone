@@ -11,15 +11,18 @@ import { Avatar, ListItem } from "react-native-elements";
 import SearchBar from "./SearchBar";
 import { useNavigation } from "@react-navigation/native";
 
-//The list view component - requires the current navigator as an input argument
-const App = ({ navigator }: { navigator: any }) => {
+
+/**
+ * The list view component
+ */
+export default function ListViewScroll () {
   const navigation = useNavigation();
   //Inline component function describing how to render a piece of data from the list when item-containing object is provided as argument
   const renderItem = ({ item }) => (
     //List item component to hold item data with an onPress listener that navigates to the MenuScreen in this navigation stack
     <ListItem
       bottomDivider
-      onPress={() => navigator.navigate("MenuScreen", { restaurant: item })}
+      onPress={() => navigation.navigate("MenuScreen", { restaurant: item })}
     >
       <Avatar
         size="large"
@@ -76,5 +79,3 @@ const styles = StyleSheet.create({
     fontSize: 32,
   },
 });
-
-export default App;

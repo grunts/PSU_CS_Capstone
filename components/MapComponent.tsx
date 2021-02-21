@@ -1,11 +1,20 @@
 import React from 'react';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { LatLng, Marker } from 'react-native-maps';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import Region from "../constants/Region";
 import restaurants from '../mock/restaurant.js';
 
-/**Component for the map view page of restaurants. This component accepts a props object containing
- * an initialRegion for the user's location.*/
+interface restaurantMarker {
+  location: LatLng;
+  name: string;
+  description: string;
+}
+
+/**
+ * Component for the map view page of restaurants.
+ * @param props {{initialRegion}} object containing an initial region
+ * @param initialRegion the initial coordinates and scale for the user's location.
+ */
 export default function MapComponent({ initialRegion }:  { initialRegion: typeof Region } ) {
   return (
       /**MapView is wrapped in a normal View to give it flexbox properties.*/
@@ -14,11 +23,11 @@ export default function MapComponent({ initialRegion }:  { initialRegion: typeof
           <Marker coordinate={initialRegion} title={'You'} description={'You are here'} pinColor={'green'}/>
           {/**For each restaurant in the list of restaurants provided, create a Marker for that restaurant
             * from its location.*/}
-          {restaurants.map((marker, index) => 
+          {restaurants.map((marker: restaurantMarker, index: number) => 
             (<Marker 
-              key={index} 
-              coordinate={marker.location} 
-              title={marker.name} 
+              key={index}
+              coordinate={marker.location}
+              title={marker.name}
               description={marker.description}/>
             )
           )}
@@ -27,8 +36,11 @@ export default function MapComponent({ initialRegion }:  { initialRegion: typeof
   );
 }
 
-/**Styles used in this component.*/
+/**
+ * Styles used in this component.
+ * */
 const styles = StyleSheet.create({
+  /** container style */
   container: {
     flex: 1,
     backgroundColor: '#fff',

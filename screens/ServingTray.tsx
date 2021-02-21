@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, FlatList, Button, TouchableOpacity } from "react-native";
+import React from "react";
+import { StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { Text, View } from "../components/Themed";
 import MenuItemComponent from "../components/MenuItemComponent";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -18,10 +18,11 @@ interface RootState {
  * Populates a flatlist that includes a button to remove that item by dispatching redux action
  */
 export default function ServingTray() {
+  
   /**
-   * hook to retrieve serving tray information from redux store
+   * Serving tray information from redux store
    */
-  const tray: ServingTrayState = useSelector(
+  const tray = useSelector(
     (state: RootState) => state.servingTray
   );
 
@@ -61,12 +62,12 @@ export default function ServingTray() {
         {item.customComments}
       </Text>
       {item.mods
-        ? item.mods.map((m) => (
+        ? item.mods.map((modString, index) => (
             //Clean up mod naming conventions due to maps not liking spaces in the key
             //and other 'extra' keywords
             //Display all mods user chose
-            <Text style={{ color: "black", fontStyle: "italic" }}>
-              {m
+            <Text style={{ color: "black", fontStyle: "italic" }} key={index}>
+              {modString
                 .replace("_", " ")
                 .replace("->", ": ")
                 .replace("?", "")

@@ -2,16 +2,18 @@ import React, { ReactNode } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { Avatar, ListItem } from 'react-native-elements';
 import { MenuItem } from '../types';
-import { useNavigation } from '@react-navigation/native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-
-
-
-//The component holding a menu item and all of its info - requires an object containing a MenuItem as an input argument
+/**
+ * The component holding a menu item and all of its info - requires an object containing a MenuItem as an input argument
+ * @param props {object} contains menuItem to display and possible children
+ * @param menuItem {MenuItem} object containing menu item data
+ * @param children {ReactNode} react JSX elements object(s) or string that may be included with menu item data
+ */
 export default function ItemCardComponent({ menuItem, children }: { menuItem : MenuItem, children?: ReactNode }) {
-  const navigation = useNavigation(); 
-  //Extract constants name, image, longDesc, etc. from menuItem object
+  
+  /**
+   * Extract constants name, image, longDesc, etc. from menuItem object
+   */
   const {
     name,
     image,
@@ -24,11 +26,12 @@ export default function ItemCardComponent({ menuItem, children }: { menuItem : M
     customComments
   } = menuItem;
 
-  //Define a function that takes the abv field and determines whether it is > 0 and returns an appropriate ABV string
-  const displayABV = (abv: number) => {
-    //If abv > 0 return a string with the ABV %.  Otherwise, return an empty string
-    return abv > 0 ? `${abv}% ABV` : ''
-  }
+  /**
+   * Define a function that takes the abv field and determines whether it is > 0 and returns an appropriate ABV string
+   * @param abv {number} Alcohol by volume as mL of pure ethanol per 100 mL of solution at 20 degrees C
+   * @returns If abv > 0 return a string with the ABV %.  Otherwise, return an empty string
+   */
+  const displayABV = (abv: number) => abv > 0 ? `${abv}% ABV` : ''
 
   //Define the ItemCardComponent and return it as the default export
   return (

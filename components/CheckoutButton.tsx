@@ -1,11 +1,18 @@
 import React from "react";
-import {View} from 'react-native'
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-export default function CheckoutButton(props) {
+interface Props {
+  cartLength: number;
+};
+
+/**
+ * Displays button that navigates to the serving tray
+ * @param props {object} contains cart length
+ */
+export default function CheckoutButton(props: Props) {
     const navigation = useNavigation()
-    const length = props.cartLength
+    const { cartLength } = props
     return(
         <MaterialCommunityIcons.Button
           onPress={() => {
@@ -17,7 +24,7 @@ export default function CheckoutButton(props) {
           backgroundColor="#a28"
           accessibilityLabel="Confirm add item"
         >
-          {`Go to checkout - ${length} item${length>1 ? "s" : ""}`}
+          {`Go to checkout - ${cartLength} item${cartLength > 1 ? "s" : ""}`}
         </MaterialCommunityIcons.Button>
     )
 }

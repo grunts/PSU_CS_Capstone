@@ -4,12 +4,18 @@ import { View } from "../components/Themed";
 import ScrollListComponent from "../components/ListViewScroll";
 import { useSelector, useDispatch } from "react-redux";
 import CheckoutButton from "../components/CheckoutButton";
+import { ServingTrayState } from "../store/reducers/types";
 
-export default function TabOneScreen({ navigation }: { navigation: any }) {
-  const tray = useSelector((state) => state.servingTray);
+
+interface RootState {
+  servingTray: ServingTrayState;
+}
+
+export default function TabOneScreen() {
+  const tray: ServingTrayState = useSelector((state: RootState) => state.servingTray);
   return (
     <>
-      <ScrollListComponent navigator={navigation} />
+      <ScrollListComponent/>
       {tray.currentTray.length ? (
         <View
           style={{

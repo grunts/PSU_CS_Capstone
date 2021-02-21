@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { Fragment, useState } from "react";
 import { StyleSheet, Platform } from "react-native";
 import { Text, View } from "../components/Themed";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -7,20 +7,33 @@ import { Image, ScrollView } from "react-native";
 import { Card } from "react-native-elements";
 import InputSpinner from "react-native-input-spinner";
 import { TextInput, KeyboardAvoidingView } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { CheckBox } from "react-native-elements";
+import { MenuItem } from "../types"
 
-export default function StagingScreen({ route }) {
-  const [quantity, setQuantity] = React.useState(1);
+interface Props {
+  route: {
+    params: {
+      MenuItem: MenuItem;
+    };
+  };
+};
+
+/**
+ * 
+ * @param param0 
+ */
+export default function StagingScreen({ route }: Props) {
+
+  const [quantity, setQuantity] = useState(1);
   const myMenuItem = route.params.MenuItem;
-  const [comments, setComments] = React.useState("");
-  const [checked, setChecked] = React.useState({
+  const [comments, setComments] = useState("");
+  const [checked, setChecked] = useState({
     adtlCharges: 0,
     mods: new Map(),
   });
   const navigation = useNavigation();
-  const tray = useSelector((state) => state.servingTray);
   const dispatch = useDispatch();
 
   const {
@@ -34,9 +47,15 @@ export default function StagingScreen({ route }) {
     mandatoryMods,
     nonMandatoryMods,
   } = myMenuItem;
-  let updateComments = (comments) => {
+
+  /**
+   * Updates comments
+   * @param comments comment for item
+   */
+  let updateComments = (comments: string) => {
     setComments(comments);
   };
+
   return (
     // We want to wrap this all in a KeyBoardAvoiding view so that when the user wants to type something they can see
     <KeyboardAvoidingView
@@ -80,9 +99,8 @@ export default function StagingScreen({ route }) {
         {/*Check and display mandatory mods */}
         {mandatoryMods.length
           ? mandatoryMods.map((mod, index) => (
-              <>
+              <Fragment key={mod.modName + index}>
                 <View
-                  key={mod.modName + index}
                   style={{
                     width: "100%",
                     height: 60,
@@ -106,16 +124,14 @@ export default function StagingScreen({ route }) {
                   </Text>
                 </View>
                 <View
-                  key={index + mod.modName}
                   style={{ backgroundColor: "transparent", width: "100%" }}
                 >
                   {/**List out every option per mod */}
                   {mod.modOptions.map((opt, index) => {
                     var name = mod.modName;
                     return (
-                      <>
+                      <Fragment key={opt.option + index}>
                         <View
-                          key={`${opt}${index}`}
                           style={{
                             backgroundColor: "transparent",
                             flexDirection: "row",
@@ -165,20 +181,19 @@ export default function StagingScreen({ route }) {
                         <Card.Divider
                           style={{ marginBottom: 0 }}
                         ></Card.Divider>
-                      </>
+                      </Fragment>
                     );
                   })}
                 </View>
-              </>
+              </Fragment>
             ))
           : null}
 
         {/*Check and display optional mods */}
         {nonMandatoryMods.length
           ? nonMandatoryMods.map((mod, index) => (
-              <>
+              <Fragment key={mod.modName + index}>
                 <View
-                  key={mod.modName + index}
                   style={{
                     width: "100%",
                     height: 60,
@@ -198,14 +213,12 @@ export default function StagingScreen({ route }) {
                   </Text>
                 </View>
                 <View
-                  key={index}
                   style={{ backgroundColor: "transparent", width: "100%" }}
                 >
                   {mod.modOptions.map((opt, index) => {
                     return (
-                      <>
+                      <Fragment key={opt.option + index}>
                         <View
-                          key={opt + index}
                           style={{
                             backgroundColor: "transparent",
                             flex: 1,
@@ -283,11 +296,11 @@ export default function StagingScreen({ route }) {
                         <Card.Divider
                           style={{ marginBottom: 0 }}
                         ></Card.Divider>
-                      </>
+                      </Fragment>
                     );
                   })}
                 </View>
-              </>
+              </Fragment>
             ))
           : null}
         <View
