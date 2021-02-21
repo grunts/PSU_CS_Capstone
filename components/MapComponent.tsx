@@ -20,7 +20,7 @@ export default function MapComponent({ initialRegion, navigator }:  { initialReg
               coordinate={marker.location} 
               title={marker.name} 
               description={marker.description}
-              onPress={() => navigator.navigate('MenuScreen', { restaurant: marker })} />
+              onCalloutPress={() => navigator.navigate('MenuScreen', { restaurant: marker })} />
             )
           )}
         </MapView>
