@@ -12,6 +12,7 @@ export type TabOneParamList = {
   TabOneScreen: undefined;
   ServingTray: undefined;
   MenuScreen: { restaurant };
+  StagingScreen: { MenuItem };
 };
 
 export type TabTwoParamList = {
@@ -28,5 +29,7 @@ export type MenuItem = {
   price: number,
   category: string,
   mandatoryMods: [],
-  nonMandatoryMods: []
+  nonMandatoryMods: [],
+  customComments?: string
+  mods?: [string]
 };

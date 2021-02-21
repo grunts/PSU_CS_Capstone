@@ -7,7 +7,7 @@ import { MenuItem } from "../types";
 import SearchBar from "../components/SearchBar";
 
 import { useSelector, useDispatch } from "react-redux";
-import { ServingTrayState } from "../store/reducers/types"
+import { ServingTrayState } from "../store/reducers/types";
 
 interface RootState {
   servingTray: ServingTrayState;
@@ -18,11 +18,12 @@ interface RootState {
  * Populates a flatlist that includes a button to remove that item by dispatching redux action
  */
 export default function ServingTray() {
-
   /**
    * hook to retrieve serving tray information from redux store
    */
-  const tray: ServingTrayState = useSelector((state: RootState) => state.servingTray);
+  const tray: ServingTrayState = useSelector(
+    (state: RootState) => state.servingTray
+  );
 
   /**
    * Destructures tray contents
@@ -33,11 +34,10 @@ export default function ServingTray() {
    * retrieves redux dispatch functionality
    */
   const dispatch = useDispatch();
-  
+
   // Sums the price of all the serving tray items
   const total = currentTray.reduce(
-    (accumulator, currentItem) =>
-      (accumulator += currentItem.price),
+    (accumulator, currentItem) => (accumulator += currentItem.price),
     0
   );
 
@@ -46,24 +46,48 @@ export default function ServingTray() {
    *
    * @param {object} params Item info and index in array
    */
-  const renderItem = ({ item, index }: { item: MenuItem, index: number }) => (
-    <View>
-      <MenuItemComponent menuItem={item}>
-        {/**
-         * Use a convenient button component from Material-Community-icons to create an remove from tray button.
-         * */}
-        <MaterialCommunityIcons.Button
-          name="tray-minus"
-          onPress={() => dispatch({ type: "REMOVE_ITEM", payload: item, index: index })}
-          size={24}
-          color="#a28"
-          backgroundColor="white"
-          accessibilityLabel="Remove item from tray"
-        >
-          Remove
-        </MaterialCommunityIcons.Button>
-      </MenuItemComponent>
-    </View>
+  const renderItem = ({ item, index }: { item: MenuItem; index: number }) => (
+    <MenuItemComponent menuItem={item}>
+      {/**
+       * Use a convenient button component from Material-Community-icons to create an remove from tray button.
+       * */}
+      <Text
+        style={{
+          color: "black",
+          fontStyle: "italic",
+          fontSize: 12,
+        }}
+      >
+        {item.customComments}
+      </Text>
+      {item.mods
+        ? item.mods.map((m) => (
+            //Clean up mod naming conventions due to maps not liking spaces in the key
+            //and other 'extra' keywords
+            //Display all mods user chose
+            <Text style={{ color: "black", fontStyle: "italic" }}>
+              {m
+                .replace("_", " ")
+                .replace("->", ": ")
+                .replace("?", "")
+                .replace("(recommended)", "")
+                .trim()}
+            </Text>
+          ))
+        : null}
+      <MaterialCommunityIcons.Button
+        name="tray-minus"
+        onPress={() =>
+          dispatch({ type: "REMOVE_ITEM", payload: item, index: index })
+        }
+        size={26}
+        color="#a28"
+        backgroundColor="white"
+        accessibilityLabel="Remove item from tray"
+      >
+        Remove
+      </MaterialCommunityIcons.Button>
+    </MenuItemComponent>
   );
 
   return (
@@ -77,7 +101,15 @@ export default function ServingTray() {
         data={currentTray}
         renderItem={renderItem}
         keyExtractor={(item, index) => item.name + index}
-        ListFooterComponent={<View style={{padding: 40}}></View>}
+        contentContainerStyle={{
+          paddingBottom: 50,
+          flexGrow: 1,
+          backgroundColor: "white",
+        }}
+        style={{ height: "100%" }}
+        ListFooterComponent={
+          <View style={{ padding: 50, backgroundColor: "white" }}></View>
+        }
       />
       {/* <Text>Total: {MakeCurrencyString(total)}</Text> */}
       <TouchableOpacity
@@ -104,13 +136,12 @@ const MakeCurrencyString = (value: number) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-    backgroundColor: "transparent",
+    backgroundColor: "white",
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
+    flex: 1,
   },
   separator: {
     marginVertical: 30,
@@ -129,6 +160,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     left: 50,
-    bottom: 5,
+    bottom: 65,
   },
 });

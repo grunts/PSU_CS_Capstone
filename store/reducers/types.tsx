@@ -9,6 +9,9 @@ export interface ServingTrayState {
 interface AddMenuItem {
     type: typeof ADD_ITEM
     payload: MenuItem
+    comments: string
+    adtlCharges: number
+    mods: string[]
 }
 
 interface RemoveMenuItem {
