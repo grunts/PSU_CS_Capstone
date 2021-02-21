@@ -31,4 +31,5 @@ export type MenuItem = {
   mandatoryMods: [],
   nonMandatoryMods: [],
   customComments?: string
+  mods?: [string]
 };

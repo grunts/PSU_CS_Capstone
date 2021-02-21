@@ -9,9 +9,7 @@ export default function TabOneScreen({ navigation }: { navigation: any }) {
   const tray = useSelector((state) => state.servingTray);
   return (
     <>
-      <View style={styles.container}>
-        <ScrollListComponent navigator={navigation} />
-      </View>
+      <ScrollListComponent navigator={navigation} />
       {tray.currentTray.length ? (
         <View
           style={{
@@ -34,7 +32,8 @@ export default function TabOneScreen({ navigation }: { navigation: any }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: "center",
+    backgroundColor: "white"
   },
   title: {
     fontSize: 20,
