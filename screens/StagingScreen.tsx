@@ -10,13 +10,15 @@ import { TextInput, KeyboardAvoidingView } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { CheckBox } from "react-native-elements";
-import { setStatusBarNetworkActivityIndicatorVisible } from "expo-status-bar";
 
 export default function StagingScreen({ route }) {
   const [quantity, setQuantity] = React.useState(1);
   const myMenuItem = route.params.MenuItem;
   const [comments, setComments] = React.useState("");
-  const [checked, setChecked] = React.useState({ adtlCharges: 0 });
+  const [checked, setChecked] = React.useState({
+    adtlCharges: 0,
+    mods: new Map(),
+  });
   const navigation = useNavigation();
   const tray = useSelector((state) => state.servingTray);
   const dispatch = useDispatch();
@@ -35,7 +37,6 @@ export default function StagingScreen({ route }) {
   let updateComments = (comments) => {
     setComments(comments);
   };
-
   return (
     // We want to wrap this all in a KeyBoardAvoiding view so that when the user wants to type something they can see
     <KeyboardAvoidingView
@@ -81,7 +82,7 @@ export default function StagingScreen({ route }) {
           ? mandatoryMods.map((mod, index) => (
               <>
                 <View
-                  key={mod.modName+index}
+                  key={mod.modName + index}
                   style={{
                     width: "100%",
                     height: 60,
@@ -105,7 +106,7 @@ export default function StagingScreen({ route }) {
                   </Text>
                 </View>
                 <View
-                  key={index+mod.modName}
+                  key={index + mod.modName}
                   style={{ backgroundColor: "transparent", width: "100%" }}
                 >
                   {/**List out every option per mod */}
@@ -121,15 +122,26 @@ export default function StagingScreen({ route }) {
                           }}
                         >
                           <CheckBox
-                            //Simulate a radio button by only allowing one value per mod to be selected 
+                            //Simulate a radio button by only allowing one value per mod to be selected
                             //via its position in the list
                             checked={
                               checked[`${mod.modName}`] === index ? true : false
                             }
                             checkedColor="#a28"
-                            //On press take the old state and update the value of the option 
+                            //On press take the old state and update the value of the option
                             //with the index
+                            //Use a map to easily controls mod selection, no duplicates allowed
+                            //Clearing the map before entry reflects choosing from a
+                            //radio button list
                             onPress={() => {
+                              mod.modOptions.forEach((clean) => {
+                                const item = `${mod.modName}->${clean.option}`;
+                                checked.mods.delete(item);
+                              });
+                              checked.mods.set(
+                                `${mod.modName}->${opt.option}`,
+                                true
+                              );
                               setChecked({ ...checked, [name]: index });
                             }}
                             containerStyle={{ marginRight: 0 }}
@@ -142,7 +154,7 @@ export default function StagingScreen({ route }) {
                               padding: 16,
                               fontSize: 16,
                               fontWeight: "500",
-                              paddingLeft: 0
+                              paddingLeft: 0,
                             }}
                           >
                             {opt.option}
@@ -166,7 +178,7 @@ export default function StagingScreen({ route }) {
           ? nonMandatoryMods.map((mod, index) => (
               <>
                 <View
-                  key={mod.modName+index}
+                  key={mod.modName + index}
                   style={{
                     width: "100%",
                     height: 60,
@@ -193,7 +205,7 @@ export default function StagingScreen({ route }) {
                     return (
                       <>
                         <View
-                          key={opt+index}
+                          key={opt + index}
                           style={{
                             backgroundColor: "transparent",
                             flex: 1,
@@ -214,10 +226,17 @@ export default function StagingScreen({ route }) {
                             //We need to check if the selection costs more and update the price
                             //If it is selected we add, if it has been pressed and was alreadu selected
                             //we subtract
+                            //Non radio lists can have as many selected as they please and we do not need
+                            //to clear. These CheckButtons should both be moved to components called
+                            //RadioButton and CheckButton and imported here
                             onPress={() => {
                               const isChecked =
                                 typeof checked[mod.modName + opt.option] ===
                                 "number";
+                              const item = `${mod.modName}->${opt.option}`;
+                              isChecked
+                                ? checked.mods.delete(item.replace("", "_"))
+                                : checked.mods.set(item.replace("", "_"), true);
                               setChecked({
                                 ...checked,
                                 [mod.modName + opt.option]: isChecked
@@ -343,11 +362,20 @@ export default function StagingScreen({ route }) {
             for (let i = 0; i < quantity; ++i) {
               //Add each item to the redux store for later checkout with
               //the additonal comments and info
-              myMenuItem["customComments"] = comments;
-              myMenuItem.price += checked.adtlCharges;
-              dispatch({ type: "ADD_ITEM", payload: myMenuItem });
+
+              //Get all of the key which represent mods and turn them into an
+              //array. Probably could have just mapped modName to Option but
+              //that is not how it started haha.
+              const arratize = Array.from(checked.mods.keys());
+              dispatch({
+                type: "ADD_ITEM",
+                payload: myMenuItem,
+                comments: comments,
+                adtlCharges: checked.adtlCharges,
+                mods: arratize,
+              });
             }
-            //send the user back to the menu screen
+            //send the user back to the menu screen after their order has been placed
             navigation.goBack();
           }}
           name="tray-plus"

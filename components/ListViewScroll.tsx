@@ -59,7 +59,6 @@ const App = ({ navigator }: { navigator: any }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
     height: "20%",
   },
   container2: {

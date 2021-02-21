@@ -47,24 +47,47 @@ export default function ServingTray() {
    * @param {object} params Item info and index in array
    */
   const renderItem = ({ item, index }: { item: MenuItem; index: number }) => (
-      <MenuItemComponent menuItem={item}>
-        {/**
-         * Use a convenient button component from Material-Community-icons to create an remove from tray button.
-         * */}
-        <Text style={{paddingTop: 3, fontStyle: "italic", fontSize: 12}}>{item.customComments}</Text>
-        <MaterialCommunityIcons.Button
-          name="tray-minus"
-          onPress={() =>
-            dispatch({ type: "REMOVE_ITEM", payload: item, index: index })
-          }
-          size={26}
-          color="#a28"
-          backgroundColor="white"
-          accessibilityLabel="Remove item from tray"
-        >
-          Remove
-        </MaterialCommunityIcons.Button>
-      </MenuItemComponent>
+    <MenuItemComponent menuItem={item}>
+      {/**
+       * Use a convenient button component from Material-Community-icons to create an remove from tray button.
+       * */}
+      <Text
+        style={{
+          color: "black",
+          fontStyle: "italic",
+          fontSize: 12,
+        }}
+      >
+        {item.customComments}
+      </Text>
+      {item.mods
+        ? item.mods.map((m) => (
+            //Clean up mod naming conventions due to maps not liking spaces in the key
+            //and other 'extra' keywords
+            //Display all mods user chose
+            <Text style={{ color: "black", fontStyle: "italic" }}>
+              {m
+                .replace("_", " ")
+                .replace("->", ": ")
+                .replace("?", "")
+                .replace("(recommended)", "")
+                .trim()}
+            </Text>
+          ))
+        : null}
+      <MaterialCommunityIcons.Button
+        name="tray-minus"
+        onPress={() =>
+          dispatch({ type: "REMOVE_ITEM", payload: item, index: index })
+        }
+        size={26}
+        color="#a28"
+        backgroundColor="white"
+        accessibilityLabel="Remove item from tray"
+      >
+        Remove
+      </MaterialCommunityIcons.Button>
+    </MenuItemComponent>
   );
 
   return (
@@ -78,9 +101,15 @@ export default function ServingTray() {
         data={currentTray}
         renderItem={renderItem}
         keyExtractor={(item, index) => item.name + index}
-        contentContainerStyle={{ paddingBottom: 50, flexGrow: 1, backgroundColor: "white"}}
-        style={{height: "100%"}}
-        ListFooterComponent={<View style={{ padding: 50, backgroundColor: "white"}}></View>}
+        contentContainerStyle={{
+          paddingBottom: 50,
+          flexGrow: 1,
+          backgroundColor: "white",
+        }}
+        style={{ height: "100%" }}
+        ListFooterComponent={
+          <View style={{ padding: 50, backgroundColor: "white" }}></View>
+        }
       />
       {/* <Text>Total: {MakeCurrencyString(total)}</Text> */}
       <TouchableOpacity
@@ -107,12 +136,12 @@ const MakeCurrencyString = (value: number) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   title: {
     fontSize: 20,
     fontWeight: "bold",
-    flex: 1
+    flex: 1,
   },
   separator: {
     marginVertical: 30,
