@@ -1,13 +1,13 @@
 import * as React from "react";
 import { StyleSheet, SectionList } from "react-native";
 import { Text, View } from "../components/Themed";
-import MenuTitleComponent from "../components/MenuTitleComponent";
 import MenuItemComponent from "../components/MenuItemComponent";
-import DefaultRestaurant from "../constants/DefaultRestaurant";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SearchBar from "../components/SearchBar";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import CheckoutButton from "../components/CheckoutButton";
 
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 //Get the pushToken from local storage
 // const getData = async () => {
 //   try {
@@ -22,24 +22,26 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function MenuScreen({ route }) {
   const { restaurant } = route.params;
   const { menu } = restaurant;
+  const tray = useSelector((state) => state.servingTray);
   const categories = extractCategories(menu);
   const renderItem = ({ item }) => (
     <View>
       <MenuItemComponent menuItem={item}>
-          {/**Use a convenient button component from react-native-vector-icons to create an add to tray button.*/}
-          <MaterialCommunityIcons.Button
-            name="tray-plus"
-            size={24} 
-            color="white"
-            backgroundColor="#a28"
-            accessibilityLabel="Add item to tray"
-            >
-              Add
-          </MaterialCommunityIcons.Button>
+        {/**Use a convenient button component from react-native-vector-icons to create an add to tray button.*/}
+        <MaterialCommunityIcons.Button
+          onPress={() => navigation.navigate('StagingScreen', {MenuItem: item})}
+          name="tray-plus"
+          size={24}
+          color="white"
+          backgroundColor="#a28"
+          accessibilityLabel="Add item to tray"
+        >
+          Add
+        </MaterialCommunityIcons.Button>
       </MenuItemComponent>
     </View>
   );
-
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       {/* <MenuTitleComponent
@@ -55,18 +57,36 @@ export default function MenuScreen({ route }) {
         sections={categories}
         keyExtractor={(item, index) => item + index}
         renderItem={renderItem}
-        style={{paddingTop: 5, height: "100%"}}
+        style={{ paddingTop: 5, height: "100%" }}
         stickySectionHeadersEnabled={false}
-        renderSectionHeader={({ section: { title } }) => <Text style={{fontWeight: "500", fontSize: 15}}>{title}</Text>}
+        renderSectionHeader={({ section: { title } }) => (
+          <Text style={{ fontWeight: "500", fontSize: 15 }}>{title}</Text>
+        )}
+        contentContainerStyle={{ paddingBottom: 100 }}
       />
+
+      {tray.currentTray.length ? (
+        <View
+          style={{
+            position: "absolute",
+            bottom: 45,
+            left: 50,
+            right: 50,
+            alignItems: "center",
+            backgroundColor: "transparent",
+          }}
+        >
+          <CheckoutButton cartLength={tray.currentTray.length}></CheckoutButton>
+        </View>
+      ) : null}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    //flex: 1,
     justifyContent: "center",
+    backgroundColor: "transparent",
   },
   title: {
     fontSize: 20,
