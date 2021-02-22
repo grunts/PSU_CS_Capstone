@@ -6,7 +6,7 @@ import restaurants from '../mock/restaurant.js';
 
 /**Component for the map view page of restaurants. This component accepts a props object containing
  * an initialRegion for the user's location.*/
-export default function MapComponent({ initialRegion }:  { initialRegion: typeof Region } ) {
+export default function MapComponent({ initialRegion, navigator }:  { initialRegion: typeof Region, navigator: any } ) {
   return (
       /**MapView is wrapped in a normal View to give it flexbox properties.*/
       <View style={styles.container}>
@@ -19,7 +19,8 @@ export default function MapComponent({ initialRegion }:  { initialRegion: typeof
               key={index} 
               coordinate={marker.location} 
               title={marker.name} 
-              description={marker.description}/>
+              description={marker.description}
+              onCalloutPress={() => navigator.navigate('MenuScreen', { restaurant: marker })} />
             )
           )}
         </MapView>

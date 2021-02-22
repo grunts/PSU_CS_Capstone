@@ -1,5 +1,6 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
+  "//": "this is the old main, aka entry point: node_modules/expo/AppEntry.js",
+  "main": "index.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -13,6 +14,7 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^12.0.0",
+    "@react-native-async-storage/async-storage": "^1.13.4",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.3",
     "@react-navigation/native": "^5.9.0",
@@ -21,6 +23,8 @@
     "expo-asset": "~8.2.1",
     "expo-constants": "~9.3.3",
     "expo-linking": "~2.0.0",
+    "expo-location": "~10.0.0",
+    "expo-notifications": "~0.8.2",
     "expo-splash-screen": "~0.8.1",
     "expo-status-bar": "~1.0.3",
     "expo-web-browser": "~8.6.0",
@@ -30,13 +34,15 @@
     "react-native-components": "0.0.1",
     "react-native-elements": "^3.0.0-alpha.1",
     "react-native-gesture-handler": "~1.8.0",
+    "react-native-input-spinner": "^1.4.8",
+    "react-native-maps": "0.27.1",
     "react-native-paper": "^4.4.1",
     "react-native-safe-area-context": "3.1.9",
     "react-native-screens": "~2.15.0",
-    "react-native-maps": "0.27.1",
-    "expo-location": "~10.0.0",
     "react-native-vector-icons": "^7.1.0",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "react-redux": "^7.2.2",
+    "redux": "^4.0.5"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
