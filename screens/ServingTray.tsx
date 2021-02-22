@@ -75,9 +75,9 @@ export default function ServingTray() {
 
   
   const [expoPushToken, setExpoPushToken] = useState('');
-  const [notification, setNotification] = useState(false);
-  const notificationListener: React.MutableRefObject<Subscription | undefined> = useRef();
-  const responseListener: React.MutableRefObject<Subscription | undefined> = useRef();
+  const [notification, setNotification] = useState({});
+  const notificationListener: any = useRef();
+  const responseListener: any = useRef();
 
   useEffect(() => {
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
@@ -170,6 +170,7 @@ export default function ServingTray() {
       <TouchableOpacity
         onPress={async () => {
           await schedulePushNotification();
+          await mockAcceptedNotification();
         }}
         accessibilityLabel="Confirm total purchase"
         style={styles.confirmButton}
@@ -234,6 +235,17 @@ async function schedulePushNotification() {
   });
 }
 
+
+async function mockAcceptedNotification() {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Order Accepted",
+      body: 'Your order has been accepted by the restaurant!\nWe will let you know when your order is ready!',
+      data: { data: '[unique id here]' },
+    },
+    trigger: { seconds: 30 },
+  });
+}
 
 
 async function registerForPushNotificationsAsync() {
