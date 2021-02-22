@@ -1,58 +1,54 @@
 import React from 'react';
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { Text, View } from "./Themed";
 import { Ionicons } from '@expo/vector-icons';
 
 export default function TitleBarComponent({title, numItems, navigator}: {title: String, numItems: Number, navigator: any}) {
     return (
-        <View style={styleSheet.inline}>
-            <Text style={styleSheet.title}>
-                {title}
+        <View style={styles.inline}>
+            <Text style={styles.title}>{title.length < 17 ? title : title.substring(0,17)+"..."}</Text>
+          <TouchableOpacity
+          style={{position: "absolute", right: 10, bottom: -2, flex: 1}}
+          onPress={() => navigator.navigate("ServingTray")}
+        >
+          <View style={styles.container2}>
+            <Text style={{ color: "white", fontWeight: "bold" }}>
+              {numItems}
             </Text>
-            <Ionicons.Button
-                name="restaurant"
-                size={24} 
-                color="white"
-                style={styleSheet.button}
-                accessibilityLabel="Add item to tray"                
-                onPress={() => {
-                    navigator.navigate("ServingTray");
-                }}>
-                    {`${numItems} in Tray`}
-            </Ionicons.Button>
+          </View>
+          <Ionicons name="restaurant" size={30} />
+        </TouchableOpacity>
         </View>
     );
 }
 
-let styleSheet: StyleSheet.NamedStyles<any> = {
+const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center"
     },
-    title: {
-        fontSize: 20,
-        fontWeight: "bold",
-        maxWidth: 170
-    },
-    item: {
-        backgroundColor: '#f9c2ff',
-        padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 16,
-    },
-    name: {
-        fontSize: 32,
+    container2: {
+      position: "absolute",
+      height: 30,
+      width: 30,
+      borderRadius: 15,
+      backgroundColor: "#a28",
+      opacity: 0.7,
+      right: 15,
+      bottom: 15,
+      alignItems: "center",
+      justifyContent: "center",
+      zIndex: 2000
     },
     inline: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
+        justifyContent: "center",
+        backgroundColor: "transparent"
     },
-    button: {
-        backgroundColor: "#a28",
-        justifyContent: 'flex-end'
-    }
-}
-
-const styles = StyleSheet.create(styleSheet);
+    title: {
+        fontSize: 18,
+        fontWeight: "bold",
+        maxWidth: 200,
+    },
+  });
