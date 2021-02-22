@@ -7,7 +7,7 @@ import MapComponent from "../components/MapComponent";
 import { Text, View } from "../components/Themed";
 const restaurants = require("../mock/restaurant");
 
-export default function TabTwoScreen() {
+export default function TabTwoScreen({navigation}: {navigation: any}) {
   const [errorMsg, setErrorMsg] = useState("");
   const [region, setRegion] = useState(Region);
 
@@ -35,6 +35,7 @@ export default function TabTwoScreen() {
       />
       <MapComponent 
         initialRegion={region}
+        navigator={navigation}
       />
     </View>
   );

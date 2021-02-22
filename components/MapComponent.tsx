@@ -15,7 +15,7 @@ interface restaurantMarker {
  * @param props {{initialRegion}} object containing an initial region
  * @param initialRegion the initial coordinates and scale for the user's location.
  */
-export default function MapComponent({ initialRegion }:  { initialRegion: typeof Region } ) {
+export default function MapComponent({ initialRegion, navigator }:  { initialRegion: typeof Region, navigator: any } ) {
   return (
       /**MapView is wrapped in a normal View to give it flexbox properties.*/
       <View style={styles.container}>
@@ -28,7 +28,8 @@ export default function MapComponent({ initialRegion }:  { initialRegion: typeof
               key={index}
               coordinate={marker.location}
               title={marker.name}
-              description={marker.description}/>
+              description={marker.description}
+              onCalloutPress={() => navigator.navigate('MenuScreen', { restaurant: marker })} />
             )
           )}
         </MapView>
