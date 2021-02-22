@@ -11,13 +11,15 @@ import StagingScreen from '../screens/StagingScreen';
 import ServingTray from '../screens/ServingTray';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
 import TitleBarComponent from '../components/TitleBarComponent';
-import { enableScreens } from 'react-native-screens'
+import { enableScreens } from 'react-native-screens';
+import { useSelector, useDispatch } from "react-redux";
 
 /**This creates a new Navigator to manage switching between list view and map view using the bottom tabs.
  * We give "BottomTab" a type: "BottomTabParamList" - this identifies which object types are valid to use
  * as components for each Screen of the Navigator.*/
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 enableScreens(true)
+//Retrieve the tray using redux
 
 /**Create the BottomTabNavigator and export it.*/
 export default function BottomTabNavigator() {
@@ -63,21 +65,21 @@ const TabOneStack = createStackNavigator<TabOneParamList>();
 
 /**This function defines the stack navigator for Tab One that is used by the BottomTabNavigator to 
  * switch between navigation stacks.*/
-function TabOneNavigator() {
+function TabOneNavigator({navigation} : {navigation: any}) {
+  const tray = useSelector((state) => state.servingTray);
   return (
     /**The TabOne Navigator has two screens, with TabOneScreen (the List View) being 
      * the inital (default) screen.*/
     <TabOneStack.Navigator initialRouteName="TabOneScreen">
       {/**The List View Screen is defined by the TabOneScreen component.  It has a headerTitle 
         * designating it as the List View.*/}
-      <TabOneStack.Screen name="TabOneScreen" component={TabOneScreen} options={{ headerTitle: () => <TitleBarComponent title="Restaurants"/>, headerTitleAlign: "left"}}/>
+      <TabOneStack.Screen name="TabOneScreen" component={TabOneScreen} options={{ headerTitle: () => <TitleBarComponent title="Restaurants" numItems={tray.currentTray.length} navigator={navigation}/>, headerTitleAlign: "left"}}/>
       {/**The Menu Screen is accessed from the List View.  See TabOneScreen component.  The Menu Screen
         * also has a title, but in this case, the title is based on a lambda function that uses the route object
         * (the route object contains the restaurant object as part of its type definition) to extract the name
         * of the restaurant to be used as the title.  If there is no restaurant name in the route object, then
         * the title gets set to "The Menu"*/}
-      <TabOneStack.Screen name="MenuScreen" component={MenuScreen} options={({ route }) => ( {headerTitle: () => <TitleBarComponent title={route?.params?.restaurant?.name ?? "The Menu"}/>, headerTitleAlign: "left"})}/>
-      <TabOneStack.Screen name="MenuScreen" component={MenuScreen} options={({ route }) => ({ title: route?.params?.restaurant?.name} ?? 'The Menu')}/>
+      <TabOneStack.Screen name="MenuScreen" component={MenuScreen} options={({ route }) => ( {headerTitle: () => <TitleBarComponent title={route?.params?.restaurant?.name ?? "The Menu"} numItems={tray.currentTray.length} navigator={navigation}/>, headerTitleAlign: "left"})}/>
       <TabOneStack.Screen name="StagingScreen" component={StagingScreen} options={{ headerTitle: 'Customize Your Order' }}/>
       <TabOneStack.Screen name="ServingTray" component={ServingTray} options={{ headerTitle: 'Serving Tray' }}/>
     </TabOneStack.Navigator>
@@ -88,18 +90,19 @@ function TabOneNavigator() {
 /**The stack navigator for tab two.*/
 const TabTwoStack = createStackNavigator<TabTwoParamList>();
 
-function TabTwoNavigator() {
+function TabTwoNavigator({navigation} : {navigation: any}) {
+  const tray = useSelector((state) => state.servingTray);
   return (
     <TabTwoStack.Navigator initialRouteName="TabTwoScreen">
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: () => <TitleBarComponent title="Map View"/>, headerTitleAlign: "left"}}
+        options={{ headerTitle: () => <TitleBarComponent title="Map View" numItems={tray.currentTray.length} navigator={navigation}/>, headerTitleAlign: "left"}}
       />
       <TabOneStack.Screen 
         name="MenuScreen"
         component={MenuScreen}
-        options={({ route }) => ({ title: route?.params?.restaurant?.name} ?? 'The Menu')}/>
+        options={({ route }) => ( {headerTitle: () => <TitleBarComponent title={route?.params?.restaurant?.name ?? "The Menu"} numItems={tray.currentTray.length} navigator={navigation}/>, headerTitleAlign: "left"})}/>
       <TabOneStack.Screen 
         name="ServingTray"
         component={ServingTray}

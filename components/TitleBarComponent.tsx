@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 import { Text, View } from "./Themed";
 import { Ionicons } from '@expo/vector-icons';
 
-export default function TitleBarComponent({title}: {title: String}) {
+export default function TitleBarComponent({title, numItems, navigator}: {title: String, numItems: Number, navigator: any}) {
     return (
         <View style={styleSheet.inline}>
             <Text style={styleSheet.title}>
@@ -14,7 +14,12 @@ export default function TitleBarComponent({title}: {title: String}) {
                 size={24} 
                 color="white"
                 style={styleSheet.button}
-                accessibilityLabel="Add item to tray">3</Ionicons.Button>
+                accessibilityLabel="Add item to tray"                
+                onPress={() => {
+                    navigator.navigate("ServingTray");
+                }}>
+                    {`${numItems} in Tray`}
+            </Ionicons.Button>
         </View>
     );
 }
@@ -28,6 +33,7 @@ let styleSheet: StyleSheet.NamedStyles<any> = {
     title: {
         fontSize: 20,
         fontWeight: "bold",
+        maxWidth: 170
     },
     item: {
         backgroundColor: '#f9c2ff',
