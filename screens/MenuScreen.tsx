@@ -20,18 +20,30 @@ import { useNavigation } from "@react-navigation/native";
 //   }
 // }
 
+/**
+ * Object containing properties
+ */
 interface Props {
+  /** object containing parameters from parent */
   route: {
+    /** parameters passed from parent*/
     params: {
-      restaurant: { menu: MenuItem[] }
-    }
-  }
-}
+      /** current restaurant */
+      restaurant: {
+        /** array of menu items */
+        menu: MenuItem[];
+      };
+    };
+  };
+};
 
 interface RootState {
   servingTray: ServingTrayState;
 }
 
+/**
+ * Render the item menu from a restaurant
+ */
 export default function MenuScreen({ route }: Props) {
   /** array containing menu items */
   const menu = route.params.restaurant.menu;
@@ -42,7 +54,8 @@ export default function MenuScreen({ route }: Props) {
 
   /**
    * Components to render for flatlist and how it uses the menu item
-   * @param props object containing a menu item
+   * @param {{item: MenuItem}} props  object containing a menu item
+   * @param {MenuItem} props.item menu item to be rendered
    */
   const renderItem = ({ item }: { item: MenuItem }) => (
       <MenuItemComponent menuItem={item}>
@@ -127,9 +140,9 @@ const styles = StyleSheet.create({
  * If a new category is found, it creates a new category array
  * This orders categories by first appearance in the array.
  * This is also case sensitive.
- * @param accumulator {object} the result of each pass sorting the item into a category
- * @param currentItem {MenuItem} the item to be sorted to a category
- * @returns accumlator after sorting the item
+ * @param {object} accumulator the result of each pass sorting the item into a category
+ * @param {MenuItem} currentItem the item to be sorted to a category
+ * @returns accumlator after sorting the current item
  */
 const reducer = (accumulator: MenuItem[][], currentItem: MenuItem) => {
   if (accumulator[currentItem.category]) {

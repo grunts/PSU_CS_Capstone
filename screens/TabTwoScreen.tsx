@@ -5,9 +5,15 @@ import Region from "../constants/Region";
 import EditScreenInfo from "../components/EditScreenInfo";
 import MapComponent from "../components/MapComponent";
 import { Text, View } from "../components/Themed";
+import { useNavigation } from "@react-navigation/native";
 const restaurants = require("../mock/restaurant");
 
-export default function TabTwoScreen({navigation}: {navigation: any}) {
+
+
+export default function TabTwoScreen() {
+  
+  const navigation = useNavigation();
+
   const [errorMsg, setErrorMsg] = useState("");
   const [region, setRegion] = useState(Region);
 
@@ -35,7 +41,6 @@ export default function TabTwoScreen({navigation}: {navigation: any}) {
       />
       <MapComponent 
         initialRegion={region}
-        navigator={navigation}
       />
     </View>
   );

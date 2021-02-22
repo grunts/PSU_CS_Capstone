@@ -2,17 +2,21 @@ import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
+/** Contains cart length */
 interface Props {
+  /** Length of cart array */
   cartLength: number;
 };
 
 /**
  * Displays button that navigates to the serving tray
- * @param props {object} contains cart length
+ * @param {object} props contains cart length
+ * @param {number} props.cartLength length of cart array
  */
 export default function CheckoutButton(props: Props) {
     const navigation = useNavigation()
-    const { cartLength } = props
+    /** Length of cart array */
+    const length = props.cartLength
     return(
         <MaterialCommunityIcons.Button
           onPress={() => {
@@ -24,7 +28,7 @@ export default function CheckoutButton(props: Props) {
           backgroundColor="#a28"
           accessibilityLabel="Confirm add item"
         >
-          {`Go to checkout - ${cartLength} item${cartLength > 1 ? "s" : ""}`}
+          {`Go to checkout - ${length} item${length > 1 ? "s" : ""}`}
         </MaterialCommunityIcons.Button>
     )
 }

@@ -32,7 +32,7 @@ export default function ServingTray() {
   const { currentTray } = tray;
 
   /**
-   * retrieves redux dispatch functionality
+   * Redux store's `dispatch` function
    */
   const dispatch = useDispatch();
 
@@ -63,9 +63,11 @@ export default function ServingTray() {
       </Text>
       {item.mods
         ? item.mods.map((modString, index) => (
-            //Clean up mod naming conventions due to maps not liking spaces in the key
-            //and other 'extra' keywords
-            //Display all mods user chose
+            /**
+             * Clean up mod naming conventions due to maps not liking spaces in the key
+             * and other 'extra' keywords
+             * Display all mods user chose
+             */
             <Text style={{ color: "black", fontStyle: "italic" }} key={index}>
               {modString
                 .replace("_", " ")

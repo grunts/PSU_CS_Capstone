@@ -21,8 +21,7 @@ interface Props {
 };
 
 /**
- * 
- * @param param0 
+ * Staging screen to customize an order or multiple of the same order
  */
 export default function StagingScreen({ route }: Props) {
 
@@ -33,7 +32,15 @@ export default function StagingScreen({ route }: Props) {
     adtlCharges: 0,
     mods: new Map(),
   });
+
+  /**
+   * Navigation prop of the parent screen
+   */
   const navigation = useNavigation();
+  
+  /**
+   * Redux store's `dispatch` function
+   */
   const dispatch = useDispatch();
 
   const {
@@ -50,7 +57,7 @@ export default function StagingScreen({ route }: Props) {
 
   /**
    * Updates comments
-   * @param comments comment for item
+   * @param {string} comments comment for item
    */
   let updateComments = (comments: string) => {
     setComments(comments);

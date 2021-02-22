@@ -3,6 +3,7 @@ import MapView, { LatLng, Marker } from 'react-native-maps';
 import { StyleSheet, View, Dimensions } from 'react-native';
 import Region from "../constants/Region";
 import restaurants from '../mock/restaurant.js';
+import { useNavigation } from "@react-navigation/native";
 
 interface restaurantMarker {
   location: LatLng;
@@ -12,10 +13,13 @@ interface restaurantMarker {
 
 /**
  * Component for the map view page of restaurants.
- * @param props {{initialRegion}} object containing an initial region
- * @param initialRegion the initial coordinates and scale for the user's location.
+ * @param {{Region}} props  object containing an initial region
+ * @param {Region} props.initialRegion the initial coordinates and scale for the user's location.
  */
-export default function MapComponent({ initialRegion, navigator }:  { initialRegion: typeof Region, navigator: any } ) {
+export default function MapComponent({ initialRegion }:  { initialRegion: typeof Region } ) {
+
+  const navigation = useNavigation();
+
   return (
       /**MapView is wrapped in a normal View to give it flexbox properties.*/
       <View style={styles.container}>
@@ -29,7 +33,7 @@ export default function MapComponent({ initialRegion, navigator }:  { initialReg
               coordinate={marker.location}
               title={marker.name}
               description={marker.description}
-              onCalloutPress={() => navigator.navigate('MenuScreen', { restaurant: marker })} />
+              onCalloutPress={() => navigation.navigate('MenuScreen', { restaurant: marker })} />
             )
           )}
         </MapView>

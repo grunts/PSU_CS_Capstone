@@ -3,13 +3,21 @@ import { StyleSheet, Text } from 'react-native';
 import { Avatar, ListItem } from 'react-native-elements';
 import { MenuItem } from '../types';
 
+/** Props for ItemCardComponent */
+interface Props {
+  /** menu item data */
+  menuItem: MenuItem;
+  /** other children to render inside the item card */
+  children?: ReactNode;
+};
+
 /**
  * The component holding a menu item and all of its info - requires an object containing a MenuItem as an input argument
- * @param props {object} contains menuItem to display and possible children
- * @param menuItem {MenuItem} object containing menu item data
- * @param children {ReactNode} react JSX elements object(s) or string that may be included with menu item data
+ * @param {object} props  contains menuItem to display and possible children
+ * @param {MenuItem} props.menuItem  object containing menu item data
+ * @param {ReactNode} props.children  react JSX elements object(s) or string that may be included with menu item data
  */
-export default function ItemCardComponent({ menuItem, children }: { menuItem : MenuItem, children?: ReactNode }) {
+export default function ItemCardComponent({ menuItem, children }: Props) {
   
   /**
    * Extract constants name, image, longDesc, etc. from menuItem object
@@ -28,7 +36,7 @@ export default function ItemCardComponent({ menuItem, children }: { menuItem : M
 
   /**
    * Define a function that takes the abv field and determines whether it is > 0 and returns an appropriate ABV string
-   * @param abv {number} Alcohol by volume as mL of pure ethanol per 100 mL of solution at 20 degrees C
+   * @param {number} abv Alcohol by volume as mL of pure ethanol per 100 mL of solution at 20 degrees C
    * @returns If abv > 0 return a string with the ABV %.  Otherwise, return an empty string
    */
   const displayABV = (abv: number) => abv > 0 ? `${abv}% ABV` : ''
