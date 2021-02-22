@@ -181,7 +181,7 @@ function TabTwoNavigator({ navigation }: { navigation: any }) {
       <TabOneStack.Screen
         name="ServingTray"
         component={ServingTray}
-        options={{ headerTitle: "Serving Tray" }}
+        options={{ headerTitle: "Serving Tray", headerBackTitle: "Back" }}
       />
     </TabTwoStack.Navigator>
   );
