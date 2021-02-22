@@ -2,13 +2,17 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { Text, View } from "./Themed";
 import { Ionicons } from '@expo/vector-icons';
+import { useHeaderHeight } from '@react-navigation/stack'
+import Constants from 'expo-constants';
+
 
 export default function TitleBarComponent({title, numItems, navigator}: {title: String, numItems: Number, navigator: any}) {
+    const headerHeight = useHeaderHeight()
+    // console.log(Constants.statusBarHeight)
     return (
         <View style={styles.inline}>
-            <Text style={styles.title}>{title.length < 17 ? title : title.substring(0,17)+"..."}</Text>
           <TouchableOpacity
-          style={{position: "absolute", right: 10, bottom: -2, flex: 1}}
+          style={{position: "absolute", right: 10, bottom: 5, flex: 1}}
           onPress={() => navigator.navigate("ServingTray")}
         >
           <View style={styles.container2}>
@@ -30,13 +34,13 @@ const styles = StyleSheet.create({
     },
     container2: {
       position: "absolute",
-      height: 30,
-      width: 30,
-      borderRadius: 15,
+      height: 25,
+      width: 25,
+      borderRadius: 12,
       backgroundColor: "#a28",
       opacity: 0.7,
-      right: 15,
-      bottom: 15,
+      right: 19,
+      bottom: 16,
       alignItems: "center",
       justifyContent: "center",
       zIndex: 2000

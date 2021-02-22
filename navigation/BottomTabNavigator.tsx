@@ -13,7 +13,7 @@ import { BottomTabParamList, TabOneParamList, TabTwoParamList } from "../types";
 import TitleBarComponent from "../components/TitleBarComponent";
 import { enableScreens } from "react-native-screens";
 import { useSelector, useDispatch } from "react-redux";
-
+import { Text } from "react-native";
 /**This creates a new Navigator to manage switching between list view and map view using the bottom tabs.
  * We give "BottomTab" a type: "BottomTabParamList" - this identifies which object types are valid to use
  * as components for each Screen of the Navigator.*/
@@ -84,17 +84,17 @@ function TabOneNavigator({ navigation }: { navigation: any }) {
       <TabOneStack.Screen
         name="TabOneScreen"
         component={TabOneScreen}
-        options={{
-          headerTitle: () => (
+        options={({ route }) => ({
+          headerRight: () => (
             <TitleBarComponent
               title="Restaurants"
               numItems={tray.currentTray.length}
               navigator={navigation}
             />
           ),
-          headerTitleAlign: "left",
-          headerBackTitle: ""
-        }}
+          headerTitle: "Restaurants",
+          headerBackTitle: "",
+        })}
       />
       {/**The Menu Screen is accessed from the List View.  See TabOneScreen component.  The Menu Screen
        * also has a title, but in this case, the title is based on a lambda function that uses the route object
@@ -105,27 +105,36 @@ function TabOneNavigator({ navigation }: { navigation: any }) {
         name="MenuScreen"
         component={MenuScreen}
         options={({ route }) => ({
-          headerTitle: () => (
+          headerRight: () => (
             <TitleBarComponent
               title={route?.params?.restaurant?.name ?? "The Menu"}
               numItems={tray.currentTray.length}
               navigator={navigation}
             />
           ),
-          headerTitleContainerStyle: {left: 0},
-          headerTitleAlign: "left",
+          headerTitle: () => (
+            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+              {route.params.restaurant.name.length < 17
+                ? route.params.restaurant.name
+                : route.params.restaurant.name.substring(0, 17) + "..."}
+            </Text>
+          ),
+          headerTitleContainerStyle: { left: 0 },
           headerBackTitle: "Back",
         })}
       />
       <TabOneStack.Screen
         name="StagingScreen"
         component={StagingScreen}
-        options={{ headerTitle: "Customize Your Order", headerBackTitle: ""}}
+        options={{
+          headerTitle: "Customize Your Order",
+          headerBackTitle: "Back",
+        }}
       />
       <TabOneStack.Screen
         name="ServingTray"
         component={ServingTray}
-        options={{ headerTitle: "Serving Tray", headerBackTitle: "" }}
+        options={{ headerTitle: "Serving Tray", headerBackTitle: "Back" }}
       />
     </TabOneStack.Navigator>
   );
@@ -142,28 +151,37 @@ function TabTwoNavigator({ navigation }: { navigation: any }) {
         name="TabTwoScreen"
         component={TabTwoScreen}
         options={{
-          headerTitle: () => (
+          headerRight: () => (
             <TitleBarComponent
               title="Map View"
               numItems={tray.currentTray.length}
               navigator={navigation}
             />
           ),
-          headerTitleAlign: "left",
+          headerTitle: "Map",
+          headerBackTitle: "Back",
         }}
       />
       <TabOneStack.Screen
         name="MenuScreen"
         component={MenuScreen}
         options={({ route }) => ({
-          headerTitle: () => (
+          headerRight: () => (
             <TitleBarComponent
               title={route?.params?.restaurant?.name ?? "The Menu"}
               numItems={tray.currentTray.length}
               navigator={navigation}
             />
           ),
-          headerTitleAlign: "left",
+          headerTitle: () => (
+            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+              {route.params.restaurant.name.length < 17
+                ? route.params.restaurant.name
+                : route.params.restaurant.name.substring(0, 17) + "..."}
+            </Text>
+          ),
+          headerBackTitle: "Back",
+          headerTitleContainerStyle: { left: 0 },
         })}
       />
       <TabOneStack.Screen
