@@ -78,20 +78,24 @@ function TabOneNavigator({ navigation }: { navigation: any }) {
   return (
     /**The TabOne Navigator has two screens, with TabOneScreen (the List View) being
      * the inital (default) screen.*/
-    <TabOneStack.Navigator initialRouteName="TabOneScreen">
+    <TabOneStack.Navigator
+      initialRouteName="TabOneScreen"
+      screenOptions={{
+        headerRight: () => (
+          <TitleBarComponent
+            title="Restaurants"
+            numItems={tray.currentTray.length}
+            navigator={navigation}
+          />
+        ),
+      }}
+    >
       {/**The List View Screen is defined by the TabOneScreen component.  It has a headerTitle
        * designating it as the List View.*/}
       <TabOneStack.Screen
         name="TabOneScreen"
         component={TabOneScreen}
-        options={({ route }) => ({
-          headerRight: () => (
-            <TitleBarComponent
-              title="Restaurants"
-              numItems={tray.currentTray.length}
-              navigator={navigation}
-            />
-          ),
+        options={() => ({
           headerTitle: "Restaurants",
           headerBackTitle: "",
         })}
@@ -105,13 +109,6 @@ function TabOneNavigator({ navigation }: { navigation: any }) {
         name="MenuScreen"
         component={MenuScreen}
         options={({ route }) => ({
-          headerRight: () => (
-            <TitleBarComponent
-              title={route?.params?.restaurant?.name ?? "The Menu"}
-              numItems={tray.currentTray.length}
-              navigator={navigation}
-            />
-          ),
           headerTitle: () => (
             <Text style={{ fontSize: 18, fontWeight: "bold" }}>
               {route.params.restaurant.name.length < 17
@@ -146,18 +143,22 @@ const TabTwoStack = createStackNavigator<TabTwoParamList>();
 function TabTwoNavigator({ navigation }: { navigation: any }) {
   const tray = useSelector((state) => state.servingTray);
   return (
-    <TabTwoStack.Navigator initialRouteName="TabTwoScreen">
+    <TabTwoStack.Navigator
+      initialRouteName="TabTwoScreen"
+      screenOptions={{
+        headerRight: () => (
+          <TitleBarComponent
+            title="Restaurants"
+            numItems={tray.currentTray.length}
+            navigator={navigation}
+          />
+        ),
+      }}
+    >
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
         options={{
-          headerRight: () => (
-            <TitleBarComponent
-              title="Map View"
-              numItems={tray.currentTray.length}
-              navigator={navigation}
-            />
-          ),
           headerTitle: "Map",
           headerBackTitle: "Back",
         }}
@@ -166,13 +167,6 @@ function TabTwoNavigator({ navigation }: { navigation: any }) {
         name="MenuScreen"
         component={MenuScreen}
         options={({ route }) => ({
-          headerRight: () => (
-            <TitleBarComponent
-              title={route?.params?.restaurant?.name ?? "The Menu"}
-              numItems={tray.currentTray.length}
-              navigator={navigation}
-            />
-          ),
           headerTitle: () => (
             <Text style={{ fontSize: 18, fontWeight: "bold" }}>
               {route.params.restaurant.name.length < 17

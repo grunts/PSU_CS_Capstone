@@ -7,8 +7,6 @@ import Constants from 'expo-constants';
 
 
 export default function TitleBarComponent({title, numItems, navigator}: {title: String, numItems: Number, navigator: any}) {
-    const headerHeight = useHeaderHeight()
-    // console.log(Constants.statusBarHeight)
     return (
         <View style={styles.inline}>
           <TouchableOpacity
