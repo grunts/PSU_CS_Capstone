@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, FlatList, Button, TouchableOpacity } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { StyleSheet, FlatList, Button, TouchableOpacity, Platform } from "react-native";
 import { Text, View } from "../components/Themed";
 import MenuItemComponent from "../components/MenuItemComponent";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -8,6 +8,38 @@ import SearchBar from "../components/SearchBar";
 
 import { useSelector, useDispatch } from "react-redux";
 import { ServingTrayState } from "../store/reducers/types";
+
+
+/** imports for notifications */
+import * as Notifications from 'expo-notifications';
+import Constants from 'expo-constants';
+
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// /**
+//  * Get the pushToken from local storage
+//  */
+// const getData = async () => {
+//   try {
+//     const jsonValue = await AsyncStorage.getItem('@pushToken')
+//     return jsonValue != null ? JSON.parse(jsonValue) : null;
+//   } catch(e) {
+//     // error reading value
+//     console.log('Async Storage Error', e)
+//   }
+// }
+
+interface Subscription {
+  remove: () => void;
+}
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 interface RootState {
   servingTray: ServingTrayState;
@@ -40,6 +72,29 @@ export default function ServingTray() {
     (accumulator, currentItem) => (accumulator += currentItem.price),
     0
   );
+
+  
+  const [expoPushToken, setExpoPushToken] = useState('');
+  const [notification, setNotification] = useState(false);
+  const notificationListener: React.MutableRefObject<Subscription | undefined> = useRef();
+  const responseListener: React.MutableRefObject<Subscription | undefined> = useRef();
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener);
+      Notifications.removeNotificationSubscription(responseListener);
+    };
+  }, []);
 
   /**
    * Creates components to populate the list
@@ -113,7 +168,9 @@ export default function ServingTray() {
       />
       {/* <Text>Total: {MakeCurrencyString(total)}</Text> */}
       <TouchableOpacity
-        onPress={() => {}}
+        onPress={async () => {
+          await schedulePushNotification();
+        }}
         accessibilityLabel="Confirm total purchase"
         style={styles.confirmButton}
       >
@@ -163,3 +220,49 @@ const styles = StyleSheet.create({
     bottom: 65,
   },
 });
+
+
+
+async function schedulePushNotification() {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Order Received",
+      body: 'Your order has been received by the restaurant!\nWe will let you know when your order is accepted!',
+      data: { data: '[unique id here]' },
+    },
+    trigger: { seconds: 2 },
+  });
+}
+
+
+
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Constants.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  return token;
+}
