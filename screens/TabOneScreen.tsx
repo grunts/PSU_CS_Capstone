@@ -27,7 +27,6 @@ export default function TabOneScreen({ navigation }: { navigation: any }) {
     </>
   );
 }
-/*<ScrollListComponent navigator={navigation}/>*/
 
 const styles = StyleSheet.create({
   container: {
