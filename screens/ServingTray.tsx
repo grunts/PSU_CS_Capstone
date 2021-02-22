@@ -171,6 +171,19 @@ export default function ServingTray() {
         onPress={async () => {
           await schedulePushNotification();
           await mockAcceptedNotification();
+
+          /**
+           * Tell the store that this order has been confirmed
+           */
+          dispatch({ type: "TRAY_CONFIRMED" });
+
+          // /**
+          //  * temporarily remove each item until the store can handle it
+          //  */
+          // for (let i = currentTray.length - 1; i >= 0; --i) {
+          //   dispatch({ type: "REMOVE_ITEM", payload: currentTray[i], index: i });
+          // }
+
         }}
         accessibilityLabel="Confirm total purchase"
         style={styles.confirmButton}
