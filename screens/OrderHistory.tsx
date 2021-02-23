@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, FlatList, Button, TouchableOpacity } from "react-native";
 import { Text, View } from "../components/Themed";
-import MenuItemComponent from "../components/MenuItemComponent";
 import { MenuItem } from "../types";
 
+import { Avatar, ListItem } from "react-native-elements";
 import { useSelector, useDispatch } from "react-redux";
 import { ServingTrayState } from "../store/reducers/types";
 
@@ -76,35 +76,48 @@ export default function ServingTray() {
    * @param {object} params Item info and index in array
    */
   const renderItem = ({ item, index }: { item: MenuItem; index: number }) => (
-    <MenuItemComponent menuItem={item}>
-      {/**
-       * Use a convenient button component from Material-Community-icons to create an remove from tray button.
-       * */}
-      <Text
-        style={{
-          color: "black",
-          fontStyle: "italic",
-          fontSize: 12,
-        }}
-      >
-        {item.customComments}
-      </Text>
-      {item.mods
-        ? item.mods.map((m, i) => (
-            //Clean up mod naming conventions due to maps not liking spaces in the key
-            //and other 'extra' keywords
-            //Display all mods user chose
-            <Text key={m + i} style={{ color: "black", fontStyle: "italic" }}>
-              {m
-                .replace("_", " ")
-                .replace("->", ": ")
-                .replace("?", "")
-                .replace("(recommended)", "")
-                .trim()}
-            </Text>
-          ))
-        : null}
-    </MenuItemComponent>
+    <ListItem
+      containerStyle={{
+        backgroundColor: "gray",
+        opacity: 0.6,
+        borderBottomColor: "black",
+        borderBottomWidth: 1,
+      }}
+    >
+      {/**A simple picture element for holding an image of the food item.*/}
+      <Avatar size="large" source={{ uri: item.image }} />
+      {/**The Content component holds the body of the data in the list item.*/}
+      <ListItem.Content>
+        <ListItem.Title style={{ fontSize: 20 }}>
+          {item.name} {`$${Number(item.price).toFixed(2)}`}
+        </ListItem.Title>
+        <ListItem.Subtitle>{item.longDesc}</ListItem.Subtitle>
+        <Text
+          style={{
+            color: "black",
+            fontStyle: "italic",
+            fontSize: 12,
+          }}
+        >
+          {item.customComments}
+        </Text>
+        {item.mods
+          ? item.mods.map((m, i) => (
+              //Clean up mod naming conventions due to maps not liking spaces in the key
+              //and other 'extra' keywords
+              //Display all mods user chose
+              <Text key={m + i} style={{ color: "black", fontStyle: "italic" }}>
+                {m
+                  .replace("_", " ")
+                  .replace("->", ": ")
+                  .replace("?", "")
+                  .replace("(recommended)", "")
+                  .trim()}
+              </Text>
+            ))
+          : null}
+      </ListItem.Content>
+    </ListItem>
   );
 
   return orderHistory.length ? (
@@ -148,7 +161,9 @@ export default function ServingTray() {
         alignItems: "center",
       }}
     >
-      <Text style={{fontSize: 25, textAlign: "center", padding: 10}}>There is nothing here!</Text>
+      <Text style={{ fontSize: 25, textAlign: "center", padding: 10 }}>
+        There is nothing here!
+      </Text>
     </View>
   );
 }
@@ -199,6 +214,6 @@ async function mockAcceptedNotification(place) {
       body: `Thank you for dining with ${place}!`,
       data: { data: await getData("@pushToken") },
     },
-    trigger: { seconds: 5 },
+    trigger: { seconds: 3 },
   });
 }
