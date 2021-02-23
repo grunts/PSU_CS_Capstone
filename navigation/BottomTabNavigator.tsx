@@ -110,13 +110,15 @@ function TabOneNavigator({ navigation }: { navigation: any }) {
         component={MenuScreen}
         options={({ route }) => ({
           headerTitle: () => (
-            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+            
+            <Text style={{ fontSize: 18, fontWeight: "bold", textAlign: "center"}}>
               {route.params.restaurant.name.length < 17
                 ? route.params.restaurant.name
                 : route.params.restaurant.name.substring(0, 17) + "..."}
+                
             </Text>
           ),
-          headerTitleContainerStyle: { left: 0 },
+          headerTitleContainerStyle: { alignContent: "center", alignSelf: "center"},
           headerBackTitle: "Back",
         })}
       />
@@ -124,6 +126,7 @@ function TabOneNavigator({ navigation }: { navigation: any }) {
         name="StagingScreen"
         component={StagingScreen}
         options={{
+          
           headerTitle: "Customize Your Order",
           headerBackTitle: "Back",
         }}
