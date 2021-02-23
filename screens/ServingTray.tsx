@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { StyleSheet, FlatList, Button, TouchableOpacity } from "react-native";
 import { Text, View } from "../components/Themed";
 import MenuItemComponent from "../components/MenuItemComponent";
@@ -8,6 +8,38 @@ import SearchBar from "../components/SearchBar";
 
 import { useSelector, useDispatch } from "react-redux";
 import { ServingTrayState } from "../store/reducers/types";
+
+
+/** imports for notifications */
+import * as Notifications from 'expo-notifications';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+/**
+ * Get the pushToken from local storage
+ */
+const getData = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('@pushToken')
+    console.log('Async Storage Acessed')
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch(e) {
+    // error reading value
+    console.log('Async Storage Error', e)
+  }
+} 
+
+interface Subscription {
+  remove: () => void;
+}
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 interface RootState {
   servingTray: ServingTrayState;
@@ -61,11 +93,14 @@ export default function ServingTray() {
         {item.customComments}
       </Text>
       {item.mods
-        ? item.mods.map((m) => (
+        ? item.mods.map((m, i) => (
             //Clean up mod naming conventions due to maps not liking spaces in the key
             //and other 'extra' keywords
             //Display all mods user chose
-            <Text style={{ color: "black", fontStyle: "italic" }}>
+            <Text
+              key={m + i}
+              style={{ color: "black", fontStyle: "italic" }}
+            >
               {m
                 .replace("_", " ")
                 .replace("->", ": ")
@@ -113,7 +148,23 @@ export default function ServingTray() {
       />
       {/* <Text>Total: {MakeCurrencyString(total)}</Text> */}
       <TouchableOpacity
-        onPress={() => {}}
+        onPress={async () => {
+          await schedulePushNotification();
+          await mockAcceptedNotification();
+
+          /**
+           * Tell the store that this order has been confirmed
+           */
+          dispatch({ type: "TRAY_CONFIRMED" });
+
+          // /**
+          //  * temporarily remove each item until the store can handle it
+          //  */
+          // for (let i = currentTray.length - 1; i >= 0; --i) {
+          //   dispatch({ type: "REMOVE_ITEM", payload: currentTray[i], index: i });
+          // }
+
+        }}
         accessibilityLabel="Confirm total purchase"
         style={styles.confirmButton}
       >
@@ -163,3 +214,28 @@ const styles = StyleSheet.create({
     bottom: 65,
   },
 });
+
+
+
+async function schedulePushNotification() {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Order Received",
+      body: 'Your order has been received by the restaurant!\nWe will let you know when your order is accepted!',
+      data: { data: await getData() },
+    },
+    trigger: { seconds: 2 },
+  });
+}
+
+
+async function mockAcceptedNotification() {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: "Order Accepted",
+      body: 'Your order has been accepted by the restaurant!\nWe will let you know when your order is ready!',
+      data: { data: await getData() },
+    },
+    trigger: { seconds: 30 },
+  });
+}

@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { Fragment, useState } from "react";
 import { StyleSheet, Platform } from "react-native";
 import { Text, View } from "../components/Themed";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -80,9 +80,8 @@ export default function StagingScreen({ route }) {
         {/*Check and display mandatory mods */}
         {mandatoryMods.length
           ? mandatoryMods.map((mod, index) => (
-              <>
+              <Fragment key={mod.modName + index}>
                 <View
-                  key={mod.modName + index}
                   style={{
                     width: "100%",
                     height: 60,
@@ -106,16 +105,14 @@ export default function StagingScreen({ route }) {
                   </Text>
                 </View>
                 <View
-                  key={index + mod.modName}
                   style={{ backgroundColor: "transparent", width: "100%" }}
                 >
                   {/**List out every option per mod */}
                   {mod.modOptions.map((opt, index) => {
                     var name = mod.modName;
                     return (
-                      <>
+                      <Fragment key={opt.option + index}>
                         <View
-                          key={`${opt}${index}`}
                           style={{
                             backgroundColor: "transparent",
                             flexDirection: "row",
@@ -165,20 +162,19 @@ export default function StagingScreen({ route }) {
                         <Card.Divider
                           style={{ marginBottom: 0 }}
                         ></Card.Divider>
-                      </>
+                      </Fragment>
                     );
                   })}
                 </View>
-              </>
+              </Fragment>
             ))
           : null}
 
         {/*Check and display optional mods */}
         {nonMandatoryMods.length
           ? nonMandatoryMods.map((mod, index) => (
-              <>
+              <Fragment key={mod.modName + index}>
                 <View
-                  key={mod.modName + index}
                   style={{
                     width: "100%",
                     height: 60,
@@ -198,14 +194,12 @@ export default function StagingScreen({ route }) {
                   </Text>
                 </View>
                 <View
-                  key={index}
                   style={{ backgroundColor: "transparent", width: "100%" }}
                 >
                   {mod.modOptions.map((opt, index) => {
                     return (
-                      <>
+                      <Fragment key={opt.option + index}>
                         <View
-                          key={opt + index}
                           style={{
                             backgroundColor: "transparent",
                             flex: 1,
@@ -283,11 +277,11 @@ export default function StagingScreen({ route }) {
                         <Card.Divider
                           style={{ marginBottom: 0 }}
                         ></Card.Divider>
-                      </>
+                      </Fragment>
                     );
                   })}
                 </View>
-              </>
+              </Fragment>
             ))
           : null}
         <View
