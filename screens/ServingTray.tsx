@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, FlatList, Button, TouchableOpacity, Platform } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, FlatList, Button, TouchableOpacity } from "react-native";
 import { Text, View } from "../components/Themed";
 import MenuItemComponent from "../components/MenuItemComponent";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -12,7 +12,6 @@ import { ServingTrayState } from "../store/reducers/types";
 
 /** imports for notifications */
 import * as Notifications from 'expo-notifications';
-import Constants from 'expo-constants';
 
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -73,29 +72,6 @@ export default function ServingTray() {
     0
   );
 
-  
-  const [expoPushToken, setExpoPushToken] = useState('');
-  const [notification, setNotification] = useState({});
-  const notificationListener: any = useRef();
-  const responseListener: any = useRef();
-
-  useEffect(() => {
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
-    });
-
-    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-      console.log(response);
-    });
-
-    return () => {
-      Notifications.removeNotificationSubscription(notificationListener);
-      Notifications.removeNotificationSubscription(responseListener);
-    };
-  }, []);
-
   /**
    * Creates components to populate the list
    *
@@ -116,11 +92,14 @@ export default function ServingTray() {
         {item.customComments}
       </Text>
       {item.mods
-        ? item.mods.map((m) => (
+        ? item.mods.map((m, i) => (
             //Clean up mod naming conventions due to maps not liking spaces in the key
             //and other 'extra' keywords
             //Display all mods user chose
-            <Text style={{ color: "black", fontStyle: "italic" }}>
+            <Text
+              key={m + i}
+              style={{ color: "black", fontStyle: "italic" }}
+            >
               {m
                 .replace("_", " ")
                 .replace("->", ": ")
@@ -258,36 +237,4 @@ async function mockAcceptedNotification() {
     },
     trigger: { seconds: 30 },
   });
-}
-
-
-async function registerForPushNotificationsAsync() {
-  let token;
-  if (Constants.isDevice) {
-    const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    let finalStatus = existingStatus;
-    if (existingStatus !== 'granted') {
-      const { status } = await Notifications.requestPermissionsAsync();
-      finalStatus = status;
-    }
-    if (finalStatus !== 'granted') {
-      alert('Failed to get push token for push notification!');
-      return;
-    }
-    token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
-  } else {
-    alert('Must use physical device for Push Notifications');
-  }
-
-  if (Platform.OS === 'android') {
-    Notifications.setNotificationChannelAsync('default', {
-      name: 'default',
-      importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
-      lightColor: '#FF231F7C',
-    });
-  }
-
-  return token;
 }
