@@ -13,20 +13,21 @@ import { ServingTrayState } from "../store/reducers/types";
 /** imports for notifications */
 import * as Notifications from 'expo-notifications';
 
-// import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// /**
-//  * Get the pushToken from local storage
-//  */
-// const getData = async () => {
-//   try {
-//     const jsonValue = await AsyncStorage.getItem('@pushToken')
-//     return jsonValue != null ? JSON.parse(jsonValue) : null;
-//   } catch(e) {
-//     // error reading value
-//     console.log('Async Storage Error', e)
-//   }
-// }
+/**
+ * Get the pushToken from local storage
+ */
+const getData = async () => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('@pushToken')
+    console.log('Async Storage Acessed')
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
+  } catch(e) {
+    // error reading value
+    console.log('Async Storage Error', e)
+  }
+} 
 
 interface Subscription {
   remove: () => void;
@@ -221,7 +222,7 @@ async function schedulePushNotification() {
     content: {
       title: "Order Received",
       body: 'Your order has been received by the restaurant!\nWe will let you know when your order is accepted!',
-      data: { data: '[unique id here]' },
+      data: { data: await getData() },
     },
     trigger: { seconds: 2 },
   });
@@ -233,7 +234,7 @@ async function mockAcceptedNotification() {
     content: {
       title: "Order Accepted",
       body: 'Your order has been accepted by the restaurant!\nWe will let you know when your order is ready!',
-      data: { data: '[unique id here]' },
+      data: { data: await getData() },
     },
     trigger: { seconds: 30 },
   });
