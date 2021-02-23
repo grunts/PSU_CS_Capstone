@@ -4,9 +4,11 @@ import { Text, View } from "./Themed";
 import { Ionicons } from '@expo/vector-icons';
 import { useHeaderHeight } from '@react-navigation/stack'
 import Constants from 'expo-constants';
+import { useTheme } from "@react-navigation/native";
 
 
 export default function TitleBarComponent({title, numItems, navigator}: {title: String, numItems: Number, navigator: any}) {
+    const { dark } = useTheme()
     return (
         <View style={styles.inline}>
           <TouchableOpacity
@@ -18,7 +20,7 @@ export default function TitleBarComponent({title, numItems, navigator}: {title: 
               {numItems}
             </Text>
           </View>
-          <Ionicons name="restaurant" size={30} />
+          <Ionicons name="restaurant" size={30} color={dark ? "white": "black"} />
         </TouchableOpacity>
         </View>
     );
