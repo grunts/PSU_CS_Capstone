@@ -5,42 +5,29 @@ import MenuItemComponent from "../components/MenuItemComponent";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MenuItem } from "../types";
 import SearchBar from "../components/SearchBar";
+import { useNavigation } from "@react-navigation/native"
 
 import { useSelector, useDispatch } from "react-redux";
 import { ServingTrayState } from "../store/reducers/types";
 
-
 /** imports for notifications */
-import * as Notifications from 'expo-notifications';
+import * as Notifications from "expo-notifications";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 /**
  * Get the pushToken from local storage
  */
 const getData = async (toGet) => {
   try {
-    const jsonValue = await AsyncStorage.getItem(toGet)
-    console.log('Async Storage Acessed')
+    const jsonValue = await AsyncStorage.getItem(toGet);
+    console.log("Async Storage Acessed");
     return jsonValue != null ? JSON.parse(jsonValue) : null;
-  } catch(e) {
+  } catch (e) {
     // error reading value
-    console.log('Async Storage Error', e)
+    console.log("Async Storage Error", e);
   }
-} 
-
-const updateHistory = async (tray) => {
-  const oldHistory = await getData('@orderHistory')
-  if(!oldHistory){
-    await AsyncStorage.setItem('@orderHistory', JSON.stringify(tray))
-  }
-  else {
-    const updatedHistory = oldHistory.concat(tray)
-    await AsyncStorage.setItem('@orderHistory', JSON.stringify(updatedHistory))
-  }
-  const oldHistory2 = await getData('@orderHistory')
-  console.log(oldHistory2)
-}
+};
 
 interface Subscription {
   remove: () => void;
@@ -70,10 +57,12 @@ export default function ServingTray() {
     (state: RootState) => state.servingTray
   );
 
+  const navigator = useNavigation()
+
   /**
    * Destructures tray contents
    */
-  const { currentTray } = tray;
+  const { currentTray, orderHistory, currentRestaurant } = tray;
 
   /**
    * retrieves redux dispatch functionality
@@ -110,10 +99,7 @@ export default function ServingTray() {
             //Clean up mod naming conventions due to maps not liking spaces in the key
             //and other 'extra' keywords
             //Display all mods user chose
-            <Text
-              key={m + i}
-              style={{ color: "black", fontStyle: "italic" }}
-            >
+            <Text key={m + i} style={{ color: "black", fontStyle: "italic" }}>
               {m
                 .replace("_", " ")
                 .replace("->", ": ")
@@ -138,7 +124,7 @@ export default function ServingTray() {
     </MenuItemComponent>
   );
 
-  return (
+  return currentTray.length ? (
     <View style={styles.container}>
       <SearchBar
         renderFunction={renderItem}
@@ -162,22 +148,8 @@ export default function ServingTray() {
       {/* <Text>Total: {MakeCurrencyString(total)}</Text> */}
       <TouchableOpacity
         onPress={async () => {
-          // await schedulePushNotification();
-          // await mockAcceptedNotification();
-
-          /**
-           * Tell the store that this order has been confirmed
-           */
-          await updateHistory(currentTray)
+          await schedulePushNotification(currentRestaurant);
           dispatch({ type: "TRAY_CONFIRMED" });
-
-          // /**
-          //  * temporarily remove each item until the store can handle it
-          //  */
-          // for (let i = currentTray.length - 1; i >= 0; --i) {
-          //   dispatch({ type: "REMOVE_ITEM", payload: currentTray[i], index: i });
-          // }
-
         }}
         accessibilityLabel="Confirm total purchase"
         style={styles.confirmButton}
@@ -186,6 +158,19 @@ export default function ServingTray() {
           Confirm - {MakeCurrencyString(total)}
         </Text>
       </TouchableOpacity>
+    </View>
+  ) : (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "transparent",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Text style={{ fontSize: 25, textAlign: "center", padding: 10 }}>
+        Your serving tray is empty! {orderHistory.length ? "Your previous trays can be found in the order tab." : ""}
+      </Text>
     </View>
   );
 }
@@ -229,27 +214,14 @@ const styles = StyleSheet.create({
   },
 });
 
-
-
-async function schedulePushNotification() {
+async function schedulePushNotification(place) {
   await Notifications.scheduleNotificationAsync({
     content: {
       title: "Order Received",
-      body: 'Your order has been received by the restaurant!\nWe will let you know when your order is accepted!',
-      data: { data: await getData('@pushToken') },
+      body:
+        `Your order has been received by ${place}!\nWe will let you know when your order is accepted!`,
+      data: { data: await getData("@pushToken") },
     },
     trigger: { seconds: 2 },
-  });
-}
-
-
-async function mockAcceptedNotification() {
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: "Order Accepted",
-      body: 'Your order has been accepted by the restaurant!\nWe will let you know when your order is ready!',
-      data: { data: await getData('@pushToken') },
-    },
-    trigger: { seconds: 30 },
   });
 }

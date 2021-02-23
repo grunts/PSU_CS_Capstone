@@ -1,34 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, FlatList, Button, TouchableOpacity } from "react-native";
 import { Text, View } from "../components/Themed";
 import MenuItemComponent from "../components/MenuItemComponent";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MenuItem } from "../types";
-import SearchBar from "../components/SearchBar";
 
 import { useSelector, useDispatch } from "react-redux";
 import { ServingTrayState } from "../store/reducers/types";
 
-
 /** imports for notifications */
-import * as Notifications from 'expo-notifications';
+import * as Notifications from "expo-notifications";
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 /**
  * Get the pushToken from local storage
  */
 const getData = async (toGet) => {
   try {
-    const jsonValue = await AsyncStorage.getItem(toGet)
-    console.log('Async Storage Acessed')
+    const jsonValue = await AsyncStorage.getItem(toGet);
+    console.log("Async Storage Acessed");
     return jsonValue != null ? JSON.parse(jsonValue) : null;
-  } catch(e) {
+  } catch (e) {
     // error reading value
-    console.log('Async Storage Error', e)
+    console.log("Async Storage Error", e);
   }
-} 
-
+};
 
 interface Subscription {
   remove: () => void;
@@ -61,7 +57,7 @@ export default function ServingTray() {
   /**
    * Destructures tray contents
    */
-  const { orderHistory } = tray;
+  const { orderHistory, currentRestaurant } = tray;
 
   /**
    * retrieves redux dispatch functionality
@@ -69,7 +65,7 @@ export default function ServingTray() {
   const dispatch = useDispatch();
 
   // Sums the price of all the serving tray items
-  const total = orderHistory[0].reduce(
+  const total = orderHistory.reduce(
     (accumulator, currentItem) => (accumulator += currentItem.price),
     0
   );
@@ -98,10 +94,7 @@ export default function ServingTray() {
             //Clean up mod naming conventions due to maps not liking spaces in the key
             //and other 'extra' keywords
             //Display all mods user chose
-            <Text
-              key={m + i}
-              style={{ color: "black", fontStyle: "italic" }}
-            >
+            <Text key={m + i} style={{ color: "black", fontStyle: "italic" }}>
               {m
                 .replace("_", " ")
                 .replace("->", ": ")
@@ -111,25 +104,13 @@ export default function ServingTray() {
             </Text>
           ))
         : null}
-      <MaterialCommunityIcons.Button
-        name="tray-minus"
-        onPress={() =>
-          dispatch({ type: "REMOVE_ITEM", payload: item, index: index })
-        }
-        size={26}
-        color="#a28"
-        backgroundColor="white"
-        accessibilityLabel="Remove item from tray"
-      >
-        Remove
-      </MaterialCommunityIcons.Button>
     </MenuItemComponent>
   );
 
-  return (
+  return orderHistory.length ? (
     <View style={styles.container}>
       <FlatList
-        data={orderHistory[0]}
+        data={orderHistory}
         renderItem={renderItem}
         keyExtractor={(item, index) => item.name + index}
         contentContainerStyle={{
@@ -142,24 +123,13 @@ export default function ServingTray() {
           <View style={{ padding: 50, backgroundColor: "white" }}></View>
         }
       />
-      {/* <Text>Total: {MakeCurrencyString(total)}</Text> */}
       <TouchableOpacity
         onPress={async () => {
-          // await schedulePushNotification();
-          // await mockAcceptedNotification();
-
-          /**
-           * Tell the store that this order has been confirmed
-           */
-        //   dispatch({ type: "TRAY_CONFIRMED" });
-
-          // /**
-          //  * temporarily remove each item until the store can handle it
-          //  */
-          // for (let i = currentTray.length - 1; i >= 0; --i) {
-          //   dispatch({ type: "REMOVE_ITEM", payload: currentTray[i], index: i });
-          // }
-
+          if (!orderHistory.length) {
+            return;
+          }
+          await mockAcceptedNotification(currentRestaurant);
+          dispatch({ type: "CLOSE_TAB" });
         }}
         accessibilityLabel="Confirm total purchase"
         style={styles.confirmButton}
@@ -168,6 +138,17 @@ export default function ServingTray() {
           Close tab - {MakeCurrencyString(total)}
         </Text>
       </TouchableOpacity>
+    </View>
+  ) : (
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: "transparent",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Text style={{fontSize: 25, textAlign: "center", padding: 10}}>There is nothing here!</Text>
     </View>
   );
 }
@@ -207,31 +188,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     left: 50,
-    bottom: 65,
+    bottom: 10,
   },
 });
 
-
-
-async function schedulePushNotification() {
+async function mockAcceptedNotification(place) {
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: "Order Received",
-      body: 'Your order has been received by the restaurant!\nWe will let you know when your order is accepted!',
-      data: { data: await getData('@pushToken') },
+      title: "Your tab has been closed!",
+      body: `Thank you for dining with ${place}!`,
+      data: { data: await getData("@pushToken") },
     },
-    trigger: { seconds: 2 },
-  });
-}
-
-
-async function mockAcceptedNotification() {
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: "Order Accepted",
-      body: 'Your order has been accepted by the restaurant!\nWe will let you know when your order is ready!',
-      data: { data: await getData('@pushToken') },
-    },
-    trigger: { seconds: 30 },
+    trigger: { seconds: 5 },
   });
 }

@@ -2,6 +2,7 @@ import { MenuItem } from '../../types'
 export const ADD_ITEM = 'ADD_ITEM'
 export const REMOVE_ITEM = 'REMOVE_ITEM'
 export const TRAY_CONFIRMED = 'TRAY_CONFIRMED'
+export const CLOSE_TAB = 'CLOSE_TAB'
 
 export interface ServingTrayState {
     currentTray: MenuItem[]
@@ -28,4 +29,8 @@ interface TrayConfirmed{
     type: typeof TRAY_CONFIRMED
 }
 
-export type ServingTrayActionTypes = AddMenuItem | RemoveMenuItem | TrayConfirmed
+interface CloseTab{
+    type: typeof CLOSE_TAB
+}
+
+export type ServingTrayActionTypes = AddMenuItem | RemoveMenuItem | TrayConfirmed | CloseTab
