@@ -3,24 +3,39 @@ import { StyleSheet, Platform } from "react-native";
 import { Text, View } from "../components/Themed";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import { Image, ScrollView } from "react-native";
+import {
+  Image,
+  ScrollView,
+  Modal,
+  Alert,
+  TextInput,
+  KeyboardAvoidingView,
+  TouchableHighlight,
+} from "react-native";
 import { Card } from "react-native-elements";
 import InputSpinner from "react-native-input-spinner";
-import { TextInput, KeyboardAvoidingView } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { CheckBox } from "react-native-elements";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function StagingScreen({ route }) {
   const [quantity, setQuantity] = React.useState(1);
+  const [modalVisible, setModalVisible] = useState(false);
   const myMenuItem = route.params.MenuItem;
+  //focusedRest is the restaurant menu that the user is currently viewing
+  const focusedRest = route.params.restaurant;
   const [comments, setComments] = React.useState("");
   const [checked, setChecked] = React.useState({
     adtlCharges: 0,
     mods: new Map(),
   });
   const navigation = useNavigation();
-  const tray = useSelector((state) => state.servingTray);
+  //currentRest is the restaurant they have started an order with
+  const currentRest = useSelector(
+    (state) => state.servingTray.currentRestaurant
+  );
+
   const dispatch = useDispatch();
 
   const {
@@ -45,6 +60,38 @@ export default function StagingScreen({ route }) {
       contentContainerStyle={{ flex: 1 }}
       keyboardVerticalOffset={0}
     >
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <AntDesign
+              name="exclamationcircleo"
+              size={30}
+              color="#a28"
+              style={{ marginTop: 0, paddingBottom: 12 }}
+            />
+            <Text style={styles.modalText}>
+              Orders cannot include items from multiple restaurants. Please
+              complete your current order or start a new one to change
+              locations.
+            </Text>
+            <TouchableHighlight
+              style={{ ...styles.openButton, backgroundColor: "#a2006d" }}
+              onPress={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <Text style={styles.textStyle}>Got it!</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
       <ScrollView
         style={styles.container}
         contentContainerStyle={{ paddingBottom: 100 }}
@@ -104,9 +151,7 @@ export default function StagingScreen({ route }) {
                     Required
                   </Text>
                 </View>
-                <View
-                  style={{ backgroundColor: "transparent", width: "100%" }}
-                >
+                <View style={{ backgroundColor: "transparent", width: "100%" }}>
                   {/**List out every option per mod */}
                   {mod.modOptions.map((opt, index) => {
                     var name = mod.modName;
@@ -193,9 +238,7 @@ export default function StagingScreen({ route }) {
                     {mod.modName}
                   </Text>
                 </View>
-                <View
-                  style={{ backgroundColor: "transparent", width: "100%" }}
-                >
+                <View style={{ backgroundColor: "transparent", width: "100%" }}>
                   {mod.modOptions.map((opt, index) => {
                     return (
                       <Fragment key={opt.option + index}>
@@ -353,6 +396,13 @@ export default function StagingScreen({ route }) {
       >
         <MaterialCommunityIcons.Button
           onPress={() => {
+            if (currentRest && currentRest !== focusedRest) {
+              setModalVisible(true);
+              // alert(
+              //   "Orders cannot include items from multiple restaurants.\nPlease complete your current order or start a new one to change locations."
+              // );
+              return;
+            }
             for (let i = 0; i < quantity; ++i) {
               //Add each item to the redux store for later checkout with
               //the additonal comments and info
@@ -367,6 +417,7 @@ export default function StagingScreen({ route }) {
                 comments: comments,
                 adtlCharges: checked.adtlCharges,
                 mods: arratize,
+                currentRestaurant: focusedRest,
               });
             }
             //send the user back to the menu screen after their order has been placed
@@ -415,5 +466,47 @@ const styles = StyleSheet.create({
   spinner: {
     // margin: 15,
     alignSelf: "center",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+    backgroundColor: "transparent",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    paddingTop: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    backgroundColor: "#a28",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    paddingLeft: 40,
+    paddingRight: 40,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "500",
   },
 });

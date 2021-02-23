@@ -1,9 +1,12 @@
 import { MenuItem } from '../../types'
 export const ADD_ITEM = 'ADD_ITEM'
 export const REMOVE_ITEM = 'REMOVE_ITEM'
+export const TRAY_CONFIRMED = 'TRAY_CONFIRMED'
 
 export interface ServingTrayState {
     currentTray: MenuItem[]
+    currentRestaurant: string | null,
+    orderHistory: MenuItem[]
   }
 
 interface AddMenuItem {
@@ -11,7 +14,8 @@ interface AddMenuItem {
     payload: MenuItem
     comments: string
     adtlCharges: number
-    mods: string[]
+    mods: string[],
+    currentRestaurant: string
 }
 
 interface RemoveMenuItem {
@@ -20,4 +24,8 @@ interface RemoveMenuItem {
     index: number
 }
 
-export type ServingTrayActionTypes = AddMenuItem | RemoveMenuItem
+interface TrayConfirmed{
+    type: typeof TRAY_CONFIRMED
+}
+
+export type ServingTrayActionTypes = AddMenuItem | RemoveMenuItem | TrayConfirmed
