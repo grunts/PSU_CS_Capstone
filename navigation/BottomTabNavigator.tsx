@@ -10,12 +10,17 @@ import TabTwoScreen from "../screens/TabTwoScreen";
 import TabThreeScreen from "../screens/OrderHistory";
 import StagingScreen from "../screens/StagingScreen";
 import ServingTray from "../screens/ServingTray";
-import { BottomTabParamList, TabOneParamList, TabTwoParamList, TabThreeParamList } from "../types";
+import {
+  BottomTabParamList,
+  TabOneParamList,
+  TabTwoParamList,
+  TabThreeParamList,
+} from "../types";
 import TitleBarComponent from "../components/TitleBarComponent";
 import { enableScreens } from "react-native-screens";
 import { useSelector, useDispatch } from "react-redux";
-import { Text } from "react-native";
-import { Entypo } from '@expo/vector-icons';
+import { Text, View, StyleSheet } from "react-native";
+import { Entypo } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 /**This creates a new Navigator to manage switching between list view and map view using the bottom tabs.
  * We give "BottomTab" a type: "BottomTabParamList" - this identifies which object types are valid to use
@@ -27,6 +32,8 @@ enableScreens(true);
 /**Create the BottomTabNavigator and export it.*/
 export default function BottomTabNavigator() {
   const colorScheme = useColorScheme();
+  const tray = useSelector((state) => state.servingTray);
+  const {orderHistory} = tray
   return (
     /**The BottomTab Navigator will have two screens.  The initially displayed screen will be TabOne.
      * The BottomTab will also have some style properties set - namely it will be colored based on the
@@ -65,14 +72,20 @@ export default function BottomTabNavigator() {
         component={TabThreeNavigator}
         options={{
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="newspaper-outline" color={color} />
+            <View>
+              <TabBarIcon name="newspaper-outline" color={color} />
+              {orderHistory.length ? (
+                <View style={styles.container2}>
+                  <Text style={{ color: "white", fontWeight: "bold" }}>{orderHistory.length}</Text>
+                </View>
+              ) : null}
+            </View>
           ),
         }}
       />
     </BottomTab.Navigator>
   );
 }
-
 /**This creates a TabBarIcon JSX element with the given properties.*/
 // You can explore the built-in icon families and icons on the web at:
 // https://icons.expo.fyi/
@@ -118,20 +131,29 @@ function TabOneNavigator({ navigation }: { navigation: any }) {
        * (the route object contains the restaurant object as part of its type definition) to extract the name
        * of the restaurant to be used as the title.  If there is no restaurant name in the route object, then
        * the title gets set to "The Menu"*/}
-  
+
       <TabOneStack.Screen
         name="MenuScreen"
         component={MenuScreen}
         options={({ route }) => ({
           headerTitle: () => (
-            <Text style={{ fontSize: 18, fontWeight: "bold", textAlign: "center", color: useTheme().dark ? "white": "black"}}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "bold",
+                textAlign: "center",
+                color: useTheme().dark ? "white" : "black",
+              }}
+            >
               {route.params.restaurant.name.length < 17
                 ? route.params.restaurant.name
                 : route.params.restaurant.name.substring(0, 17) + "..."}
-                
             </Text>
           ),
-          headerTitleContainerStyle: { alignContent: "center", alignSelf: "center"},
+          headerTitleContainerStyle: {
+            alignContent: "center",
+            alignSelf: "center",
+          },
           headerBackTitle: "Back",
         })}
       />
@@ -139,7 +161,6 @@ function TabOneNavigator({ navigation }: { navigation: any }) {
         name="StagingScreen"
         component={StagingScreen}
         options={{
-          
           headerTitle: "Customize Your Order",
           headerBackTitle: "Back",
         }}
@@ -184,7 +205,13 @@ function TabTwoNavigator({ navigation }: { navigation: any }) {
         component={MenuScreen}
         options={({ route }) => ({
           headerTitle: () => (
-            <Text style={{ fontSize: 18, fontWeight: "bold", color: useTheme().dark ? "white" : "black" }}>
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "bold",
+                color: useTheme().dark ? "white" : "black",
+              }}
+            >
               {route.params.restaurant.name.length < 17
                 ? route.params.restaurant.name
                 : route.params.restaurant.name.substring(0, 17) + "..."}
@@ -202,8 +229,6 @@ function TabTwoNavigator({ navigation }: { navigation: any }) {
     </TabTwoStack.Navigator>
   );
 }
-
-
 
 const TabThreeStack = createStackNavigator<TabThreeParamList>();
 function TabThreeNavigator({ navigation }: { navigation: any }) {
@@ -232,6 +257,22 @@ function TabThreeNavigator({ navigation }: { navigation: any }) {
     </TabThreeStack.Navigator>
   );
 }
+
+const styles = StyleSheet.create({
+  container2: {
+    position: "absolute",
+    height: 18,
+    width: 18,
+    borderRadius: 9,
+    backgroundColor: "#a28",
+    opacity: 0.7,
+    right: 19,
+    bottom: -4,
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 2000,
+  },
+});
 /* abandon and delete this comment if there's not enough time to implement
 const AllTabs = StackNavigator(
 {
