@@ -1,10 +1,5 @@
-<<<<<<< HEAD
 import React from "react";
 import { StyleSheet, FlatList, TouchableOpacity } from "react-native";
-=======
-import React, { useState } from "react";
-import { StyleSheet, FlatList, Button, TouchableOpacity } from "react-native";
->>>>>>> 164f6994483ca7ba34b12198bee350c7efcc4feb
 import { Text, View } from "../components/Themed";
 import MenuItemComponent from "../components/MenuItemComponent";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
