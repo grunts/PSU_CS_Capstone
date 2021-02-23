@@ -7,13 +7,15 @@ import useColorScheme from "../hooks/useColorScheme";
 import MenuScreen from "../screens/MenuScreen";
 import TabOneScreen from "../screens/TabOneScreen";
 import TabTwoScreen from "../screens/TabTwoScreen";
+import TabThreeScreen from "../screens/OrderHistory";
 import StagingScreen from "../screens/StagingScreen";
 import ServingTray from "../screens/ServingTray";
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from "../types";
+import { BottomTabParamList, TabOneParamList, TabTwoParamList, TabThreeParamList } from "../types";
 import TitleBarComponent from "../components/TitleBarComponent";
 import { enableScreens } from "react-native-screens";
 import { useSelector, useDispatch } from "react-redux";
 import { Text } from "react-native";
+import { Entypo } from '@expo/vector-icons';
 /**This creates a new Navigator to manage switching between list view and map view using the bottom tabs.
  * We give "BottomTab" a type: "BottomTabParamList" - this identifies which object types are valid to use
  * as components for each Screen of the Navigator.*/
@@ -53,6 +55,16 @@ export default function BottomTabNavigator() {
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="map-outline" color={color} />
+          ),
+        }}
+      />
+
+      <BottomTab.Screen
+        name="Order"
+        component={TabThreeNavigator}
+        options={{
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="newspaper-outline" color={color} />
           ),
         }}
       />
@@ -110,13 +122,13 @@ function TabOneNavigator({ navigation }: { navigation: any }) {
         component={MenuScreen}
         options={({ route }) => ({
           headerTitle: () => (
-            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+            <Text style={{ fontSize: 18, fontWeight: "bold", textAlign: "center" }}>
               {route.params.restaurant.name.length < 17
                 ? route.params.restaurant.name
                 : route.params.restaurant.name.substring(0, 17) + "..."}
             </Text>
           ),
-          headerTitleContainerStyle: { left: 0 },
+          headerTitleContainerStyle: { alignContent: "center", alignSelf: "center"},
           headerBackTitle: "Back",
         })}
       />
@@ -187,6 +199,35 @@ function TabTwoNavigator({ navigation }: { navigation: any }) {
   );
 }
 
+
+
+const TabThreeStack = createStackNavigator<TabThreeParamList>();
+function TabThreeNavigator({ navigation }: { navigation: any }) {
+  const tray = useSelector((state) => state.servingTray);
+  return (
+    <TabThreeStack.Navigator
+      initialRouteName="TabThreeScreen"
+      screenOptions={{
+        headerRight: () => (
+          <TitleBarComponent
+            title="Restaurants"
+            numItems={tray.currentTray.length}
+            navigator={navigation}
+          />
+        ),
+      }}
+    >
+      <TabThreeStack.Screen
+        name="TabThreeScreen"
+        component={TabThreeScreen}
+        options={{
+          headerTitle: "Your Order",
+          headerBackTitle: "Back",
+        }}
+      />
+    </TabThreeStack.Navigator>
+  );
+}
 /* abandon and delete this comment if there's not enough time to implement
 const AllTabs = StackNavigator(
 {

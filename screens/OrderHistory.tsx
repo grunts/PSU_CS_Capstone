@@ -29,18 +29,6 @@ const getData = async (toGet) => {
   }
 } 
 
-const updateHistory = async (tray) => {
-  const oldHistory = await getData('@orderHistory')
-  if(!oldHistory){
-    await AsyncStorage.setItem('@orderHistory', JSON.stringify(tray))
-  }
-  else {
-    const updatedHistory = oldHistory.concat(tray)
-    await AsyncStorage.setItem('@orderHistory', JSON.stringify(updatedHistory))
-  }
-  const oldHistory2 = await getData('@orderHistory')
-  console.log(oldHistory2)
-}
 
 interface Subscription {
   remove: () => void;
@@ -73,7 +61,7 @@ export default function ServingTray() {
   /**
    * Destructures tray contents
    */
-  const { currentTray } = tray;
+  const { orderHistory } = tray;
 
   /**
    * retrieves redux dispatch functionality
@@ -81,7 +69,7 @@ export default function ServingTray() {
   const dispatch = useDispatch();
 
   // Sums the price of all the serving tray items
-  const total = currentTray.reduce(
+  const total = orderHistory[0].reduce(
     (accumulator, currentItem) => (accumulator += currentItem.price),
     0
   );
@@ -140,13 +128,8 @@ export default function ServingTray() {
 
   return (
     <View style={styles.container}>
-      <SearchBar
-        renderFunction={renderItem}
-        dataToBeSearched={currentTray}
-        fieldToSearch={"name"}
-      />
       <FlatList
-        data={currentTray}
+        data={orderHistory[0]}
         renderItem={renderItem}
         keyExtractor={(item, index) => item.name + index}
         contentContainerStyle={{
@@ -168,8 +151,7 @@ export default function ServingTray() {
           /**
            * Tell the store that this order has been confirmed
            */
-          await updateHistory(currentTray)
-          dispatch({ type: "TRAY_CONFIRMED" });
+        //   dispatch({ type: "TRAY_CONFIRMED" });
 
           // /**
           //  * temporarily remove each item until the store can handle it
@@ -183,7 +165,7 @@ export default function ServingTray() {
         style={styles.confirmButton}
       >
         <Text style={{ color: "white" }}>
-          Confirm - {MakeCurrencyString(total)}
+          Close tab - {MakeCurrencyString(total)}
         </Text>
       </TouchableOpacity>
     </View>
