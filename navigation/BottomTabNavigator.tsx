@@ -14,6 +14,7 @@ import TitleBarComponent from "../components/TitleBarComponent";
 import { enableScreens } from "react-native-screens";
 import { useSelector, useDispatch } from "react-redux";
 import { Text } from "react-native";
+import { useTheme } from "@react-navigation/native";
 /**This creates a new Navigator to manage switching between list view and map view using the bottom tabs.
  * We give "BottomTab" a type: "BottomTabParamList" - this identifies which object types are valid to use
  * as components for each Screen of the Navigator.*/
@@ -105,18 +106,20 @@ function TabOneNavigator({ navigation }: { navigation: any }) {
        * (the route object contains the restaurant object as part of its type definition) to extract the name
        * of the restaurant to be used as the title.  If there is no restaurant name in the route object, then
        * the title gets set to "The Menu"*/}
+  
       <TabOneStack.Screen
         name="MenuScreen"
         component={MenuScreen}
         options={({ route }) => ({
           headerTitle: () => (
-            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+            <Text style={{ fontSize: 18, fontWeight: "bold", textAlign: "center", color: useTheme().dark ? "white": "black"}}>
               {route.params.restaurant.name.length < 17
                 ? route.params.restaurant.name
                 : route.params.restaurant.name.substring(0, 17) + "..."}
+                
             </Text>
           ),
-          headerTitleContainerStyle: { left: 0 },
+          headerTitleContainerStyle: { alignContent: "center", alignSelf: "center"},
           headerBackTitle: "Back",
         })}
       />
@@ -124,6 +127,7 @@ function TabOneNavigator({ navigation }: { navigation: any }) {
         name="StagingScreen"
         component={StagingScreen}
         options={{
+          
           headerTitle: "Customize Your Order",
           headerBackTitle: "Back",
         }}
@@ -168,7 +172,7 @@ function TabTwoNavigator({ navigation }: { navigation: any }) {
         component={MenuScreen}
         options={({ route }) => ({
           headerTitle: () => (
-            <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+            <Text style={{ fontSize: 18, fontWeight: "bold", color: useTheme().dark ? "white" : "black" }}>
               {route.params.restaurant.name.length < 17
                 ? route.params.restaurant.name
                 : route.params.restaurant.name.substring(0, 17) + "..."}
