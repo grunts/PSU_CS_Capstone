@@ -52,6 +52,7 @@ export default function StagingScreen({ route }) {
   let updateComments = (comments) => {
     setComments(comments);
   };
+  
   return (
     // We want to wrap this all in a KeyBoardAvoiding view so that when the user wants to type something they can see
     <KeyboardAvoidingView
@@ -508,5 +509,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
     fontWeight: "500",
+    color: "black"
   },
 });
