@@ -1,9 +1,8 @@
 import React, { ReactNode } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Avatar, ListItem } from 'react-native-elements';
 import { MenuItem } from '../types';
 import { useNavigation } from '@react-navigation/native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 

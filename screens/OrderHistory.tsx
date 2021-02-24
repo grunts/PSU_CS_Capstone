@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, FlatList, Button, TouchableOpacity } from "react-native";
+import { StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { Text, View } from "../components/Themed";
 import { MenuItem } from "../types";
 
@@ -26,25 +26,12 @@ const getData = async (toGet) => {
   }
 };
 
-interface Subscription {
-  remove: () => void;
-}
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
-
 interface RootState {
   servingTray: ServingTrayState;
 }
 
 /**
- * Creates serving tray screen
- * Populates a flatlist that includes a button to remove that item by dispatching redux action
+ * Creates order history screen
  */
 export default function ServingTray() {
   /**
@@ -71,9 +58,9 @@ export default function ServingTray() {
   );
 
   /**
-   * Creates components to populate the list
-   *
-   * @param {object} params Item info and index in array
+   This renderItem creates a condensed order history that is greyed out
+   to reflect that the order is final at this point and the information has
+   been delivered to the establishment
    */
   const renderItem = ({ item, index }: { item: MenuItem; index: number }) => (
     <ListItem
@@ -105,7 +92,7 @@ export default function ServingTray() {
           ? item.mods.map((m, i) => (
               //Clean up mod naming conventions due to maps not liking spaces in the key
               //and other 'extra' keywords
-              //Display all mods user chose
+              //Display all mods user choices ina friendly way
               <Text key={m + i} style={{ color: "black", fontStyle: "italic" }}>
                 {m
                   .replace("_", " ")
@@ -120,6 +107,8 @@ export default function ServingTray() {
     </ListItem>
   );
 
+  //If they have an orderHistory display it and allow for closing the tab, otherwise
+  //just display a message letting them know the car is empty
   return orderHistory.length ? (
     <View style={styles.container}>
       <FlatList
@@ -141,7 +130,9 @@ export default function ServingTray() {
           if (!orderHistory.length) {
             return;
           }
+          //Simulate a server triggering that the order has been processed and tab is closed
           await mockAcceptedNotification(currentRestaurant);
+          //Clear the redux store
           dispatch({ type: "CLOSE_TAB" });
         }}
         accessibilityLabel="Confirm total purchase"

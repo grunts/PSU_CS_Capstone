@@ -2,10 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Dimensions } from "react-native";
 import * as Location from 'expo-location';
 import Region from "../constants/Region";
-import EditScreenInfo from "../components/EditScreenInfo";
 import MapComponent from "../components/MapComponent";
 import { Text, View } from "../components/Themed";
-const restaurants = require("../mock/restaurant");
 
 export default function TabTwoScreen({navigation}: {navigation: any}) {
   const [errorMsg, setErrorMsg] = useState("");

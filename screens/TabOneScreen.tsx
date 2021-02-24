@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet } from "react-native";
 import { View } from "../components/Themed";
 import ScrollListComponent from "../components/ListViewScroll";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import CheckoutButton from "../components/CheckoutButton";
 
 export default function TabOneScreen({ navigation }: { navigation: any }) {

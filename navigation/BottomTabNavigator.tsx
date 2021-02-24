@@ -18,9 +18,8 @@ import {
 } from "../types";
 import TitleBarComponent from "../components/TitleBarComponent";
 import { enableScreens } from "react-native-screens";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Text, View, StyleSheet } from "react-native";
-import { Entypo } from "@expo/vector-icons";
 import { useTheme } from "@react-navigation/native";
 /**This creates a new Navigator to manage switching between list view and map view using the bottom tabs.
  * We give "BottomTab" a type: "BottomTabParamList" - this identifies which object types are valid to use

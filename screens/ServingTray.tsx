@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { StyleSheet, FlatList, Button, TouchableOpacity } from "react-native";
+import React from "react";
+import { StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { Text, View } from "../components/Themed";
 import MenuItemComponent from "../components/MenuItemComponent";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -124,6 +124,7 @@ export default function ServingTray() {
     </MenuItemComponent>
   );
 
+  //If the tray has contents display them, otherwise display a message saying it is empty
   return currentTray.length ? (
     <View style={styles.container}>
       <SearchBar
