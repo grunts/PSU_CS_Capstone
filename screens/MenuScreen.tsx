@@ -6,7 +6,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import SearchBar from "../components/SearchBar";
 import CheckoutButton from "../components/CheckoutButton";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 //Get the pushToken from local storage
 // const getData = async () => {

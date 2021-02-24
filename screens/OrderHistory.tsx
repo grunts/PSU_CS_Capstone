@@ -1,12 +1,9 @@
 import React from "react";
 import { StyleSheet, FlatList, TouchableOpacity } from "react-native";
 import { Text, View } from "../components/Themed";
-import MenuItemComponent from "../components/MenuItemComponent";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MenuItem } from "../types";
-import SearchBar from "../components/SearchBar";
-import { useNavigation } from "@react-navigation/native"
 
+import { Avatar, ListItem } from "react-native-elements";
 import { useSelector, useDispatch } from "react-redux";
 import { ServingTrayState } from "../store/reducers/types";
 
@@ -29,25 +26,12 @@ const getData = async (toGet) => {
   }
 };
 
-interface Subscription {
-  remove: () => void;
-}
-
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
-
 interface RootState {
   servingTray: ServingTrayState;
 }
 
 /**
- * Creates serving tray screen
- * Populates a flatlist that includes a button to remove that item by dispatching redux action
+ * Creates order history screen
  */
 export default function ServingTray() {
   /**
@@ -57,12 +41,10 @@ export default function ServingTray() {
     (state: RootState) => state.servingTray
   );
 
-  const navigator = useNavigation()
-
   /**
    * Destructures tray contents
    */
-  const { currentTray, orderHistory, currentRestaurant } = tray;
+  const { orderHistory, currentRestaurant } = tray;
 
   /**
    * retrieves redux dispatch functionality
@@ -70,70 +52,67 @@ export default function ServingTray() {
   const dispatch = useDispatch();
 
   // Sums the price of all the serving tray items
-  const total = currentTray.reduce(
+  const total = orderHistory.reduce(
     (accumulator, currentItem) => (accumulator += currentItem.price),
     0
   );
 
   /**
-   * Creates components to populate the list
-   *
-   * @param {object} params Item info and index in array
+   This renderItem creates a condensed order history that is greyed out
+   to reflect that the order is final at this point and the information has
+   been delivered to the establishment
    */
   const renderItem = ({ item, index }: { item: MenuItem; index: number }) => (
-    <MenuItemComponent menuItem={item}>
-      {/**
-       * Use a convenient button component from Material-Community-icons to create an remove from tray button.
-       * */}
-      <Text
-        style={{
-          color: "black",
-          fontStyle: "italic",
-          fontSize: 12,
-        }}
-      >
-        {item.customComments}
-      </Text>
-      {item.mods
-        ? item.mods.map((m, i) => (
-            //Clean up mod naming conventions due to maps not liking spaces in the key
-            //and other 'extra' keywords
-            //Display all mods user chose
-            <Text key={m + i} style={{ color: "black", fontStyle: "italic" }}>
-              {m
-                .replace("_", " ")
-                .replace("->", ": ")
-                .replace("?", "")
-                .replace("(recommended)", "")
-                .trim()}
-            </Text>
-          ))
-        : null}
-      <MaterialCommunityIcons.Button
-        name="tray-minus"
-        onPress={() =>
-          dispatch({ type: "REMOVE_ITEM", payload: item, index: index })
-        }
-        size={26}
-        color="#a28"
-        backgroundColor="white"
-        accessibilityLabel="Remove item from tray"
-      >
-        Remove
-      </MaterialCommunityIcons.Button>
-    </MenuItemComponent>
+    <ListItem
+      containerStyle={{
+        backgroundColor: "gray",
+        opacity: 0.6,
+        borderBottomColor: "black",
+        borderBottomWidth: 1,
+      }}
+    >
+      {/**A simple picture element for holding an image of the food item.*/}
+      <Avatar size="large" source={{ uri: item.image }} />
+      {/**The Content component holds the body of the data in the list item.*/}
+      <ListItem.Content>
+        <ListItem.Title style={{ fontSize: 20 }}>
+          {item.name} {`$${Number(item.price).toFixed(2)}`}
+        </ListItem.Title>
+        <ListItem.Subtitle>{item.longDesc}</ListItem.Subtitle>
+        <Text
+          style={{
+            color: "black",
+            fontStyle: "italic",
+            fontSize: 12,
+          }}
+        >
+          {item.customComments}
+        </Text>
+        {item.mods
+          ? item.mods.map((m, i) => (
+              //Clean up mod naming conventions due to maps not liking spaces in the key
+              //and other 'extra' keywords
+              //Display all mods user choices ina friendly way
+              <Text key={m + i} style={{ color: "black", fontStyle: "italic" }}>
+                {m
+                  .replace("_", " ")
+                  .replace("->", ": ")
+                  .replace("?", "")
+                  .replace("(recommended)", "")
+                  .trim()}
+              </Text>
+            ))
+          : null}
+      </ListItem.Content>
+    </ListItem>
   );
 
-  //If the tray has contents display them, otherwise display a message saying it is empty
-  return currentTray.length ? (
+  //If they have an orderHistory display it and allow for closing the tab, otherwise
+  //just display a message letting them know the car is empty
+  return orderHistory.length ? (
     <View style={styles.container}>
-      <SearchBar
-        renderFunction={renderItem}
-        dataToBeSearched={currentTray}
-        fieldToSearch={"name"}
-      />
       <FlatList
-        data={currentTray}
+        data={orderHistory}
         renderItem={renderItem}
         keyExtractor={(item, index) => item.name + index}
         contentContainerStyle={{
@@ -146,17 +125,21 @@ export default function ServingTray() {
           <View style={{ padding: 50, backgroundColor: "white" }}></View>
         }
       />
-      {/* <Text>Total: {MakeCurrencyString(total)}</Text> */}
       <TouchableOpacity
         onPress={async () => {
-          await schedulePushNotification(currentRestaurant);
-          dispatch({ type: "TRAY_CONFIRMED" });
+          if (!orderHistory.length) {
+            return;
+          }
+          //Simulate a server triggering that the order has been processed and tab is closed
+          await mockAcceptedNotification(currentRestaurant);
+          //Clear the redux store
+          dispatch({ type: "CLOSE_TAB" });
         }}
         accessibilityLabel="Confirm total purchase"
         style={styles.confirmButton}
       >
         <Text style={{ color: "white" }}>
-          Confirm - {MakeCurrencyString(total)}
+          Close tab - {MakeCurrencyString(total)}
         </Text>
       </TouchableOpacity>
     </View>
@@ -170,7 +153,7 @@ export default function ServingTray() {
       }}
     >
       <Text style={{ fontSize: 25, textAlign: "center", padding: 10 }}>
-        Your serving tray is empty! {orderHistory.length ? "Your previous trays can be found in the order tab." : ""}
+        There is nothing here!
       </Text>
     </View>
   );
@@ -211,18 +194,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     left: 50,
-    bottom: 65,
+    bottom: 10,
   },
 });
 
-async function schedulePushNotification(place) {
+async function mockAcceptedNotification(place) {
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: "Order Received",
-      body:
-        `Your order has been received by ${place}!\nWe will let you know when your order is accepted!`,
+      title: "Your tab has been closed!",
+      body: `Thank you for dining with ${place}!`,
       data: { data: await getData("@pushToken") },
     },
-    trigger: { seconds: 2 },
+    trigger: { seconds: 3 },
   });
 }

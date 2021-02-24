@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  SafeAreaView,
-  FlatList,
-  StyleSheet,
-  StatusBar,
-  View,
-} from "react-native";
+import { SafeAreaView, FlatList, StyleSheet, StatusBar } from "react-native";
 import restaurants from "../mock/restaurant.js";
 import { Avatar, ListItem } from "react-native-elements";
 import SearchBar from "./SearchBar";
@@ -49,7 +43,7 @@ const App = ({ navigator }: { navigator: any }) => {
         data={restaurants}
         renderItem={renderItem}
         keyExtractor={(item) => item.description}
-        contentContainerStyle={{paddingBottom: 70}}
+        contentContainerStyle={{ paddingBottom: 70 }}
       />
     </SafeAreaView>
   );
