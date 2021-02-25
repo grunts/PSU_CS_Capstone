@@ -19,7 +19,7 @@ import {
 import TitleBarComponent from "../components/TitleBarComponent";
 import { enableScreens } from "react-native-screens";
 import { useSelector } from "react-redux";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Dimensions, Platform } from "react-native";
 import { useTheme } from "@react-navigation/native";
 /**This creates a new Navigator to manage switching between list view and map view using the bottom tabs.
  * We give "BottomTab" a type: "BottomTabParamList" - this identifies which object types are valid to use
@@ -32,7 +32,7 @@ enableScreens(true);
 export default function BottomTabNavigator() {
   const colorScheme = useColorScheme();
   const tray = useSelector((state) => state.servingTray);
-  const {orderHistory} = tray
+  const { orderHistory } = tray;
   return (
     /**The BottomTab Navigator will have two screens.  The initially displayed screen will be TabOne.
      * The BottomTab will also have some style properties set - namely it will be colored based on the
@@ -75,7 +75,9 @@ export default function BottomTabNavigator() {
               <TabBarIcon name="newspaper-outline" color={color} />
               {orderHistory.length ? (
                 <View style={styles.container2}>
-                  <Text style={{ color: "white", fontWeight: "bold" }}>{orderHistory.length}</Text>
+                  <Text style={{ color: "white", fontWeight: "bold" }}>
+                    {orderHistory.length}
+                  </Text>
                 </View>
               ) : null}
             </View>
@@ -121,7 +123,25 @@ function TabOneNavigator({ navigation }: { navigation: any }) {
         name="TabOneScreen"
         component={TabOneScreen}
         options={() => ({
-          headerTitle: "Restaurants",
+          headerTitle: () =>
+            Platform.OS === "ios" ? (
+              <Text style={{ fontSize: 20, fontWeight: "600" }}>
+                Restaurants
+              </Text>
+            ) : (
+              <Text
+                style={{
+                  position: "absolute",
+                  left: Dimensions.get("window").width / 2 - 75,
+                  fontSize: 20,
+                  bottom: -10,
+                  fontWeight: "bold",
+                  color: useTheme().dark ? "white" : "black",
+                }}
+              >
+                Restaurants
+              </Text>
+            ),
           headerBackTitle: "",
         })}
       />
@@ -160,14 +180,46 @@ function TabOneNavigator({ navigation }: { navigation: any }) {
         name="StagingScreen"
         component={StagingScreen}
         options={{
-          headerTitle: "Customize Your Order",
+          headerTitle: () => (
+            <Text
+              style={{
+                fontSize: 18,
+                fontWeight: "bold",
+                textAlign: "center",
+                color: useTheme().dark ? "white" : "black",
+              }}
+            >
+              Customize Your Order
+            </Text>
+          ),
           headerBackTitle: "Back",
         }}
       />
       <TabOneStack.Screen
         name="ServingTray"
         component={ServingTray}
-        options={{ headerTitle: "Serving Tray", headerBackTitle: "Back" }}
+        options={{
+          headerTitle: () => (
+            <Text
+              style={
+                Platform.OS === "android"
+                  ? {
+                      position: "absolute",
+                      left: Dimensions.get("window").width / 2- 130,
+                      fontSize: 20,
+                      bottom: -10,
+                      fontWeight: "bold",
+                      color: useTheme().dark ? "white" : "black",
+                    }
+                  : { textAlign: "center", fontSize: 18, fontWeight: "700" }
+              }
+            >
+              Serving Tray
+            </Text>
+          ),
+
+          headerBackTitle: "Back",
+        }}
       />
     </TabOneStack.Navigator>
   );
@@ -195,8 +247,23 @@ function TabTwoNavigator({ navigation }: { navigation: any }) {
         name="TabTwoScreen"
         component={TabTwoScreen}
         options={{
-          headerTitle: () => <Text style={{textAlign: "center"}}>Map</Text>,
-          headerBackTitle: "Back",
+          headerTitle: () => (
+            <Text
+              style={
+                Platform.OS === "android"
+                  ? {
+                      position: "absolute",
+                      left: Dimensions.get("window").width / 2 - 32,
+                      fontSize: 20,
+                      bottom: -10,
+                      fontWeight: "bold",
+                    }
+                  : { textAlign: "center", fontSize: 18, fontWeight: "500" }
+              }
+            >
+              Map
+            </Text>
+          ),
         }}
       />
       <TabOneStack.Screen
@@ -223,7 +290,27 @@ function TabTwoNavigator({ navigation }: { navigation: any }) {
       <TabOneStack.Screen
         name="ServingTray"
         component={ServingTray}
-        options={{ headerTitle: "Serving Tray", headerBackTitle: "Back" }}
+        options={{  headerTitle: () => (
+          <Text
+            style={
+              Platform.OS === "android"
+                ? {
+                    position: "absolute",
+                    left: Dimensions.get("window").width / 2- 130,
+                    fontSize: 20,
+                    bottom: -10,
+                    fontWeight: "bold",
+                    color: useTheme().dark ? "white" : "black",
+                  }
+                : { textAlign: "center", fontSize: 18, fontWeight: "700" }
+            }
+          >
+            Serving Tray
+          </Text>
+        ),
+        
+        
+        headerBackTitle: "Back" }}
       />
     </TabTwoStack.Navigator>
   );
@@ -249,7 +336,24 @@ function TabThreeNavigator({ navigation }: { navigation: any }) {
         name="TabThreeScreen"
         component={TabThreeScreen}
         options={{
-          headerTitle: "Your Order",
+          headerTitle: () => (
+            <Text
+              style={
+                Platform.OS === "android"
+                  ? {
+                      position: "absolute",
+                      left: Dimensions.get("window").width / 2 - 65,
+                      fontSize: 20,
+                      bottom: -10,
+                      fontWeight: "bold",
+                      color: useTheme().dark ? "white" : "black",
+                    }
+                  : { textAlign: "center", fontSize: 18, fontWeight: "700" }
+              }
+            >
+              Your Order
+            </Text>
+          ),
           headerBackTitle: "Back",
         }}
       />
@@ -270,6 +374,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     zIndex: 2000,
+  },
+  androidHeader: {
+    position: "absolute",
+    left: Dimensions.get("window").width / 2 - 32,
+    fontSize: 20,
+    bottom: -10,
+    fontWeight: "bold",
   },
 });
 /* abandon and delete this comment if there's not enough time to implement
