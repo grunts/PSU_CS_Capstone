@@ -7,6 +7,7 @@ import {
   Alert,
   TouchableHighlight,
   Dimensions,
+  TouchableWithoutFeedback
 } from "react-native";
 import { Text, View } from "../components/Themed";
 import { MenuItem } from "../types";
@@ -90,7 +91,6 @@ export default function ServingTray() {
   };
 
   const handleCustomGratuity = () => {
-    console.log(tipField);
     if (tipField <= 0) {
       setHighLight(-1);
     } else {
@@ -205,7 +205,7 @@ export default function ServingTray() {
                   width: 200,
                   paddingLeft: 3,
                   fontSize: 18,
-                  fontWeight: "500",
+                  fontWeight: "500"
                 }}
                 containerStyle={{backgroundColor: "transparent"}}
                 value={tipField}
@@ -241,7 +241,6 @@ export default function ServingTray() {
           <View style={{ padding: 50, backgroundColor: "white" }}></View>
         }
       />
-      <View style={{ alignItems: "center" }}>
         <View style={styles.gratuityButtonContainer}>
           <TouchableOpacity
             style={
@@ -367,10 +366,8 @@ export default function ServingTray() {
               Custom{tipField ? `\n$${tipField.toFixed(2)}` : ""}
             </Text>
           </TouchableOpacity>
-        </View>
       </View>
 
-      <View style={{alignItems: "center"}}>
         <TouchableOpacity
           onPress={async () => {
             if (!orderHistory.length) {
@@ -390,7 +387,6 @@ export default function ServingTray() {
             Close tab - {MakeCurrencyString(total + gratuity)}
           </Text>
         </TouchableOpacity>
-      </View>
     </View>
   ) : (
     <View
@@ -436,18 +432,20 @@ const styles = StyleSheet.create({
     padding: 15,
     // marginLeft: 60,
     // marginRight: 60,
-    width: 307,
+    width: 305,
     marginBottom: 15,
     marginTop: 15,
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
+    left: 40,
     // left: 33,
     bottom: 10,
   },
   gratuityButtonContainer: {
     borderWidth: 1,
+    backgroundColor: "white",
     borderColor: "#a28",
     marginBottom: 15,
     marginTop: 15,
@@ -456,7 +454,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     width: 305,
     height: 45,
-    bottom: 60,
+    bottom: 62,
+    left: 40,
     flex: 1,
     flexDirection: "row",
   },
