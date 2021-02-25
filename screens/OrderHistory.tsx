@@ -6,6 +6,7 @@ import {
   Modal,
   Alert,
   TouchableHighlight,
+  Dimensions,
 } from "react-native";
 import { Text, View } from "../components/Themed";
 import { MenuItem } from "../types";
@@ -206,6 +207,7 @@ export default function ServingTray() {
                   fontSize: 18,
                   fontWeight: "500",
                 }}
+                containerStyle={{backgroundColor: "transparent"}}
                 value={tipField}
                 onChangeValue={(text: number) => setTipField(text)}
                 placeholder="0.00"
@@ -239,126 +241,156 @@ export default function ServingTray() {
           <View style={{ padding: 50, backgroundColor: "white" }}></View>
         }
       />
-      <View style={styles.gratuityButtonContainer}>
-        <TouchableOpacity
-          style={highLight === 0.15 ? [styles.gratuityContainerSelected, {borderTopLeftRadius: 6, borderBottomLeftRadius: 6}] : {width: 60, paddingLeft: 0}}
-          onPress={() => handleGratuity(0.15)}
-        >
-          <Text
+      <View style={{ alignItems: "center" }}>
+        <View style={styles.gratuityButtonContainer}>
+          <TouchableOpacity
             style={
               highLight === 0.15
-                ? styles.gratuityAmountSelected
-                : styles.gratuityAmount
+                ? [
+                    styles.gratuityContainerSelected,
+                    { borderTopLeftRadius: 6, borderBottomLeftRadius: 6 },
+                  ]
+                : { width: 60, paddingLeft: 0 }
             }
+            onPress={() => handleGratuity(0.15)}
           >
-            15%{"\n"}${Number(total * 0.15).toFixed(2)}
-          </Text>
-        </TouchableOpacity>
-        <View
-          style={{
-            height: "100%",
-            borderRightWidth: 1,
-            borderRightColor: "#a28",
-          }}
-        ></View>
-        <TouchableOpacity
-          style={highLight === 0.2 ? styles.gratuityContainerSelected : {width: 60}}
-          onPress={() => handleGratuity(0.2)}
-        >
-          <Text
+            <Text
+              style={
+                highLight === 0.15
+                  ? styles.gratuityAmountSelected
+                  : styles.gratuityAmount
+              }
+            >
+              15%{"\n"}${Number(total * 0.15).toFixed(2)}
+            </Text>
+          </TouchableOpacity>
+          <View
+            style={{
+              height: "100%",
+              borderRightWidth: 1,
+              borderRightColor: "#a28",
+            }}
+          ></View>
+          <TouchableOpacity
             style={
               highLight === 0.2
-                ? styles.gratuityAmountSelected
-                : styles.gratuityAmount
+                ? styles.gratuityContainerSelected
+                : { width: 60 }
             }
+            onPress={() => handleGratuity(0.2)}
           >
-            20%{"\n"}${Number(total * 0.2).toFixed(2)}
-          </Text>
-        </TouchableOpacity>
-        <View
-          style={{
-            height: "100%",
-            borderRightWidth: 1,
-            borderRightColor: "#a28",
-          }}
-        ></View>
-        <TouchableOpacity
-          style={highLight === 0.25 ? styles.gratuityContainerSelected : {width: 60}}
-          onPress={() => handleGratuity(0.25)}
-        >
-          <Text
+            <Text
+              style={
+                highLight === 0.2
+                  ? styles.gratuityAmountSelected
+                  : styles.gratuityAmount
+              }
+            >
+              20%{"\n"}${Number(total * 0.2).toFixed(2)}
+            </Text>
+          </TouchableOpacity>
+          <View
+            style={{
+              height: "100%",
+              borderRightWidth: 1,
+              borderRightColor: "#a28",
+            }}
+          ></View>
+          <TouchableOpacity
             style={
               highLight === 0.25
-                ? styles.gratuityAmountSelected
-                : styles.gratuityAmount
+                ? styles.gratuityContainerSelected
+                : { width: 60 }
             }
+            onPress={() => handleGratuity(0.25)}
           >
-            25%{"\n"}${Number(total * 0.25).toFixed(2)}
-          </Text>
-        </TouchableOpacity>
-        <View
-          style={{
-            height: "100%",
-            borderRightWidth: 1,
-            borderRightColor: "#a28",
-          }}
-        ></View>
-        <TouchableOpacity
-          style={highLight === 0.3 ? styles.gratuityContainerSelected : {width: 60}}
-          onPress={() => handleGratuity(0.3)}
-        >
-          <Text
+            <Text
+              style={
+                highLight === 0.25
+                  ? styles.gratuityAmountSelected
+                  : styles.gratuityAmount
+              }
+            >
+              25%{"\n"}${Number(total * 0.25).toFixed(2)}
+            </Text>
+          </TouchableOpacity>
+          <View
+            style={{
+              height: "100%",
+              borderRightWidth: 1,
+              borderRightColor: "#a28",
+            }}
+          ></View>
+          <TouchableOpacity
             style={
               highLight === 0.3
-                ? styles.gratuityAmountSelected
-                : styles.gratuityAmount
+                ? styles.gratuityContainerSelected
+                : { width: 60 }
             }
+            onPress={() => handleGratuity(0.3)}
           >
-            30%{"\n"}${Number(total * 0.3).toFixed(2)}
-          </Text>
-        </TouchableOpacity>
-        <View
-          style={{
-            height: "100%",
-            borderRightWidth: 1,
-            borderRightColor: "#a28",
-          }}
-        ></View>
-        <TouchableOpacity
-          style={highLight === 1 ? [styles.gratuityContainerSelected, {borderTopRightRadius: 6, borderBottomRightRadius: 6}] : {width: 60, borderRadius: 10}}
-          onPress={() => promptCustomGratuity()}
-        >
-          <Text
+            <Text
+              style={
+                highLight === 0.3
+                  ? styles.gratuityAmountSelected
+                  : styles.gratuityAmount
+              }
+            >
+              30%{"\n"}${Number(total * 0.3).toFixed(2)}
+            </Text>
+          </TouchableOpacity>
+          <View
+            style={{
+              height: "100%",
+              borderRightWidth: 1,
+              borderRightColor: "#a28",
+            }}
+          ></View>
+          <TouchableOpacity
             style={
               highLight === 1
-                ? styles.gratuityAmountSelected
-                : styles.gratuityAmount
+                ? [
+                    styles.gratuityContainerSelected,
+                    { borderTopRightRadius: 6, borderBottomRightRadius: 6 },
+                  ]
+                : { width: 60, borderRadius: 10 }
             }
+            onPress={() => promptCustomGratuity()}
           >
-            Custom{tipField ? `\n$${tipField.toFixed(2)}` : ""}
+            <Text
+              style={
+                highLight === 1
+                  ? styles.gratuityAmountSelected
+                  : styles.gratuityAmount
+              }
+            >
+              Custom{tipField ? `\n$${tipField.toFixed(2)}` : ""}
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <View style={{alignItems: "center"}}>
+        <TouchableOpacity
+          onPress={async () => {
+            if (!orderHistory.length) {
+              return;
+            }
+            setGratuity(0);
+            setTipField(0.0);
+            //Simulate a server triggering that the order has been processed and tab is closed
+            await mockAcceptedNotification(currentRestaurant);
+            //Clear the redux store
+            dispatch({ type: "CLOSE_TAB" });
+          }}
+          accessibilityLabel="Confirm total purchase"
+          style={styles.confirmButton}
+        >
+          <Text style={{ color: "white" }}>
+            Close tab - {MakeCurrencyString(total + gratuity)}
           </Text>
         </TouchableOpacity>
       </View>
-
-      <TouchableOpacity
-        onPress={async () => {
-          if (!orderHistory.length) {
-            return;
-          }
-          setGratuity(0);
-          setTipField(0.0);
-          //Simulate a server triggering that the order has been processed and tab is closed
-          await mockAcceptedNotification(currentRestaurant);
-          //Clear the redux store
-          dispatch({ type: "CLOSE_TAB" });
-        }}
-        accessibilityLabel="Confirm total purchase"
-        style={styles.confirmButton}
-      >
-        <Text style={{ color: "white" }}>
-          Close tab - {MakeCurrencyString(total + gratuity)}
-        </Text>
-      </TouchableOpacity>
     </View>
   ) : (
     <View
@@ -404,30 +436,26 @@ const styles = StyleSheet.create({
     padding: 15,
     // marginLeft: 60,
     // marginRight: 60,
-    width: "82%",
+    width: 307,
     marginBottom: 15,
     marginTop: 15,
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    left: 33,
+    // left: 33,
     bottom: 10,
   },
   gratuityButtonContainer: {
-    backgroundColor: "white",
     borderWidth: 1,
     borderColor: "#a28",
     marginBottom: 15,
-    // marginRight: 20,
     marginTop: 15,
     borderRadius: 8,
-    //  justifyContent: "center",
     alignItems: "center",
     position: "absolute",
     width: 305,
     height: 45,
-    left: 35,
     bottom: 60,
     flex: 1,
     flexDirection: "row",
@@ -441,7 +469,7 @@ const styles = StyleSheet.create({
   gratuityAmountSelected: {
     fontWeight: "600",
     color: "white",
-    textAlign: "center"
+    textAlign: "center",
   },
   gratuityContainerSelected: {
     flex: 1,
