@@ -205,7 +205,7 @@ function TabOneNavigator({ navigation }: { navigation: any }) {
                 Platform.OS === "android"
                   ? {
                       position: "absolute",
-                      left: Dimensions.get("window").width / 2- 130,
+                      left: Dimensions.get("window").width / 2 - 130,
                       fontSize: 20,
                       bottom: -10,
                       fontWeight: "bold",
@@ -290,27 +290,28 @@ function TabTwoNavigator({ navigation }: { navigation: any }) {
       <TabOneStack.Screen
         name="ServingTray"
         component={ServingTray}
-        options={{  headerTitle: () => (
-          <Text
-            style={
-              Platform.OS === "android"
-                ? {
-                    position: "absolute",
-                    left: Dimensions.get("window").width / 2- 130,
-                    fontSize: 20,
-                    bottom: -10,
-                    fontWeight: "bold",
-                    color: useTheme().dark ? "white" : "black",
-                  }
-                : { textAlign: "center", fontSize: 18, fontWeight: "700" }
-            }
-          >
-            Serving Tray
-          </Text>
-        ),
-        
-        
-        headerBackTitle: "Back" }}
+        options={{
+          headerTitle: () => (
+            <Text
+              style={
+                Platform.OS === "android"
+                  ? {
+                      position: "absolute",
+                      left: Dimensions.get("window").width / 2 - 130,
+                      fontSize: 20,
+                      bottom: -10,
+                      fontWeight: "bold",
+                      color: useTheme().dark ? "white" : "black",
+                    }
+                  : { textAlign: "center", fontSize: 18, fontWeight: "700" }
+              }
+            >
+              Serving Tray
+            </Text>
+          ),
+
+          headerBackTitle: "Back",
+        }}
       />
     </TabTwoStack.Navigator>
   );
