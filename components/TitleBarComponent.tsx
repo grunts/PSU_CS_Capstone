@@ -15,7 +15,6 @@ export default function TitleBarComponent({
 }) {
   const { dark } = useTheme();
   return (
-    <View style={styles.inline}>
       <TouchableOpacity
         style={{ position: "absolute", right: 10, bottom: 5, flex: 1 }}
         onPress={() => navigator.navigate("ServingTray")}
@@ -29,7 +28,6 @@ export default function TitleBarComponent({
           color={dark ? "white" : "black"}
         />
       </TouchableOpacity>
-    </View>
   );
 }
 
