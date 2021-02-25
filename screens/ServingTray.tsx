@@ -156,7 +156,7 @@ export default function ServingTray() {
         style={styles.confirmButton}
       >
         <Text style={{ color: "white" }}>
-          Confirm - {MakeCurrencyString(total)}
+          Add to order - {MakeCurrencyString(total)}
         </Text>
       </TouchableOpacity>
     </View>

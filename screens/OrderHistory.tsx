@@ -1,16 +1,27 @@
-import React from "react";
-import { StyleSheet, FlatList, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+  Modal,
+  Alert,
+  TouchableHighlight,
+} from "react-native";
 import { Text, View } from "../components/Themed";
 import { MenuItem } from "../types";
 
-import { Avatar, ListItem } from "react-native-elements";
+import { Avatar, ListItem, Input } from "react-native-elements";
 import { useSelector, useDispatch } from "react-redux";
 import { ServingTrayState } from "../store/reducers/types";
+import { AntDesign } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+import CurrencyInput, { FakeCurrencyInput } from "react-native-currency-input";
 
 /** imports for notifications */
 import * as Notifications from "expo-notifications";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { TextInput } from "react-native-gesture-handler";
 
 /**
  * Get the pushToken from local storage
@@ -34,6 +45,10 @@ interface RootState {
  * Creates order history screen
  */
 export default function ServingTray() {
+  const [gratuity, setGratuity] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [tipField, setTipField] = useState(0.0);
+  const [highLight, setHighLight] = useState(-1);
   /**
    * hook to retrieve serving tray information from redux store
    */
@@ -57,6 +72,31 @@ export default function ServingTray() {
     0
   );
 
+  const handleGratuity = (locGratuity) => {
+    setHighLight(locGratuity);
+    const toAdd: number = total * locGratuity;
+    setTipField(0.0);
+    if (total + gratuity == total + toAdd) {
+      setHighLight(-1);
+      setGratuity(0);
+      return;
+    }
+    setGratuity(toAdd);
+  };
+
+  const promptCustomGratuity = () => {
+    setModalVisible(true);
+  };
+
+  const handleCustomGratuity = () => {
+    console.log(tipField);
+    if (tipField <= 0) {
+      setHighLight(-1);
+    } else {
+      setHighLight(1);
+    }
+    setGratuity(tipField);
+  };
   /**
    This renderItem creates a condensed order history that is greyed out
    to reflect that the order is final at this point and the information has
@@ -107,10 +147,84 @@ export default function ServingTray() {
     </ListItem>
   );
 
+  function currencyFormat(num) {
+    return new Intl.NumberFormat("en-US", {}).format(num);
+  }
+
   //If they have an orderHistory display it and allow for closing the tab, otherwise
   //just display a message letting them know the car is empty
   return orderHistory.length ? (
     <View style={styles.container}>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <AntDesign
+              name="hearto"
+              size={30}
+              color="#a28"
+              style={{ marginTop: 0, paddingBottom: 12 }}
+            />
+            <Text style={styles.modalText}>
+              Your tip is highly appreciated!
+            </Text>
+            {/* <Input
+              // placeholder="0.00"
+              leftIcon={<FontAwesome name="dollar" size={15} color="black" />}
+              // onChangeText={(text) => setTipField(text)}
+              // value={tipField}
+              // keyboardType="numeric"
+              InputComponent = {() => <CurrencyInput value={tipField} onChangeValue={text=>setTipField(text)}/>}
+              containerStyle={{ width: 200 }}
+            /> */}
+            <View
+              style={{
+                flexDirection: "row",
+                borderBottomColor: "grey",
+                borderBottomWidth: 1,
+                marginBottom: 25,
+                width: 200,
+                height: 25,
+              }}
+            >
+              <FontAwesome
+                name="dollar"
+                size={15}
+                color="black"
+                style={{ paddingTop: 7 }}
+              />
+              <FakeCurrencyInput
+                style={{
+                  width: 200,
+                  paddingLeft: 3,
+                  fontSize: 18,
+                  fontWeight: "500",
+                }}
+                value={tipField}
+                onChangeValue={(text: number) => setTipField(text)}
+                placeholder="0.00"
+                delimiter=","
+                separator="."
+              />
+            </View>
+            <TouchableHighlight
+              style={{ ...styles.openButton, backgroundColor: "#a2006d" }}
+              onPress={() => {
+                handleCustomGratuity();
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <Text style={styles.textStyle}>Confirm</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Modal>
       <FlatList
         data={orderHistory}
         renderItem={renderItem}
@@ -125,11 +239,114 @@ export default function ServingTray() {
           <View style={{ padding: 50, backgroundColor: "white" }}></View>
         }
       />
+      <View style={styles.gratuityButtonContainer}>
+        <TouchableOpacity
+          style={highLight === 0.15 ? [styles.gratuityContainerSelected, {borderTopLeftRadius: 6, borderBottomLeftRadius: 6}] : {width: 60, paddingLeft: 0}}
+          onPress={() => handleGratuity(0.15)}
+        >
+          <Text
+            style={
+              highLight === 0.15
+                ? styles.gratuityAmountSelected
+                : styles.gratuityAmount
+            }
+          >
+            15%{"\n"}${Number(total * 0.15).toFixed(2)}
+          </Text>
+        </TouchableOpacity>
+        <View
+          style={{
+            height: "100%",
+            borderRightWidth: 1,
+            borderRightColor: "#a28",
+          }}
+        ></View>
+        <TouchableOpacity
+          style={highLight === 0.2 ? styles.gratuityContainerSelected : {width: 60}}
+          onPress={() => handleGratuity(0.2)}
+        >
+          <Text
+            style={
+              highLight === 0.2
+                ? styles.gratuityAmountSelected
+                : styles.gratuityAmount
+            }
+          >
+            20%{"\n"}${Number(total * 0.2).toFixed(2)}
+          </Text>
+        </TouchableOpacity>
+        <View
+          style={{
+            height: "100%",
+            borderRightWidth: 1,
+            borderRightColor: "#a28",
+          }}
+        ></View>
+        <TouchableOpacity
+          style={highLight === 0.25 ? styles.gratuityContainerSelected : {width: 60}}
+          onPress={() => handleGratuity(0.25)}
+        >
+          <Text
+            style={
+              highLight === 0.25
+                ? styles.gratuityAmountSelected
+                : styles.gratuityAmount
+            }
+          >
+            25%{"\n"}${Number(total * 0.25).toFixed(2)}
+          </Text>
+        </TouchableOpacity>
+        <View
+          style={{
+            height: "100%",
+            borderRightWidth: 1,
+            borderRightColor: "#a28",
+          }}
+        ></View>
+        <TouchableOpacity
+          style={highLight === 0.3 ? styles.gratuityContainerSelected : {width: 60}}
+          onPress={() => handleGratuity(0.3)}
+        >
+          <Text
+            style={
+              highLight === 0.3
+                ? styles.gratuityAmountSelected
+                : styles.gratuityAmount
+            }
+          >
+            30%{"\n"}${Number(total * 0.3).toFixed(2)}
+          </Text>
+        </TouchableOpacity>
+        <View
+          style={{
+            height: "100%",
+            borderRightWidth: 1,
+            borderRightColor: "#a28",
+          }}
+        ></View>
+        <TouchableOpacity
+          style={highLight === 1 ? [styles.gratuityContainerSelected, {borderTopRightRadius: 6, borderBottomRightRadius: 6}] : {width: 60, borderRadius: 10}}
+          onPress={() => promptCustomGratuity()}
+        >
+          <Text
+            style={
+              highLight === 1
+                ? styles.gratuityAmountSelected
+                : styles.gratuityAmount
+            }
+          >
+            Custom{tipField ? `\n$${tipField.toFixed(2)}` : ""}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
       <TouchableOpacity
         onPress={async () => {
           if (!orderHistory.length) {
             return;
           }
+          setGratuity(0);
+          setTipField(0.0);
           //Simulate a server triggering that the order has been processed and tab is closed
           await mockAcceptedNotification(currentRestaurant);
           //Clear the redux store
@@ -139,7 +356,7 @@ export default function ServingTray() {
         style={styles.confirmButton}
       >
         <Text style={{ color: "white" }}>
-          Close tab - {MakeCurrencyString(total)}
+          Close tab - {MakeCurrencyString(total + gratuity)}
         </Text>
       </TouchableOpacity>
     </View>
@@ -185,16 +402,99 @@ const styles = StyleSheet.create({
   confirmButton: {
     backgroundColor: "#a28",
     padding: 15,
-    marginLeft: 60,
-    marginRight: 60,
+    // marginLeft: 60,
+    // marginRight: 60,
+    width: "82%",
     marginBottom: 15,
     marginTop: 15,
     borderRadius: 8,
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    left: 50,
+    left: 33,
     bottom: 10,
+  },
+  gratuityButtonContainer: {
+    backgroundColor: "white",
+    borderWidth: 1,
+    borderColor: "#a28",
+    marginBottom: 15,
+    // marginRight: 20,
+    marginTop: 15,
+    borderRadius: 8,
+    //  justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+    width: 305,
+    height: 45,
+    left: 35,
+    bottom: 60,
+    flex: 1,
+    flexDirection: "row",
+  },
+  gratuityAmount: {
+    fontWeight: "600",
+    textAlign: "center",
+    color: "#a28",
+    alignSelf: "center",
+  },
+  gratuityAmountSelected: {
+    fontWeight: "600",
+    color: "white",
+    textAlign: "center"
+  },
+  gratuityContainerSelected: {
+    flex: 1,
+    backgroundColor: "#a28",
+    // borderRadius: 10,
+    maxWidth: 60,
+    alignSelf: "stretch",
+    justifyContent: "center",
+    paddingLeft: 0,
+    marginLeft: 0,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+    backgroundColor: "transparent",
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    paddingTop: 20,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    backgroundColor: "#a28",
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    paddingLeft: 40,
+    paddingRight: 40,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "500",
+    color: "black",
   },
 });
 

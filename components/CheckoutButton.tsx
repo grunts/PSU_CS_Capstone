@@ -16,7 +16,7 @@ export default function CheckoutButton(props) {
       backgroundColor="#a28"
       accessibilityLabel="Confirm add item"
     >
-      {`Go to checkout - ${length} item${length > 1 ? "s" : ""}`}
+      {`Go to Serving Tray - ${length} item${length > 1 ? "s" : ""}`}
     </MaterialCommunityIcons.Button>
   );
 }

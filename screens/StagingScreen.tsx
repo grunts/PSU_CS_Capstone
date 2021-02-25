@@ -430,7 +430,7 @@ export default function StagingScreen({ route }) {
           backgroundColor="#a28"
           accessibilityLabel="Confirm add item"
         >
-          {`Confirm order $${Number(
+          {`Add to serving tray $${Number(
             quantity * (price + Math.max(0, checked.adtlCharges))
           ).toFixed(2)}`}
         </MaterialCommunityIcons.Button>
@@ -443,9 +443,6 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     flex: 1,
-    // width: '100%',
-    // justifyContent: "center",
-    // alignItems: 'center',
   },
   bottomcontainer: {
     width: "105%",
