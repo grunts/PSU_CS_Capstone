@@ -192,6 +192,7 @@ export default function ServingTray() {
                 marginBottom: 25,
                 width: 200,
                 height: 25,
+                backgroundColor: "white"
               }}
             >
               <FontAwesome
@@ -439,7 +440,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    left: 40,
+    left: (Dimensions.get('window').width/2)-150,
     // left: 33,
     bottom: 10,
   },
@@ -455,7 +456,7 @@ const styles = StyleSheet.create({
     width: 305,
     height: 45,
     bottom: 62,
-    left: 40,
+    left: (Dimensions.get('window').width/2)-150,
     flex: 1,
     flexDirection: "row",
   },
