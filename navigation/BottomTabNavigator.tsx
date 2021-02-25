@@ -195,7 +195,7 @@ function TabTwoNavigator({ navigation }: { navigation: any }) {
         name="TabTwoScreen"
         component={TabTwoScreen}
         options={{
-          headerTitle: "Map",
+          headerTitle: () => <Text style={{textAlign: "center"}}>Map</Text>,
           headerBackTitle: "Back",
         }}
       />
