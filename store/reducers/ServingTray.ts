@@ -9,6 +9,7 @@ import {
   TRAY_CONFIRMED,
   CLOSE_TAB,
 } from "./types";
+import moment from "moment"
 //define what the chameleon's current and possible colors are
 //it can be more than one color at once, right now it is none... don't think about it too hard
 //we create an 'action', ../actions/ChameleonActions.js, so we have a way to add colors to our chameleon
@@ -64,14 +65,14 @@ const servingTrayReducer = (
       const toBeHistory = currentTray;
       return {
         ...state,
-        orderHistory: orderHistory.concat({tray: toBeHistory, num: numTray}),
+        orderHistory: orderHistory.concat({tray: toBeHistory, num: numTray, time: moment().format('hh:mm a') }),
         currentTray: [],
         numTray: numTray + 1
       };
 
     case CLOSE_TAB:
       //Reset the orderHistory and currentRestaurant
-      return {...state, orderHistory: [], currentRestaurant: null}
+      return {...state, orderHistory: [], currentRestaurant: null, numTray: 0}
 
     default:
       return state;
