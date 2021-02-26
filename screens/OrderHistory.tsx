@@ -129,8 +129,8 @@ export default function ServingTray() {
         {tray.tray.map((item) => (
           <ListItem
             containerStyle={{
-              backgroundColor: "gray",
-              opacity: 0.6,
+              backgroundColor: "silver",
+              opacity: 0.8,
               borderBottomColor: "black",
               borderBottomWidth: 1,
             }}
@@ -418,7 +418,7 @@ export default function ServingTray() {
         accessibilityLabel="Confirm total purchase"
         style={styles.confirmButton}
       >
-        <Text style={{ color: "white" }}>
+        <Text style={{ color: "white", fontWeight: "bold" }}>
           Close tab - {MakeCurrencyString(accum + gratuity)}
         </Text>
       </TouchableOpacity>

@@ -79,7 +79,7 @@ export default function StagingScreen({ route }) {
             />
             <Text style={styles.modalText}>
               Orders cannot include items from multiple restaurants. Please
-              complete your current order or start a new one to change
+              complete your current order at {currentRest} or start a new one to change
               locations.
             </Text>
             <TouchableHighlight
