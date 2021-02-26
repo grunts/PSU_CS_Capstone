@@ -16,6 +16,7 @@ const INITIAL_STATE = {
   currentRestaurant: null,
   currentTray: [],
   orderHistory: [],
+  numTray: 0
 };
 
 const servingTrayReducer = (
@@ -23,7 +24,7 @@ const servingTrayReducer = (
   action: ServingTrayActionTypes
 ) => {
   //moved this line here to avoid it dumbly thinking I'm redeclaring the same variables for each
-  const { currentTray, currentRestaurant, orderHistory } = state;
+  const { currentTray, currentRestaurant, orderHistory, numTray } = state;
   switch (action.type) {
     case ADD_ITEM:
       //Without this step of creating a new object, we make shallow copies
@@ -63,8 +64,9 @@ const servingTrayReducer = (
       const toBeHistory = currentTray;
       return {
         ...state,
-        orderHistory: orderHistory.concat(toBeHistory),
+        orderHistory: orderHistory.concat({tray: toBeHistory, num: numTray}),
         currentTray: [],
+        numTray: numTray + 1
       };
 
     case CLOSE_TAB:

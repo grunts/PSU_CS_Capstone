@@ -62,7 +62,7 @@ export default function ServingTray() {
    * Destructures tray contents
    */
   const { orderHistory, currentRestaurant } = tray;
-
+    console.log(orderHistory)
   /**
    * retrieves redux dispatch functionality
    */
