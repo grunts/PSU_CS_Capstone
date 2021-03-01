@@ -9,6 +9,7 @@ import {
   TRAY_CONFIRMED,
   CLOSE_TAB,
 } from "./types";
+import moment from "moment"
 //define what the chameleon's current and possible colors are
 //it can be more than one color at once, right now it is none... don't think about it too hard
 //we create an 'action', ../actions/ChameleonActions.js, so we have a way to add colors to our chameleon
@@ -16,6 +17,7 @@ const INITIAL_STATE = {
   currentRestaurant: null,
   currentTray: [],
   orderHistory: [],
+  numTray: 0
 };
 
 const servingTrayReducer = (
@@ -23,7 +25,7 @@ const servingTrayReducer = (
   action: ServingTrayActionTypes
 ) => {
   //moved this line here to avoid it dumbly thinking I'm redeclaring the same variables for each
-  const { currentTray, currentRestaurant, orderHistory } = state;
+  const { currentTray, currentRestaurant, orderHistory, numTray } = state;
   switch (action.type) {
     case ADD_ITEM:
       //Without this step of creating a new object, we make shallow copies
@@ -63,13 +65,14 @@ const servingTrayReducer = (
       const toBeHistory = currentTray;
       return {
         ...state,
-        orderHistory: orderHistory.concat(toBeHistory),
+        orderHistory: orderHistory.concat({tray: toBeHistory, num: numTray, time: moment().format('hh:mm a') }),
         currentTray: [],
+        numTray: numTray + 1
       };
 
     case CLOSE_TAB:
       //Reset the orderHistory and currentRestaurant
-      return {...state, orderHistory: [], currentRestaurant: null}
+      return {...state, orderHistory: [], currentRestaurant: null, numTray: 0}
 
     default:
       return state;

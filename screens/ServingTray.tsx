@@ -62,7 +62,7 @@ export default function ServingTray() {
   /**
    * Destructures tray contents
    */
-  const { currentTray, orderHistory, currentRestaurant } = tray;
+  const { currentTray, orderHistory, currentRestaurant, num } = tray;
 
   /**
    * retrieves redux dispatch functionality
@@ -170,7 +170,7 @@ export default function ServingTray() {
       }}
     >
       <Text style={{ fontSize: 25, textAlign: "center", padding: 10 }}>
-        Your serving tray is empty! {orderHistory.length ? "Your previous trays can be found in the order tab." : ""}
+        Your current serving tray is empty! {orderHistory.length ? `You have ${orderHistory.length} tray${orderHistory.length > 1 ? "s" : ""} in your order tab.` : ""}
       </Text>
     </View>
   );

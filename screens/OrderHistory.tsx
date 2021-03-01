@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import {
   StyleSheet,
-  FlatList,
   TouchableOpacity,
   Modal,
   Alert,
@@ -10,20 +9,19 @@ import {
   Platform,
 } from "react-native";
 import { Text, View } from "../components/Themed";
-import { MenuItem } from "../types";
 
 import { Avatar, ListItem, Input } from "react-native-elements";
 import { useSelector, useDispatch } from "react-redux";
 import { ServingTrayState } from "../store/reducers/types";
 import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome } from "@expo/vector-icons";
-import CurrencyInput, { FakeCurrencyInput } from "react-native-currency-input";
+import { FakeCurrencyInput } from "react-native-currency-input";
 
 /** imports for notifications */
 import * as Notifications from "expo-notifications";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { TextInput } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 
 /**
  * Get the pushToken from local storage
@@ -57,28 +55,21 @@ export default function ServingTray() {
   const tray: ServingTrayState = useSelector(
     (state: RootState) => state.servingTray
   );
-
+  let accum = 0;
   /**
    * Destructures tray contents
    */
   const { orderHistory, currentRestaurant } = tray;
-
   /**
    * retrieves redux dispatch functionality
    */
   const dispatch = useDispatch();
 
-  // Sums the price of all the serving tray items
-  const total = orderHistory.reduce(
-    (accumulator, currentItem) => (accumulator += currentItem.price),
-    0
-  );
-
   const handleGratuity = (locGratuity) => {
     setHighLight(locGratuity);
-    const toAdd: number = total * locGratuity;
+    const toAdd: number = accum * locGratuity;
     setTipField(0.0);
-    if (total + gratuity == total + toAdd) {
+    if (accum + gratuity == accum + toAdd) {
       setHighLight(-1);
       setGratuity(0);
       return;
@@ -103,54 +94,88 @@ export default function ServingTray() {
    to reflect that the order is final at this point and the information has
    been delivered to the establishment
    */
-  const renderItem = ({ item, index }: { item: MenuItem; index: number }) => (
-    <ListItem
-      containerStyle={{
-        backgroundColor: "gray",
-        opacity: 0.6,
-        borderBottomColor: "black",
-        borderBottomWidth: 1,
-      }}
-    >
-      {/**A simple picture element for holding an image of the food item.*/}
-      <Avatar size="large" source={{ uri: item.image }} />
-      {/**The Content component holds the body of the data in the list item.*/}
-      <ListItem.Content>
-        <ListItem.Title style={{ fontSize: 20 }}>
-          {item.name} {`$${Number(item.price).toFixed(2)}`}
-        </ListItem.Title>
-        <ListItem.Subtitle>{item.longDesc}</ListItem.Subtitle>
-        <Text
-          style={{
-            color: "black",
-            fontStyle: "italic",
-            fontSize: 12,
-          }}
-        >
-          {item.customComments}
-        </Text>
-        {item.mods
-          ? item.mods.map((m, i) => (
-              //Clean up mod naming conventions due to maps not liking spaces in the key
-              //and other 'extra' keywords
-              //Display all mods user choices ina friendly way
-              <Text key={m + i} style={{ color: "black", fontStyle: "italic" }}>
-                {m
-                  .replace("_", " ")
-                  .replace("->", ": ")
-                  .replace("?", "")
-                  .replace("(recommended)", "")
-                  .trim()}
+  const traySummary = orderHistory.map((tray, index) => {
+    let thisTotal = tray.tray.reduce(
+      (accumulator, currentItem) => (accumulator += currentItem.price),
+      0
+    );
+    accum += thisTotal;
+    let t = tray.time;
+    if (t[0] === "0") {
+      t = t.substring(1);
+    }
+    return (
+      <>
+        <View style={{ flexDirection: "row", paddingLeft: 3 }}>
+          <Text
+            style={{
+              color: "#a28",
+              paddingTop: 7,
+              paddingBottom: 7,
+              fontSize: 15,
+              fontWeight: "bold",
+            }}
+          >
+            Serving Tray {tray.num + 1} - ${Number(thisTotal).toFixed(2)} placed
+            at {t}
+          </Text>
+          <FontAwesome
+            name="chevron-down"
+            size={16}
+            color="#a28"
+            style={{ paddingLeft: 5, paddingTop: 6 }}
+          />
+        </View>
+        {tray.tray.map((item) => (
+          <ListItem
+            containerStyle={{
+              backgroundColor: "silver",
+              opacity: 0.8,
+              borderBottomColor: "black",
+              borderBottomWidth: 1,
+            }}
+          >
+            {/**A simple picture element for holding an image of the food item.*/}
+            <Avatar size="large" source={{ uri: item.image }} />
+            {/**The Content component holds the body of the data in the list item.*/}
+            <ListItem.Content>
+              <ListItem.Title style={{ fontSize: 20 }}>
+                {item.name} {`$${Number(item.price).toFixed(2)}`}
+              </ListItem.Title>
+              <ListItem.Subtitle>{item.longDesc}</ListItem.Subtitle>
+              <Text
+                style={{
+                  color: "black",
+                  fontStyle: "italic",
+                  fontSize: 12,
+                }}
+              >
+                {item.customComments}
               </Text>
-            ))
-          : null}
-      </ListItem.Content>
-    </ListItem>
-  );
-
-  function currencyFormat(num) {
-    return new Intl.NumberFormat("en-US", {}).format(num);
-  }
+              {item.mods
+                ? item.mods.map((m, i) => (
+                    //Clean up mod naming conventions due to maps not liking spaces in the key
+                    //and other 'extra' keywords
+                    //Display all mods user choices ina friendly way
+                    <Text
+                      key={m + i}
+                      style={{ color: "black", fontStyle: "italic" }}
+                    >
+                      {m
+                        .replace("_", " ")
+                        .replace("->", ": ")
+                        .replace("?", "")
+                        .replace("(recommended)", "")
+                        .trim()}
+                    </Text>
+                  ))
+                : null}
+            </ListItem.Content>
+          </ListItem>
+        ))}
+      </>
+    );
+  });
 
   //If they have an orderHistory display it and allow for closing the tab, otherwise
   //just display a message letting them know the car is empty
@@ -175,15 +200,6 @@ export default function ServingTray() {
             <Text style={styles.modalText}>
               Your tip is highly appreciated!
             </Text>
-            {/* <Input
-              // placeholder="0.00"
-              leftIcon={<FontAwesome name="dollar" size={15} color="black" />}
-              // onChangeText={(text) => setTipField(text)}
-              // value={tipField}
-              // keyboardType="numeric"
-              InputComponent = {() => <CurrencyInput value={tipField} onChangeValue={text=>setTipField(text)}/>}
-              containerStyle={{ width: 200 }}
-            /> */}
             <View
               style={{
                 flexDirection: "row",
@@ -228,28 +244,24 @@ export default function ServingTray() {
           </View>
         </View>
       </Modal>
-      <FlatList
-        data={orderHistory}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => item.name + index}
+      <ScrollView
         contentContainerStyle={{
-          paddingBottom: 50,
+          paddingBottom: 180,
           flexGrow: 1,
           backgroundColor: "white",
         }}
-        style={{ height: "100%" }}
-        ListFooterComponent={
-          <View style={{ padding: 50, backgroundColor: "white" }}></View>
-        }
-      />
+        style={{ flexGrow: 1, height: "100%" }}
+      >
+        {traySummary}
+      </ScrollView>
 
       <View
         style={{
           position: "absolute",
           bottom: 128,
-          left: Dimensions.get("window").width/9,
+          left: Dimensions.get("window").width / 9,
           flexDirection: "row",
-          backgroundColor: "transparent"
+          backgroundColor: "transparent",
         }}
       >
         <Text
@@ -287,7 +299,7 @@ export default function ServingTray() {
                 : styles.gratuityAmount
             }
           >
-            15%{"\n"}${Number(total * 0.15).toFixed(2)}
+            15%{"\n"}${Number(accum * 0.15).toFixed(2)}
           </Text>
         </TouchableOpacity>
         <View
@@ -310,7 +322,7 @@ export default function ServingTray() {
                 : styles.gratuityAmount
             }
           >
-            20%{"\n"}${Number(total * 0.2).toFixed(2)}
+            20%{"\n"}${Number(accum * 0.2).toFixed(2)}
           </Text>
         </TouchableOpacity>
         <View
@@ -335,7 +347,7 @@ export default function ServingTray() {
                 : styles.gratuityAmount
             }
           >
-            25%{"\n"}${Number(total * 0.25).toFixed(2)}
+            25%{"\n"}${Number(accum * 0.25).toFixed(2)}
           </Text>
         </TouchableOpacity>
         <View
@@ -358,7 +370,7 @@ export default function ServingTray() {
                 : styles.gratuityAmount
             }
           >
-            30%{"\n"}${Number(total * 0.3).toFixed(2)}
+            30%{"\n"}${Number(accum * 0.3).toFixed(2)}
           </Text>
         </TouchableOpacity>
         <View
@@ -406,8 +418,8 @@ export default function ServingTray() {
         accessibilityLabel="Confirm total purchase"
         style={styles.confirmButton}
       >
-        <Text style={{ color: "white" }}>
-          Close tab - {MakeCurrencyString(total + gratuity)}
+        <Text style={{ color: "white", fontWeight: "bold" }}>
+          Close tab - {MakeCurrencyString(accum + gratuity)}
         </Text>
       </TouchableOpacity>
     </View>
@@ -421,7 +433,7 @@ export default function ServingTray() {
       }}
     >
       <Text style={{ fontSize: 25, textAlign: "center", padding: 10 }}>
-        There is nothing here!
+        There is nothing here... yet
       </Text>
     </View>
   );

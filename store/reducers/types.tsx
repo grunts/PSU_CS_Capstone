@@ -7,7 +7,8 @@ export const CLOSE_TAB = 'CLOSE_TAB'
 export interface ServingTrayState {
     currentTray: MenuItem[]
     currentRestaurant: string | null,
-    orderHistory: MenuItem[]
+    orderHistory: MenuItem[],
+    numTray: number
   }
 
 interface AddMenuItem {
